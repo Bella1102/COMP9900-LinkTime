@@ -6,7 +6,7 @@ ReactJS, Redux, Hooks, AntD
 **Backend:**
 Python, Flask, SQLite  
 
-**Collaborators:**
+**Collaborators:**  
 Bella1102: Juan Chen    
 Han1015: XiaoHan Ding    
 
