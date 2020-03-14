@@ -14,12 +14,12 @@ class Register extends Component{
         imgList: []
     }
 
-    handleSubmit = ()=>{
+    handleSubmit = () => {
         let userInfo = this.props.form.getFieldsValue();
         message.success(`${userInfo.userName} Current Password is：${userInfo.userPwd}`)
     }
 
-    getBase64 = (img, callback)=>{
+    getBase64 = (img, callback) => {
         const reader = new FileReader();
         reader.addEventListener('load', () => callback(reader.result));
         reader.readAsDataURL(img);

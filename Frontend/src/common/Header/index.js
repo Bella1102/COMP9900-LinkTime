@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Row, Col, Button } from 'antd';
-import { CSSTransition } from 'react-transition-group';
+// import { CSSTransition } from 'react-transition-group';
 // import { actionCreators } from './store';
 import './index.less';
-import { SearchWrapper, NavSearch} from './style';
+// import { SearchWrapper, NavSearch} from './style';
 
 
 
@@ -64,19 +64,19 @@ class Header extends Component {
                 <Row className="header-top">
                     <Col span={24}>
                         <Link to='/' className="logo">LinkTime</Link>
-                        <SearchWrapper >
+                        {/* <SearchWrapper >
                             <CSSTransition
                                 in={this.state.focused}
                                 timeout={200}
                                 classNames="slide">
                                 <NavSearch placeholder="Search"
                                     className={this.state.focused ? 'focused' : ''}
-                                    // onFocus={ }
-                                    // onBlur={ }
+                                    onFocus={ }
+                                    onBlur={ }
                                 ></NavSearch>
                             </CSSTransition>
-						    {/* { this.getListArea() } */}
-					    </SearchWrapper>
+						    { this.getListArea() }
+					    </SearchWrapper> */}
                         <Link to='/login'><Button type="primary" className="logreg">Log in</Button></Link>
                         <Link to='/register'><Button type="primary" className="logreg">Sign up</Button></Link>
                     </Col>

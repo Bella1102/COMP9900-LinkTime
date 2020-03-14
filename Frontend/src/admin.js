@@ -12,8 +12,8 @@ class Admin extends Component {
     render() {
         return (
             <Fragment>
-                <Row className="container">
-                    <Col span={24} className="main">
+                <Row>
+                    <Col span={24}>
                         <Header />
                         <Row className="content">{ this.props.children }</Row>
                         <Footer />
