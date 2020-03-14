@@ -44,7 +44,7 @@ class Login extends Component{
                                     { required: true, message: 'Please input your Password!' },
                                     { min: 6, max: 18, message: 'Password length is not valid!' }
                                 ]
-                            })( <Input prefix={<Icon type="lock"/>} type="password" placeholder="Password" /> )
+                            })( <Input.Password prefix={<Icon type="lock"/>} type="password" placeholder="Password" /> )
                         }
                     </Form.Item>
                     <Form.Item>

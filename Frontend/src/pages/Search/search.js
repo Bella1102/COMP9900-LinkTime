@@ -28,24 +28,26 @@ class Search extends Component {
 
         return (
             <div>
-               <div className="searchModule">
-                    <Cascader className="searchInner"
-                              options={options1} 
-                              onChange={this.onChange} 
-                              placeholder="House type" />
-                    <Cascader className="searchInner"
-                              options={options2} 
-                              onChange={this.onChange} 
-                              placeholder="Select location" />
-                    <RangePicker className="searchInner" 
-                                 onChange={this.onChange} />
-                    <Link to='/search'>
-                        <Button type="primary" 
-                                onClick={() => {}} 
-                                style={{width:100}}>Search</Button>
-                    </Link>
+               <div className="content" >
+                    <div className="searchModule">
+                        <Cascader className="searchInner"
+                                options={options1} 
+                                onChange={this.onChange} 
+                                placeholder="House type" />
+                        <Cascader className="searchInner"
+                                options={options2} 
+                                onChange={this.onChange} 
+                                placeholder="Select location" />
+                        <RangePicker className="searchInner" 
+                                    onChange={this.onChange} />
+                        <Link to='/search'>
+                            <Button type="primary" 
+                                    onClick={() => {}} 
+                                    style={{width: 100}}>Search
+                            </Button>
+                        </Link>
+                    </div>
                 </div>
-
             </div>
           );
     }
