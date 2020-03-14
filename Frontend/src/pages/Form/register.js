@@ -1,23 +1,43 @@
 import React, { Component } from 'react';
 import moment from 'moment';
-import {Form, Button, Input, DatePicker, message} from 'antd';
+import {Form, Button, Select,Input, DatePicker, message, AutoComplete, } from 'antd';
 
 
 const FormItem = Form.Item;
 const TextArea = Input.TextArea;
+const AutoCompleteOption = AutoComplete.Option;
+const { Option } = Select;
 
 
 
 class Register extends Component{
 
     state = {
-        imgList: []
-    }
+        confirmDirty: false,
+        autoCompleteResult: [],
+    };
 
     handleSubmit = () => {
         let userInfo = this.props.form.getFieldsValue();
         message.success(`${userInfo.userName} Current Password is：${userInfo.userPwd}`)
     }
+
+    compareToFirstPassword = (rule, value, callback) => {
+        const { form } = this.props;
+        if (value && value !== form.getFieldValue('password')) {
+            callback('Two passwords that you enter is inconsistent!');
+        } else {
+            callback();
+        }
+    };
+
+    validateToNextPassword = (rule, value, callback) => {
+        const { form } = this.props;
+        if (value && this.state.confirmDirty) {
+            form.validateFields(['confirm'], { force: true });
+        }
+            callback();
+      };
 
     getBase64 = (img, callback) => {
         const reader = new FileReader();
@@ -39,9 +59,21 @@ class Register extends Component{
         }
     }
 
+    handleWebsiteChange = value => {
+        let autoCompleteResult;
+        if (!value) {
+            autoCompleteResult = [];
+        } else {
+            autoCompleteResult = ['.com', '.org', '.net'].map(domain => `${value}${domain}`);
+        }
+        this.setState({ autoCompleteResult });
+    };
+    
+
     render(){
         
         const { getFieldDecorator } = this.props.form;
+        const { autoCompleteResult } = this.state;
 
         const formItemLayout = {
             labelCol: { xs: 24, sm: 9, xl: 9 },
@@ -53,6 +85,20 @@ class Register extends Component{
                           sm: { span: 6, offset: 10 }, 
                           xl: { span: 6, offset: 10 }  }
         }
+
+        const prefixSelector = getFieldDecorator('prefix', {
+            initialValue: '86',
+          })(
+            <Select style={{ width: 70 }}>
+                <Option value="86">+86</Option>
+                <Option value="61">+61</Option>
+            </Select>,
+        );
+
+        const websiteOptions = autoCompleteResult.map(website => (
+            <AutoCompleteOption key={website}>{website}</AutoCompleteOption>
+        ));
+      
 
         return (
             <div>
@@ -74,8 +120,17 @@ class Register extends Component{
                                 rules: [
                                     { required: true, message: 'Please input your Password!' }
                                 ]
-                            })( <Input type="password" placeholder="Please input your password" /> )
+                            })( <Input.Password type="password" placeholder="Please input your password" /> )
                         }
+                    </FormItem>
+                    <FormItem label="Confirm Password" {...formItemLayout}>
+                        {
+                        getFieldDecorator('confirm', {
+                            rules: [
+                                { required: true, message: 'Please confirm your password!'},
+                                { validator: this.compareToFirstPassword },
+                            ],
+                        })(<Input.Password onBlur={this.handleConfirmBlur} placeholder="Please confirm your password"/>)}
                     </FormItem>
                     <FormItem label="Email" {...formItemLayout}>
                         {
@@ -97,19 +152,24 @@ class Register extends Component{
                             })( <Input type="password" placeholder="Please input your phone number" /> )
                         }
                     </FormItem>
-                    <FormItem label="Birthday" {...formItemLayout}>
-                        {
-                            getFieldDecorator('birthday', {
-                                initialValue: moment("1994-11-02")
-                            })( <DatePicker showTime format="YYYY-MM-DD" /> )
-                        }
-                    </FormItem>
                     <FormItem label="Address" {...formItemLayout}>
                         {
                             getFieldDecorator('address',{
                                 initialValue: ''
                             })( <TextArea autoSize={{ minRows: 1, maxRows: 3 }} placeholder="Please input your address"/> )
                         }
+                    </FormItem>
+                    <FormItem label="Website" {...formItemLayout}>
+                        {
+                        getFieldDecorator('website', {
+                            rules: [{ required: true, message: 'Please input website!' }],
+                        })(
+                            <AutoComplete dataSource={websiteOptions} 
+                                          onChange={this.handleWebsiteChange}
+                                          placeholder="website">
+                            <Input />
+                            </AutoComplete>,
+                        )}
                     </FormItem>
                     <FormItem {...offsetLayout}>
                         <Button type="primary" onClick={this.handleSubmit}>Sign up</Button>

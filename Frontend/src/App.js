@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 import Admin from './admin';
-import Login from './pages/login';
-import Register from './pages/register';
-import Home from './pages/home';
+import Home from './pages/Home/home';
+import Login from './pages/Form/login';
+import Register from './pages/Form/register';
+import Search from './pages/Search/search';
 
 
 
@@ -15,12 +16,14 @@ class App extends Component {
       return (
         <BrowserRouter> 
           	<Switch>
-				<Route path='/login' exact component={ Login }></Route>
-				<Route path='/register' exact component={ Register }></Route>
+			  	{/* <Route path='/search' exact component={ Search }></Route> */}
 				<Route path='/' render = {() => 
 					<Admin>
 						<Switch>
 							<Route path='/' exact component={ Home }></Route>
+							<Route path='/login' exact component={ Login }></Route>
+							<Route path='/register' exact component={ Register }></Route>
+							<Route path='/search' exact component={ Search }></Route>
 						</Switch>
 					</Admin> }>
 				</Route>

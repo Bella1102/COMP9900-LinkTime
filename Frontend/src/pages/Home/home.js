@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { Carousel, DatePicker, Cascader, Button } from 'antd';
-import './pages.less';
+import './index.less';
 
 
 
@@ -21,6 +22,7 @@ const options2 = [
 
 
 class Home extends Component {
+    
 
     onChange(date, dateString) {
         console.log(date, dateString);
@@ -28,6 +30,11 @@ class Home extends Component {
 
     render() {
         const { RangePicker } = DatePicker;
+
+        // const formItemLayout = {
+        //     labelCol: { md: 24, lg: 8 },
+        //     wrapperCol: { md: 24, lg: 8 }
+        // }
 
         return (
             <div>
@@ -42,7 +49,12 @@ class Home extends Component {
                               placeholder="Select location" />
                     <RangePicker className="searchInner" 
                                  onChange={this.onChange} />
-                    <Button type="primary" onClick={() => {}} style={{width:100}}>Search</Button>
+                    <Link to='/search'>
+                        <Button type="primary" 
+                                onClick={() => {}} 
+                                style={{width:100}}>Search
+                        </Button>
+                    </Link>
                 </div>
 
                 <Carousel autoplay>

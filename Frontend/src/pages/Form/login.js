@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+import { connect } from 'react-redux';
+// import { Redirect } from 'react-router-dom';
+import { actionCreators } from './store';
 import { Form, Input, Button, message, Icon, Checkbox } from "antd";
 
 
@@ -61,5 +64,17 @@ class Login extends Component{
     }
 }
 
+const mapState = (state) => {
+	return {
+		loginStatus: state.getIn(["login", "loginStatus"])
+	}
+}
 
-export default Form.create()(Login);
+const mapDispatch = (dispatch) => ({
+    login(accountElem, passwordElem) {
+		dispatch(actionCreators.login(accountElem.value, passwordElem.value))
+	}
+});
+
+
+export default connect(mapState, mapDispatch)(Form.create()(Login));
