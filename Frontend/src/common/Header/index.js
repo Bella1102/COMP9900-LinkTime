@@ -1,12 +1,32 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { Row, Col, Button } from 'antd';
-// import { CSSTransition } from 'react-transition-group';
-// import { actionCreators } from './store';
-// import { SearchWrapper, NavSearch} from './style';
+import { Avatar, Row, Col, Button, Dropdown, Menu, Icon } from 'antd';
+import { actionCreators as loginActionCreators } from '../../pages/Form/store';
 import './index.less';
 
+
+
+
+const menu = (
+    <Menu>
+        <Menu.Item style={{width: 180, height: 35, fontWeight: 600, marginTop: 10}}>
+            <Link to='/profile'>Profile</Link>
+        </Menu.Item>
+        <Menu.Item style={{width: 180, height: 35, fontWeight: 600,}}>
+            <Link to='/register'>Sign Up</Link>
+        </Menu.Item>
+        <Menu.Item style={{width: 180, height: 35, fontWeight: 600,}}>
+            <Link to='/orders'>My Orders</Link>
+        </Menu.Item>
+        <Menu.Item style={{width: 180, height: 35, fontWeight: 600,}}>
+            <Link to='/request'>Post Request</Link>
+        </Menu.Item>
+        <Menu.Item style={{width: 180, height: 35, color: '#f9c700', fontWeight: 600,}}>
+            <Link style={{ color: '#f9c700'}}to='/' >Log Out</Link>
+        </Menu.Item>
+    </Menu>
+);
 
 
 
@@ -14,17 +34,18 @@ class Header extends Component {
 
     constructor(props) {
 		super(props);
-		this.state = { 
-            focused: false,
-            mouseIn: false,
-            list: [],
-            page: 1,
-            totalPage: 1
+		this.state = {
+            
 		};
     }
 
+    // avatarClick() {
+    //     return (
+            
+    //     )
+    // }
 
-    render() {
+    beforeLogin() {
         return (
             <div className="header">
                 <Row className="header-top">
@@ -37,23 +58,59 @@ class Header extends Component {
             </div>
           );
     }
+
+    afterLogin() {
+        return (
+            <div className="header">
+                <Row className="header-top">
+                    <Col span={24}>
+                        <Link to='/' className="logo">LinkTime</Link>
+                        <Link to='/'>
+                            <Button type="primary" className="logreg" onClick={ this.props.logout }>Logout</Button>
+                        </Link>
+
+                        <Dropdown overlay={menu} placement="bottomCenter">
+                            <Avatar size={48} 
+                                    icon="user" 
+                                    className="logreg"
+                                    style={{ backgroundColor: '#f9c700' }}>
+                                {/* {this.props.userInfo.get("username")} */}
+                            </Avatar>
+                        </Dropdown>
+                    </Col>
+                </Row>
+            </div>
+          );
+    }
+
+
+render() {
+        const { loginStatus } = this.props;
+		if (!loginStatus) {
+			return this.beforeLogin()
+		} else {
+			return this.afterLogin()
+		}
+    }
 }
 
 
 const mapState = (state) => {
 	return {
-		login: state.getIn(['login', 'login'])
+        loginStatus: state.getIn(["login", "loginStatus"]),
+        userInfo: state.getIn(["login", "userInfo"]),
 		
 	}
 };
 
 const mapDispath = (dispatch) => {
 	return {
-		// logout() {
-		// 	dispatch(loginActionCreators.logout())
-		// }
+		logout() {
+			dispatch(loginActionCreators.logout())
+		}
 	}
 };
 
 
 export default connect(mapState, mapDispath)(Header);
+

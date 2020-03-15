@@ -3,7 +3,7 @@ import { fromJS } from 'immutable';
 import * as constants from './constants';
 
 
-const baseURL = '127.0.0.0:5000';
+const baseURL = 'http://127.0.0.1:5000';
 
 
 export const logout = () => ({
@@ -19,7 +19,8 @@ const getUserData = (data, token) => ({
 	token: fromJS(token)
 });
 
-export const login = (account, password) => {
+
+export const login = (username, password) => {
 	const loginURL = baseURL + '/auth/login';
 	const loginAxiosConfig = {
 		headers: {
@@ -27,11 +28,11 @@ export const login = (account, password) => {
 			'Content-Type':'application/json'
 		}
 	};
-	const loginData = {"username": account, "password": password}
+	const loginData = {"username": username, "password": password}
 	return (dispatch) => {
 		// login auth post
 		axios.post(loginURL, loginData, loginAxiosConfig).then((res) => {
-			
+			console.log(res)
 			// get user info
 			const userURL = baseURL + '/user/';
 			const AxiosConfig = {
@@ -41,6 +42,7 @@ export const login = (account, password) => {
 				}
 			};
 			axios.get(userURL, AxiosConfig).then((response) => {
+				console.log(response)
 				const userData = response.data;
 				dispatch(getUserData(userData, res.data.token));
 			}).catch(() => {

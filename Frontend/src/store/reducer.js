@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux-immutable';
-// import { reducer as loginReducer } from '../pages/Login/store';
+import { reducer as loginReducer } from '../pages/Form/store';
 
 const reducer = combineReducers({
-	// login: loginReducer
+	login: loginReducer
 });
 
 export default reducer;

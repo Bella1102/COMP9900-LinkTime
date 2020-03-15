@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
-import moment from 'moment';
-import {Form, Button, Select,Input, DatePicker, message, AutoComplete, } from 'antd';
-
+import {Form, Button, Select,Input, message } from 'antd';
 
 
 const FormItem = Form.Item;
 const TextArea = Input.TextArea;
-const AutoCompleteOption = AutoComplete.Option;
 const { Option } = Select;
 
 
@@ -20,7 +17,7 @@ class Register extends Component{
 
     handleSubmit = () => {
         let userInfo = this.props.form.getFieldsValue();
-        message.success(`${userInfo.userName} Current Password is：${userInfo.userPwd}`)
+        message.success(`${userInfo.username} Current Password is：${userInfo.password}`)
     }
 
     compareToFirstPassword = (rule, value, callback) => {
@@ -60,21 +57,9 @@ class Register extends Component{
         }
     }
 
-    handleWebsiteChange = value => {
-        let autoCompleteResult;
-        if (!value) {
-            autoCompleteResult = [];
-        } else {
-            autoCompleteResult = ['.com', '.org', '.net'].map(domain => `${value}${domain}`);
-        }
-        this.setState({ autoCompleteResult });
-    };
-    
-
     render(){
         
         const { getFieldDecorator } = this.props.form;
-        const { autoCompleteResult } = this.state;
 
         const formItemLayout = {
             labelCol: { xs: 24, sm: 9, xl: 9 },
@@ -88,40 +73,33 @@ class Register extends Component{
         }
 
         const prefixSelector = getFieldDecorator('prefix', {
-            initialValue: '86',
+            initialValue: '61',
           })(
             <Select style={{ width: 70 }}>
-                <Option value="86">+86</Option>
                 <Option value="61">+61</Option>
+                <Option value="86">+86</Option>
             </Select>,
         );
-
-        const websiteOptions = autoCompleteResult.map(website => (
-            <AutoCompleteOption key={website}>{website}</AutoCompleteOption>
-        ));
       
-
         return (
             <div>
                 <Form layout="horizontal" style={{marginTop: 100}}>
                     <FormItem label="UserName" {...formItemLayout}>
                         {
-                            getFieldDecorator('userName', {
+                            getFieldDecorator('username', {
                                 initialValue: '',
-                                rules: [
-                                    { required: true, message: 'Please input your Username!' }
-                                ]
-                            })( <Input placeholder="Please input your username" /> )
+                                rules: [{ required: true, message: 'Please input your Username!' }]
+                            })( <Input /> )
                         }
                     </FormItem>
                     <FormItem label="Password" {...formItemLayout}>
                         {
-                            getFieldDecorator('userPwd', {
+                            getFieldDecorator('password', {
                                 initialValue: '',
                                 rules: [
                                     { required: true, message: 'Please input your Password!' }
                                 ]
-                            })( <Input.Password type="password" placeholder="Please input your password" /> )
+                            })( <Input.Password type="password" /> )
                         }
                     </FormItem>
                     <FormItem label="Confirm Password" {...formItemLayout}>
@@ -131,46 +109,32 @@ class Register extends Component{
                                 { required: true, message: 'Please confirm your password!'},
                                 { validator: this.compareToFirstPassword },
                             ],
-                        })(<Input.Password onBlur={this.handleConfirmBlur} placeholder="Please confirm your password"/>)}
+                        })(<Input.Password onBlur={this.handleConfirmBlur} />)}
                     </FormItem>
                     <FormItem label="Email" {...formItemLayout}>
                         {
-                            getFieldDecorator('userEmail', {
+                            getFieldDecorator('email', {
                                 initialValue: '',
                                 rules: [
                                     { required: true, message: 'Please input your Email!' }
                                 ]
-                            })( <Input type="password" placeholder="Please input your email" /> )
+                            })( <Input type="password" /> )
                         }
                     </FormItem>
-                    <FormItem label="Phone" {...formItemLayout}>
+                    <FormItem label="Phone Number" {...formItemLayout}>
                         {
-                            getFieldDecorator('userPhone', {
+                            getFieldDecorator('phone', {
                                 initialValue: '',
-                                rules: [
-                                    { required: true, message: 'Please input your Phone Number!' }
-                                ]
-                            })( <Input type="password" placeholder="Please input your phone number" /> )
+                                rules: [{ required: true, message: 'Please input your phone number!' }],
+                            })(<Input addonBefore={prefixSelector} />)
                         }
                     </FormItem>
                     <FormItem label="Address" {...formItemLayout}>
                         {
                             getFieldDecorator('address',{
                                 initialValue: ''
-                            })( <TextArea autoSize={{ minRows: 1, maxRows: 3 }} placeholder="Please input your address"/> )
+                            })( <TextArea autoSize={{ minRows: 1, maxRows: 3 }}/> )
                         }
-                    </FormItem>
-                    <FormItem label="Website" {...formItemLayout}>
-                        {
-                        getFieldDecorator('website', {
-                            rules: [{ required: true, message: 'Please input website!' }],
-                        })(
-                            <AutoComplete dataSource={websiteOptions} 
-                                          onChange={this.handleWebsiteChange}
-                                          placeholder="website">
-                            <Input />
-                            </AutoComplete>,
-                        )}
                     </FormItem>
                     <FormItem {...offsetLayout}>
                         <Button type="primary" onClick={this.handleSubmit}>Sign up</Button>
