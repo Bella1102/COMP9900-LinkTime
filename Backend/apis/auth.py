@@ -32,12 +32,12 @@ class Login(Resource):
         hash_password = hashlib.sha256(user.salt + password_bytes).hexdigest()
         if (hash_password != user.password):
             abort(403,'Invalid Username/Password')
-        tok = gen_token()
-        user.token = tok
+        t = gen_token()
+        user.token = t
         session.commit()
         session.close()
         return {
-            'token': tok
+            'token': t
         }
 
 @api.route('/register')

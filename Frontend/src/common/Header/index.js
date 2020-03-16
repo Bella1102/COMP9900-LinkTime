@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { Avatar, Row, Col, Button, Dropdown, Menu, Icon } from 'antd';
+import { Avatar, Alert, Row, Col, Button, Dropdown, Menu, Icon } from 'antd';
 import { actionCreators as loginActionCreators } from '../../pages/Form/store';
 import './index.less';
 
@@ -11,16 +11,16 @@ import './index.less';
 const menu = (
     <Menu>
         <Menu.Item style={{width: 180, height: 35, fontWeight: 600, marginTop: 10}}>
-            <Link to='/profile'>Profile</Link>
+            <Link to='/host'>Become a host</Link>
         </Menu.Item>
         <Menu.Item style={{width: 180, height: 35, fontWeight: 600,}}>
-            <Link to='/register'>Sign Up</Link>
+            <Link to='/order'>My orders</Link>
         </Menu.Item>
         <Menu.Item style={{width: 180, height: 35, fontWeight: 600,}}>
-            <Link to='/orders'>My Orders</Link>
+            <Link to='/property'>My properties</Link>
         </Menu.Item>
         <Menu.Item style={{width: 180, height: 35, fontWeight: 600,}}>
-            <Link to='/request'>Post Request</Link>
+            <Link to='/request'>Post request</Link>
         </Menu.Item>
         <Menu.Item style={{width: 180, height: 35, color: '#f9c700', fontWeight: 600,}}>
             <Link style={{ color: '#f9c700'}}to='/' >Log Out</Link>
@@ -38,12 +38,6 @@ class Header extends Component {
             
 		};
     }
-
-    // avatarClick() {
-    //     return (
-            
-    //     )
-    // }
 
     beforeLogin() {
         return (
@@ -71,7 +65,7 @@ class Header extends Component {
 
                         <Dropdown overlay={menu} placement="bottomCenter">
                             <Avatar size={48} 
-                                    icon="user" 
+                                    icon="user"
                                     className="logreg"
                                     style={{ backgroundColor: '#f9c700' }}>
                                 {/* {this.props.userInfo.get("username")} */}

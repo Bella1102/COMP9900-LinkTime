@@ -5,6 +5,7 @@ import { Row, Col, Carousel, DatePicker, Cascader, Button } from 'antd';
 import './index.less';
 
 
+const { RangePicker } = DatePicker;
 
 const options1 = [ {value: "Apartment", label: "Apartment"}, 
                    {value: "Studio", label: "Studio"}, 
@@ -30,7 +31,6 @@ class Home extends Component {
     }
 
     render() {
-        const { RangePicker } = DatePicker;
 
         return (
             <div className="content" >

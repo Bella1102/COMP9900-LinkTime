@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import {Form, Button, Select,Input, message } from 'antd';
+import {Form, Button, Select,Input, Upload, Icon, message } from 'antd';
 
 
 const FormItem = Form.Item;
-const TextArea = Input.TextArea;
 const { Option } = Select;
 
 
@@ -11,8 +10,7 @@ const { Option } = Select;
 class Register extends Component{
 
     state = {
-        confirmDirty: false,
-        autoCompleteResult: [],
+        imgList: []
     };
 
     handleSubmit = () => {
@@ -83,7 +81,21 @@ class Register extends Component{
       
         return (
             <div>
-                <Form layout="horizontal" style={{marginTop: 100}}>
+                <Form layout="horizontal" style={{marginTop: 180, minHeight: 600}}>
+                    {/* <FormItem label="Photo" {...formItemLayout}>
+                        {
+                            getFieldDecorator('photo')(
+                                <Upload
+                                    listType="picture-card"
+                                    showUploadList={false}
+                                    fileList={this.state.imgList}
+                                    action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                                    onChange={this.handleChange}>
+                                    {this.state.userImg ? <img src={this.state.userImg} alt=""/> : <Icon type="plus"/>}
+                                </Upload>
+                            )
+                        }
+                    </FormItem> */}
                     <FormItem label="UserName" {...formItemLayout}>
                         {
                             getFieldDecorator('username', {
@@ -118,7 +130,7 @@ class Register extends Component{
                                 rules: [
                                     { required: true, message: 'Please input your Email!' }
                                 ]
-                            })( <Input type="password" /> )
+                            })( <Input /> )
                         }
                     </FormItem>
                     <FormItem label="Phone Number" {...formItemLayout}>
@@ -127,13 +139,6 @@ class Register extends Component{
                                 initialValue: '',
                                 rules: [{ required: true, message: 'Please input your phone number!' }],
                             })(<Input addonBefore={prefixSelector} />)
-                        }
-                    </FormItem>
-                    <FormItem label="Address" {...formItemLayout}>
-                        {
-                            getFieldDecorator('address',{
-                                initialValue: ''
-                            })( <TextArea autoSize={{ minRows: 1, maxRows: 3 }}/> )
                         }
                     </FormItem>
                     <FormItem {...offsetLayout}>

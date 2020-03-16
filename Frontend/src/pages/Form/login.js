@@ -24,7 +24,7 @@ class Login extends Component{
 		if (!loginStatus) {
             return (
                 <div>
-                    <Form style={{width: 360, marginLeft: 520, marginTop: 200}}>
+                    <Form style={{width: 360, marginLeft: 520, marginTop: 200, minHeight: 600}}>
                         <Form.Item>
                             {
                                 getFieldDecorator('username',{ 
