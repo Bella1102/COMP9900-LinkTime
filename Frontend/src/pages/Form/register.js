@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import {Form, Button, Select,Input, Upload, Icon, message } from 'antd';
+import axios from 'axios';
+import {Form, Button, Select,Input, message} from 'antd';
 
 
 const FormItem = Form.Item;
 const { Option } = Select;
+const baseURL = 'http://127.0.0.1:5000';
 
 
 
@@ -12,11 +14,6 @@ class Register extends Component{
     state = {
         imgList: []
     };
-
-    handleSubmit = () => {
-        let userInfo = this.props.form.getFieldsValue();
-        message.success(`${userInfo.username} Current Password is：${userInfo.password}`)
-    }
 
     compareToFirstPassword = (rule, value, callback) => {
         const { form } = this.props;
@@ -35,25 +32,32 @@ class Register extends Component{
             callback();
       };
 
-    getBase64 = (img, callback) => {
-        const reader = new FileReader();
-        reader.addEventListener('load', () => callback(reader.result));
-        reader.readAsDataURL(img);
+    regSuccess = () => {
+        message.success('Register Success');
+    };
+
+    regFailure = () => {
+        message.error('Register Failure');
+    };
+
+    handleSubmit = () => {
+        let regInfo = this.props.form.getFieldsValue();
+        const regURL = baseURL + '/auth/signup';
+        const axiosConfig = {
+            headers: {
+                "accept": "application/json",
+                'Content-Type':'application/json'
+            }
+        };
+        const regData = {"username": regInfo.username, "password": regInfo.password, 
+                        "email": regInfo.email, "phone": regInfo.phone}
+        axios.post(regURL, regData, axiosConfig).then((res) => {
+            this.regSuccess()
+        }).catch(() => {
+            this.regFailure()
+        }); 
     }
 
-    handleChange = (info) => {
-        if (info.file.status === 'uploading') {
-            this.setState({ loading: true });
-            return;
-        }
-        if (info.file.status === 'done') {
-            // Get this url from response in real world.
-            this.getBase64(info.file.originFileObj, imageUrl => this.setState({
-                userImg: imageUrl,
-                loading: false,
-            }));
-        }
-    }
 
     render(){
         
@@ -62,12 +66,6 @@ class Register extends Component{
         const formItemLayout = {
             labelCol: { xs: 24, sm: 9, xl: 9 },
             wrapperCol: { xs: 16, sm: 9, xl: 6 }
-        }
-
-        const offsetLayout = {
-            wrapperCol: { xs: { span: 6, offset: 10 }, 
-                          sm: { span: 6, offset: 10 }, 
-                          xl: { span: 6, offset: 10 }  }
         }
 
         const prefixSelector = getFieldDecorator('prefix', {
@@ -81,7 +79,8 @@ class Register extends Component{
       
         return (
             <div>
-                <Form layout="horizontal" style={{marginTop: 180, minHeight: 600}}>
+                {/* <Alert message="Register Success" type="success" showIcon style={{ width: 200, marginLeft: 620, marginTop: 20, textAlign: "center"}}/> */}
+                <Form layout="horizontal" style={{marginTop: 120, minHeight: 600}}>
                     {/* <FormItem label="Photo" {...formItemLayout}>
                         {
                             getFieldDecorator('photo')(
@@ -109,7 +108,8 @@ class Register extends Component{
                             getFieldDecorator('password', {
                                 initialValue: '',
                                 rules: [
-                                    { required: true, message: 'Please input your Password!' }
+                                    { required: true, message: 'Please input your Password!' },
+                                    { min: 6, max: 18, message: 'Password length is not valid!' }
                                 ]
                             })( <Input.Password type="password" /> )
                         }
@@ -141,8 +141,8 @@ class Register extends Component{
                             })(<Input addonBefore={prefixSelector} />)
                         }
                     </FormItem>
-                    <FormItem {...offsetLayout}>
-                        <Button type="primary" onClick={this.handleSubmit}>Sign up</Button>
+                    <FormItem style={{textAlign: "center"}}>
+                        <Button type="primary" style={{marginTop: 50, fontSize: 16, fontWeight: 600}} onClick={this.handleSubmit}>Sign Up</Button>
                     </FormItem>
                 </Form>
             </div>

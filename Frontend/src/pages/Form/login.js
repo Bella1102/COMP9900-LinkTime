@@ -9,7 +9,6 @@ import { Form, Input, Button, Icon, Checkbox } from "antd";
 class Login extends Component{
 
     handleSubmit = () => {
-        // let userInfo = this.props.form.getFieldsValue();
         this.props.form.validateFields((err, values) => {
             if(!err){
                 this.props.login(values.username, values.password)

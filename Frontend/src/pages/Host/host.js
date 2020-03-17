@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import {Form, Button, Input, Radio, Checkbox, Select, 
-    Menu, Cascader, DatePicker, TextArea, Icon, message } from 'antd';
+    Menu, Cascader, DatePicker, Icon, message } from 'antd';
 
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 
-const plainOptions = ['TV', 'Wi-Fi', 'Gas', 'Air Conditioning', 'Wash Machine', 'Car Park', 'Swimming Pool']
+const plainOptions = ['TV', 'Intenet', 'Wifi', 'Air Conditioning', 'Washer', 'Dryer', 'Hair dryer', 'Kitchen', 'Smoke detector', 'Free parking on premises']
 
 function handleMenuClick(e) {
     message.info('Click on menu item.');
@@ -37,7 +37,7 @@ class Host extends Component{
 
     handleSubmit = () => {
         let userInfo = this.props.form.getFieldsValue();
-        message.success(`${userInfo.state} available time is：${userInfo.available_time}`)
+        message.success(`${userInfo.amenity}`)
     }
 
     radioChange = e => {
@@ -114,16 +114,16 @@ class Host extends Component{
                                 initialValue: '',
                                 rules: [{ required: true, message: 'Please select your property type!' }]
                             })( <Radio.Group onChange={this.radioChange} value={this.state.value}>
-                                    <Radio value={'apartment'}>Apartment</Radio>
-                                    <Radio value={'studio'}>Studio</Radio>
-                                    <Radio value={'house'}>House</Radio>
-                                    <Radio value={'unit'}>Unit</Radio>
+                                    <Radio value={'Apartment'}>Apartment</Radio>
+                                    <Radio value={'Loft'}>Loft</Radio>
+                                    <Radio value={'House'}>House</Radio>
+                                    <Radio value={'Unit'}>Unit</Radio>
                                 </Radio.Group>)
                         }
                     </Form.Item>
-                    <Form.Item label="Facilities" {...formItemLayout}>
+                    <Form.Item label="Amenities" {...formItemLayout}>
                         {
-                            getFieldDecorator('facility', {
+                            getFieldDecorator('amenity', {
                                 initialValue: '',
                                 rules: [{ required: true, message: 'Please select your facilities!' }]
                             })(
@@ -173,19 +173,7 @@ class Host extends Component{
                             })( <Input placeholder="2035"/>)
                         }
                     </Form.Item>
-                    <Form.Item label="Bath number" {...formItemLayout}>
-                        {
-                            getFieldDecorator('bath_num', {
-                                initialValue: ''
-                            })(<Select onChange={this.onChange}>
-                                    <Option value="1">1</Option>
-                                    <Option value="2">2</Option>
-                                    <Option value="3">3</Option>
-                                    <Option value="4">4</Option>
-                                </Select>)
-                        }
-                    </Form.Item>
-                    <Form.Item label="Room number" {...formItemLayout}>
+                    <Form.Item label="Bedroom number" {...formItemLayout}>
                         {
                             getFieldDecorator('room_num', {
                                 initialValue: ''
@@ -199,15 +187,15 @@ class Host extends Component{
                                 </Select>)
                         }
                     </Form.Item>
-                    <Form.Item label="CarPark number" {...formItemLayout}>
+                    <Form.Item label="Bathroom number" {...formItemLayout}>
                         {
-                            getFieldDecorator('carpark_num', {
+                            getFieldDecorator('bath_num', {
                                 initialValue: ''
-                            })( <Select onChange={this.onChange}>
-                                    <Option value="0">0</Option>
+                            })(<Select onChange={this.onChange}>
                                     <Option value="1">1</Option>
                                     <Option value="2">2</Option>
                                     <Option value="3">3</Option>
+                                    <Option value="4">4</Option>
                                 </Select>)
                         }
                     </Form.Item>

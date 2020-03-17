@@ -23,6 +23,8 @@ const options2 = [
 ];
 
 
+
+
 class Home extends Component {
     
 
@@ -36,7 +38,12 @@ class Home extends Component {
             <div className="content" >
 
                 <div className="contentUp">
-                    <h1 className="book">Hi Link, Welcome to book your trip!</h1>
+                    {
+                        this.props.loginStatus ?
+                        <h1 className="book">Hi {this.props.userInfo.get("username")}, Welcome to book your trip!</h1> :
+                        <h1 className="book">Welcome to book your trip!</h1>
+
+                    }
                     <div className="homeSearchModule">
                         <Cascader className="searchInner"
                                 options={options1} 
@@ -145,7 +152,8 @@ class Home extends Component {
 
 const mapState = (state) => {
 	return {
-		loginStatus: state.getIn(["login", "loginStatus"])
+        loginStatus: state.getIn(["login", "loginStatus"]),
+        userInfo: state.getIn(["login", "userInfo"]),
 	}
 }
 

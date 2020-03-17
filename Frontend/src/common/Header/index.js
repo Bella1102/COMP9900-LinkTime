@@ -1,32 +1,10 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { Avatar, Alert, Row, Col, Button, Dropdown, Menu, Icon } from 'antd';
+import { Avatar, Row, Col, Button, Dropdown, Menu} from 'antd';
 import { actionCreators as loginActionCreators } from '../../pages/Form/store';
 import './index.less';
 
-
-
-
-const menu = (
-    <Menu>
-        <Menu.Item style={{width: 180, height: 35, fontWeight: 600, marginTop: 10}}>
-            <Link to='/host'>Become a host</Link>
-        </Menu.Item>
-        <Menu.Item style={{width: 180, height: 35, fontWeight: 600,}}>
-            <Link to='/order'>My orders</Link>
-        </Menu.Item>
-        <Menu.Item style={{width: 180, height: 35, fontWeight: 600,}}>
-            <Link to='/property'>My properties</Link>
-        </Menu.Item>
-        <Menu.Item style={{width: 180, height: 35, fontWeight: 600,}}>
-            <Link to='/request'>Post request</Link>
-        </Menu.Item>
-        <Menu.Item style={{width: 180, height: 35, color: '#f9c700', fontWeight: 600,}}>
-            <Link style={{ color: '#f9c700'}}to='/' >Log Out</Link>
-        </Menu.Item>
-    </Menu>
-);
 
 
 
@@ -37,6 +15,28 @@ class Header extends Component {
 		this.state = {
             
 		};
+    }
+
+    headerMenu() {
+        return (
+            <Menu>
+                <Menu.Item style={{width: 180, height: 35, fontWeight: 600, marginTop: 10}}>
+                    <Link to='/order'>My orders</Link>
+                </Menu.Item>
+                <Menu.Item style={{width: 180, height: 35, fontWeight: 600 }}>
+                    <Link to='/host'>Become a host</Link>
+                </Menu.Item>
+                <Menu.Item style={{width: 180, height: 35, fontWeight: 600 }}>
+                    <Link to='/property'>My properties</Link>
+                </Menu.Item>
+                <Menu.Item style={{width: 180, height: 35, fontWeight: 600 }}>
+                    <Link to='/request'>Post request</Link>
+                </Menu.Item>
+                <Menu.Item style={{width: 180, height: 35, color: '#f9c700', fontWeight: 600,}}>
+                    <Link style={{ color: '#f9c700'}}to='/' onClick={this.props.logout} >Log Out</Link>
+                </Menu.Item>
+            </Menu>
+        )
     }
 
     beforeLogin() {
@@ -59,16 +59,15 @@ class Header extends Component {
                 <Row className="header-top">
                     <Col span={24}>
                         <Link to='/' className="logo">LinkTime</Link>
-                        <Link to='/'>
-                            <Button type="primary" className="logreg" onClick={ this.props.logout }>Logout</Button>
+                        <Link to='/order'>
+                            <Button type="primary" className="orders">My orders</Button>
                         </Link>
 
-                        <Dropdown overlay={menu} placement="bottomCenter">
+                        <Dropdown overlay={this.headerMenu()} placement="bottomCenter">
                             <Avatar size={48} 
                                     icon="user"
                                     className="logreg"
                                     style={{ backgroundColor: '#f9c700' }}>
-                                {/* {this.props.userInfo.get("username")} */}
                             </Avatar>
                         </Dropdown>
                     </Col>
@@ -104,7 +103,6 @@ const mapDispath = (dispatch) => {
 		}
 	}
 };
-
 
 export default connect(mapState, mapDispath)(Header);
 

@@ -1,9 +1,11 @@
 import axios from 'axios';
 import { fromJS } from 'immutable';
+import {message} from 'antd';
 import * as constants from './constants';
 
 
 const baseURL = 'http://127.0.0.1:5000';
+
 
 
 export const logout = () => ({
@@ -20,6 +22,14 @@ const getUserData = (data, token) => ({
 });
 
 
+const loginSuccess = () => {
+	message.success('Login Success');
+};
+
+const loginFailure = () => {
+	message.error('Login Failure');
+};
+
 export const login = (username, password) => {
 	const loginURL = baseURL + '/auth/login';
 	const loginAxiosConfig = {
@@ -32,7 +42,7 @@ export const login = (username, password) => {
 	return (dispatch) => {
 		// login auth post
 		axios.post(loginURL, loginData, loginAxiosConfig).then((res) => {
-			console.log(res)
+			loginSuccess()
 			// get user info
 			const userURL = baseURL + '/user/';
 			const AxiosConfig = {
@@ -50,7 +60,7 @@ export const login = (username, password) => {
 			});
 
 		}).catch(() => {
-			console.log("Login Failure!");
+			loginFailure()
 		});
 	}
 };
