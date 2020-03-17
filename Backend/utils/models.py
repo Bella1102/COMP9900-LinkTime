@@ -30,10 +30,9 @@ def user_details(api):
 
 def update_userInfo(api):
     return api.model('update_userInfo', {
-    'username': fields.String(required=True, example='Linda'),
+    'username': fields.String(required=True, example='Link666'),
     'password': fields.String(required=True, example='123456'),
-    'email': fields.String(required=True, example='123456@gmail.com'),
-    'phone': fields.String(required=True, example='0452666888')
+    'phone': fields.String(required=True, example='0452666666')
     })
 
 def search_params(api):
@@ -47,8 +46,11 @@ def search_params(api):
 def property_details(api):
     return api.model('property_details', {
     # need to be updated
-    'username': fields.String(required=True, example='Linda'),
-    'password': fields.String(required=True, example='123456')
+    'house_type': fields.String(example='House'),
+    'location': fields.String(example='Sydney'),
+    'start_date': fields.String(example='2020-05-10'),
+    'end_date': fields.String(example='2020-05-15'),
     })
+
 
 

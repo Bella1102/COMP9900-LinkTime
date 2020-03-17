@@ -39,12 +39,14 @@ class Login(Resource):
         session.close()
         return { 'token': t }
 
+
 @auth.route('/signup', strict_slashes=False)
 class Register(Resource):
 
     @auth.response(200, 'Success')
     @auth.response(400, 'Malformed Request')
     @auth.response(409, 'Username Taken')
+    @auth.response(410, 'Email Taken')
     @auth.expect(signup_details(auth))
     @auth.doc(description='''Register a new account. Username and email should be unique.''')
     def post(self):
@@ -54,9 +56,11 @@ class Register(Resource):
         (username, password, email, phone) = unpack(request.json, 'username', 'password', 'email', 'phone')
         if username == '' or password == '' or email == '' or phone == '':
             abort(400, 'Malformed Request')
-        if session.query(db.User).filter_by(username=username).first() != None:
+        check_username = session.query(db.User).filter_by(username=username).first()
+        check_email = session.query(db.User).filter_by(email=email).first()
+        if check_username != None:
             abort(409, 'Username Taken')
-        if session.query(db.User).filter_by(email=email).first() != None:
+        if check_email != None:
             abort(410, 'Email Taken')
         key = os.urandom(24)
         password_bytes = password.encode()
@@ -68,4 +72,6 @@ class Register(Resource):
         return { 'message': 'success' }
 
     
+
+
 

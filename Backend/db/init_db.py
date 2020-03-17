@@ -1,5 +1,7 @@
 import os
 import hashlib
+import json
+import pandas as pd
 from sqlalchemy import *
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
@@ -65,9 +67,10 @@ class Address(Base):
                         Base.metadata,
                         Column('id', Integer, primary_key=True),
                         Column('property_id', Integer),
+                        Column('country', VARCHAR(20)),
                         Column('state', VARCHAR(20)),
                         Column('city', VARCHAR(20)),
-                        Column('suburb', VARCHAR(20)),
+                        Column('suburb', VARCHAR(50)),
                         Column('location', VARCHAR(50)),
                         Column('postcode', Integer),
                         Column('latitude', NUMERIC),
@@ -144,9 +147,22 @@ def init_db():
     # finish init
     session.close()
 
+
 def get_session():
     Session = sessionmaker(engine)
     return Session()
+
+
+def read_csv_return_dict(filepath):
+    df = pd.read_csv(filepath)
+    res = []
+    for i in range(len(df)):
+        temp = {}
+        for j in list(df.keys()):
+            temp[j] = df[j][i]
+        res.append(temp)
+    return res
+
 
 def init_user(session):
     with open('db/data/user.csv') as f:
@@ -159,52 +175,71 @@ def init_user(session):
             session.add(user)
     session.commit()
 
+
 def init_property(session):
-    with open('db/data/property.csv') as f:
-        for line in f.readlines():
-            line = line.strip().split(',')
-            amenitie = line[3]
-            property = Property(property_id=line[0], title=line[1], property_type=line[2], amenitie=line[3], \
-                                price=line[4], bedrooms=line[5], bathrooms=line[6],accommodates=line[7], \
-                                minimum_nights=line[8], description=line[9], notes=line[10], house_rules=line[11], \
-                                start_time=line[12], end_time=line[13])
-            session.add( property)
+    res = read_csv_return_dict('db/data/property.csv')
+    for item in res:
+        property = Property(property_id=item['property_id'],
+                       title=item['title'],
+                       property_type=item['property_type'],
+                       amenities=item['amenities'],
+                       price=item['price'],
+                       bedrooms=item['bedrooms'],
+                       bathrooms=item['bathrooms'],
+                       accommodates=item['accommodates'],
+                       minimum_nights=item['minimum_nights'],
+                       description=item['description'],
+                       notes=item['notes'],
+                       house_rules=item['house_rules'],)
+        session.add(property)
     session.commit()
+
 
 def init_host(session):
-    with open('db/data/host.csv') as f:
-        for line in f.readlines():
-            line = line.strip().split(',')
-            host = Host(property_id=line[0], host_id=line[1], host_name=line[2],
-                                host_img_url=line[3], host_verifications=line[4])
-            session.add(host)
+    res = read_csv_return_dict('db/data/host.csv')
+    for item in res:
+        host = Host(property_id=item['property_id'],
+                    host_id=item['host_id'],
+                    host_name=item['host_name'],
+                    host_img_url=item['host_img_url'],
+                    host_verifications=item['host_verifications'])
+        session.add(host)
     session.commit()
+
 
 def init_address(session):
-    with open('db/data/address.csv') as f:
-        for line in f.readlines():
-            line = line.strip().split(',')
-            address = Address(property_id=line[0], state=line[1], city=line[2], suburb=line[3],
-                        location=line[4], postcode=line[5], latitude=line[6], longitude=line[7])
-            session.add(address)
+    res = read_csv_return_dict('db/data/address.csv')
+    for item in res:
+        address = Address(property_id=item['property_id'],
+                          suburb=item['suburb'],
+                          city=item['city'],
+                          state=item['state'],
+                          country=item['country'],
+                          latitude=item['latitude'],
+                          longitude=item['longitude'])
+        session.add(address)
     session.commit()
 
+
 def init_image(session):
-    with open('db/data/image.json') as f:
-        for line in f.readlines():
-            line = line.strip().split(',')
-            image = Image(property_id=line[0], img_url=line[1], img_alt=line[2])
+    with open('db/data/image.json', 'r') as f:
+        load_dict = json.load(f)
+        for i in load_dict.keys():
+            item = load_dict[i]
+            image = Image(property_id=i, img_alt=str(item[0]), img_url=str(item[1]))
             session.add(image)
     session.commit()
 
-def init_review(session):
-    with open('db/data/review.json') as f:
-        for line in f.readlines():
-            line = line.strip().split(',')
-            review = Review(property_id=line[0], reviewer_id=line[1], reviewer_name=line[2],
-                            review_date=line[3], review_content=line[4])
-            session.add(review)
-    session.commit()
 
+def init_review(session):
+    res = read_csv_return_dict('db/data/review.csv')
+    for item in res:
+        review = Review(property_id=item['property_id'],
+                        reviewer_id=item['reviewer_id'],
+                        reviewer_name=item['reviewer_name'],
+                        review_date=item['review_date'],
+                        review_content=item['review_content'])
+        session.add(review)
+    session.commit()
 
 

@@ -1,3 +1,4 @@
+import hashlib
 from flask import request
 from flask_restplus import Namespace, Resource
 
@@ -16,7 +17,8 @@ class User(Resource):
     @user.response(400, 'Missing Arguments')
     @user.response(403, 'Invalid Auth Token')
     @user.expect(auth_details(user))
-    @user.doc(description='''Get user information.''')
+    @user.param('user_id', 'the id of the user')
+    @user.doc(description='''Get login user info by token or get other user info by token and user_id.''')
     def get(self):
         user = authorize(request)
         user_id = request.args.get('user_id', None)
@@ -28,33 +30,33 @@ class User(Resource):
             "id": user.id,
             'username': user.username,
             'email': user.email,
-            'phone': user.phone,
-            'token': user.token
+            'phone': user.phone
         }
 
     @user.response(200, 'Success')
     @user.response(400, 'Missing Arguments')
     @user.response(403, 'Invalid Auth Token')
+    @user.response(409, 'Username Taken')
     @user.expect(auth_details(user), update_userInfo(user))
     @user.doc(description='''Update user information. 
-        The given object can update username, password, email, or phone number.
+        The given object can update username, password or phone number.
         At least one of above must be supplied or the request is considered malformed.''')
     def put(self):
         user = authorize(request)
-        user_id = int(user[0])
-        if not request.json:
-            abort(400, 'Malformed request')
-        safe = {}
-        allowed_keys = ['username', 'password', 'email', 'phone']
-        valid_keys = [k for k in request.json.keys() if k in allowed_keys]
-        if len(valid_keys) < 1:
-            abort(400, 'Malformed request')
-        if "password" in valid_keys and request.json["password"] == "":
-            abort(400, 'Malformed request')
-        for k in valid_keys:
-            safe[k] = request.json[k]
-        db.update('User').set(**safe).where(id=user_id).execute()
-        return {
-            'message': 'success'
-        }
+        (username, password, phone) = unpack(request.json, 'username', 'password', 'phone')
+        if username == None and password == None and phone == None:
+            abort(400, 'Missing Arguments')
+        session = db.get_session()
+        user = session.query(db.User).filter_by(token=user.token).first()
+        check_username = session.query(db.User).filter_by(username=username).first()
+        password_bytes = password.encode()
+        hash_password = hashlib.sha256(user.key + password_bytes).hexdigest()
+        if check_username != None:
+            abort(409, 'Username Taken')
+        user.username = username
+        user.password = hash_password
+        user.phone = phone
+        session.commit()
+        session.close()
+        return { 'message': 'success'}
 
