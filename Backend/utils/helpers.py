@@ -14,13 +14,14 @@ def unpack(j, *args, **kargs):
     return res
 
 def authorize(request):
-    req = request.headers.get('Authorization', None)
-    if not req:
+    res = request.headers.get('Authorization', None)
+    if not res:
         abort(403, 'Unsupplied Authorization Token')
-        
     session = db.get_session()
-    user = session.query(db.User).filter_by(token = req).first()
+    user = session.query(db.User).filter_by(token=res).first()
     session.close()
     if not user:
         abort(403, 'Invalid Authorization Token')
     return user
+
+

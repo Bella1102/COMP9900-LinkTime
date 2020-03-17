@@ -1,0 +1,239 @@
+property_id,suburb,city,state,country,latitude,longitude
+11156,Potts Point,Sydney,NSW,Australia,-33.86917,151.22656
+12351,Pyrmont,Sydney,NSW,Australia,-33.86515,151.1919
+15253,Darlinghurst,Sydney,NSW,Australia,-33.87964,151.2168
+44545,Darlinghurst,Sydney,NSW,Australia,-33.87888,151.21439
+57183,Bondi Beach,Sydney,NSW,Australia,-33.89185,151.27308
+58506,Mosman,Sydney,NSW,Australia,-33.81927,151.23652
+61721,Bondi Beach,Sydney,NSW,Australia,-33.8889,151.27726
+65126,Bondi Beach,Sydney,NSW,Australia,-33.88569,151.26886
+66009,Paddington,Sydney,NSW,Australia,-33.88327,151.22725
+66158,Elizabeth Bay,Sydney,NSW,Australia,-33.87248,151.22814
+69121,Narrabeen,Sydney,NSW,Australia,-33.71249,151.29842
+69956,Bardwell Valley,Sydney,NSW,Australia,-33.93683,151.13528
+71866,Sydney,Sydney,NSW,Australia,-33.9086,151.25185
+73628,Bondi Beach,Sydney,NSW,Australia,-33.88672,151.26656
+73639,Pyrmont,Sydney,NSW,Australia,-33.86585,151.19233
+75702,Malabar,Sydney,NSW,Australia,-33.96472,151.24797
+79624,Neutral Bay,Sydney,NSW,Australia,-33.83096,151.21532
+79912,Bronte,Sydney,NSW,Australia,-33.90642,151.26699
+86853,Bondi,Sydney,NSW,Australia,-33.8943,151.26724
+87709,North Wahroonga,Sydney,NSW,Australia,-33.70143,151.12514
+103273,Bondi Beach,Sydney,NSW,Australia,-33.88923,151.284
+104380,Bondi Beach,Sydney,NSW,Australia,-33.88885,151.27827
+104393,Bondi Beach,Sydney,NSW,Australia,-33.88869,151.27891
+108522,Surry Hills,Sydney,NSW,Australia,-33.886,151.20938
+118658,North Bondi,Sydney,NSW,Australia,-33.89124,151.28547
+135691,Bondi,Sydney,NSW,Australia,-33.8895,151.26045
+143247,Gordon,Sydney,NSW,Australia,-33.76138,151.14978
+143280,North Narrabeen,Sydney,NSW,Australia,-33.694,151.29036
+153444,Potts Point,Sydney,NSW,Australia,-33.87249,151.22479
+166468,Dee Why,Sydney,NSW,Australia,-33.75636,151.28905
+199669,Bondi Beach,Sydney,NSW,Australia,-33.88904,151.27225
+210439,Sydney,Sydney,NSW,Australia,-33.86699,151.22433
+219030,Bondi,Sydney,NSW,Australia,-33.89395,151.26608
+222559,Woollahra,Sydney,NSW,Australia,-33.88697,151.24585
+226202,Coogee,Sydney,NSW,Australia,-33.9256,151.25579
+232782,Sydney,Sydney,NSW,Australia,-33.89289,151.20956
+232793,Woollahra,Sydney,NSW,Australia,-33.88697,151.24585
+232795,Woollahra,Sydney,NSW,Australia,-33.88697,151.24585
+236590,Kellyville Ridge,Sydney,NSW,Australia,-33.70711,150.92417
+249100,Kirribilli,Sydney,NSW,Australia,-33.84373,151.21479
+249158,Ultimo,Sydney,,Australia,-33.87536,151.19675
+249998,Bondi Junction,Sydney,NSW,Australia,-33.89414,151.25138
+250821,Bondi Beach,Sydney,NSW,Australia,-33.88618,151.27614
+252427,Coogee,Sydney,NSW,Australia,-33.9263,151.25912
+259857,Camperdown,Sydney,NSW,Australia,-33.89058,151.17791
+271182,Newtown,Sydney,NSW,Australia,-33.89434,151.18196
+273673,Maroubra,Sydney,NSW,Australia,-33.94201,151.24895
+275625,Randwick,Sydney,NSW,Australia,-33.91971,151.2443
+276617,Potts Point,Sydney,NSW,Australia,-33.8727,151.22403
+283378,Darlinghurst,Sydney,NSW,Australia,-33.87734,151.22095
+286924,Sydney,Sydney,NSW,Australia,-33.84796,151.21186
+287388,Alexandria,Sydney,NSW,Australia,-33.8989,151.19824
+288359,Newtown,Sydney,NSW,Australia,-33.90806,151.17662
+288671,Darlinghurst,Sydney,NSW,Australia,-33.87866,151.21532
+290929,Paddington,Sydney,NSW,Australia,-33.88472,151.23687
+291782,Bondi Junction,Sydney,NSW,Australia,-33.89445,151.25331
+293951,Bondi Beach,Sydney,NSW,Australia,-33.88985,151.27039
+299749,Balgowlah,Sydney,NSW,Australia,-33.79494,151.25963
+304835,Darlinghurst,Sydney,NSW,Australia,-33.87664,151.21726
+304990,East Lindfield,Sydney,NSW,Australia,-33.76909,151.18124
+315059,Darlinghurst,Sydney,NSW,Australia,-33.88157,151.21563
+326040,Bondi Beach,Sydney,NSW,Australia,-33.8874,151.27433
+338130,Coogee,Sydney,NSW,Australia,-33.92255,151.25093
+348891,Bondi Beach,Sydney,NSW,Australia,-33.88958,151.27406
+352147,North Rocks,Sydney,NSW,Australia,-33.76275,151.01316
+357543,East Lindfield,Sydney,NSW,Australia,-33.76771,151.18275
+360141,Marrickville,Sydney,NSW,Australia,-33.91885,151.1526
+361912,Pennant Hills,Sydney,NSW,Australia,-33.73553,151.07519
+363237,Summer Hill,Sydney,NSW,Australia,-33.88903,151.13953
+363282,Elizabeth Bay,Sydney,NSW,Australia,-33.87109,151.22398
+365806,Cremorne,Sydney,NSW,Australia,-33.82473,151.22943
+365953,Mosman,Sydney,NSW,Australia,-33.82329,151.23679
+366856,Bondi,Sydney,NSW,Australia,-33.89306,151.26258
+366857,Bondi,Sydney,NSW,Australia,-33.89296,151.26277
+368282,Dulwich Hill,Sydney,NSW,Australia,-33.89743,151.14234
+381091,Surry Hills,Sydney,NSW,Australia,-33.88362,151.21188
+386997,Chippendale,Sydney,NSW,Australia,-33.88712,151.19678
+389876,Redfern,Sydney,NSW,Australia,-33.88926,151.20172
+394550,Darlinghurst,Sydney,NSW,Australia,-33.87664,151.21312
+403909,Sydney,Sydney,NSW,Australia,-33.88631,151.23081
+405432,Allambie Heights,Sydney,NSW,Australia,-33.76468,151.2554
+408330,Bondi Beach,Sydney,NSW,Australia,-33.88909,151.2757
+409800,Centennial Park,Sydney,NSW,Australia,-33.88791,151.23274
+410073,Woolloomooloo,Sydney,NSW,Australia,-33.87038,151.22047
+411828,Lane Cove North,Sydney,NSW,Australia,-33.80341,151.1599
+412079,Church Point,Sydney,NSW,Australia,-33.64349,151.27737
+418136,Sydney,Sydney,NSW,Australia,-33.7685,151.25856
+418480,Tamarama,Sydney,NSW,Australia,-33.89918,151.27226
+421997,Bilgola,Sydney,NSW,Australia,-33.64085,151.32023
+426879,Balmain East,Sydney,NSW,Australia,-33.85889,151.19199
+429733,Bellevue Hill,Sydney,NSW,Australia,-33.88533,151.26367
+440213,Darling Point,Sydney,NSW,Australia,-33.87355,151.23458
+444772,Double Bay,Sydney,NSW,Australia,-33.87303,151.2467
+444977,Cherrybrook,Sydney,NSW,Australia,-33.72254,151.05119
+446570,Surry Hills,Sydney,NSW,Australia,-33.88094,151.21112
+449750,Surry Hills,Sydney,NSW,Australia,-33.88094,151.21112
+450017,North Narrabeen,Sydney,NSW,Australia,-33.6939,151.29072
+458203,Bondi Beach,Sydney,NSW,Australia,-33.89105,151.27251
+460109,Clovelly,Sydney,NSW,Australia,-33.91558,151.26489
+461984,Rosebery,Sydney,NSW,Australia,-33.91476,151.20641
+463282,Coogee,Sydney,NSW,Australia,-33.92154,151.25392
+471389,Waterloo,Sydney,NSW,Australia,-33.9032,151.20648
+472566,Manly Vale,Sydney,NSW,Australia,-33.78446,151.2747
+475512,Sydney,Sydney,NSW,Australia,-33.89375,151.26337
+481472,Bondi,Sydney,NSW,Australia,-33.89577,151.26577
+496747,Bondi,Sydney,NSW,Australia,-33.89288,151.26819
+498008,Sydney,Sydney,NSW,Australia,-33.8634,151.21103
+499631,Lugarno,Sydney,NSW,Australia,-33.98625,151.0411
+501265,Maroubra,Sydney,NSW,Australia,-33.93668,151.23363
+501382,Kensington,Sydney,NSW,Australia,-33.90264,151.22421
+509133,North Bondi,Sydney,NSW,Australia,-33.88101,151.27126
+510654,Bondi Beach,Sydney,NSW,Australia,-33.88754,151.27395
+516032,Newtown,Sydney,NSW,Australia,-33.89577,151.18329
+520737,Coogee,Sydney,NSW,Australia,-33.92071,151.25588
+537851,Manly,Sydney,NSW,Australia,-33.80284,151.28979
+539231,Newport,Sydney,NSW,Australia,-33.64898,151.31927
+540974,Bondi Beach,Sydney,NSW,Australia,-33.87932,151.27498
+546959,Bondi Beach,Sydney,NSW,Australia,-33.88643,151.26849
+547003,Bondi Beach,Sydney,NSW,Australia,-33.88673,151.26756
+555783,Surry Hills,Sydney,NSW,Australia,-33.88971,151.20641
+556348,Potts Point,Sydney,NSW,Australia,-33.86988,151.22262
+564646,Bondi Junction,Sydney,NSW,Australia,-33.89077,151.2558
+571772,Tamarama,Sydney,NSW,Australia,-33.89808,151.27001
+581732,North Bondi,Sydney,NSW,Australia,-33.88436,151.27683
+583321,Bondi Beach,Sydney,NSW,Australia,-33.88984,151.26418
+591662,Bondi,Sydney,NSW,Australia,-33.89632,151.27312
+592309,Coogee,Sydney,NSW,Australia,-33.92046,151.25657
+593481,Darlington,Sydney,NSW,Australia,-33.8917,151.19499
+594776,Coogee,Sydney,NSW,Australia,-33.91564,151.25148
+606519,Malabar,Sydney,NSW,Australia,-33.97223,151.25246
+614739,Stanmore,Sydney,NSW,Australia,-33.89015,151.16815
+616822,Darlinghurst,Sydney,NSW,Australia,-33.87773,151.21481
+619474,Potts Point,Sydney,NSW,Australia,-33.87334,151.2224
+633322,Manly,Sydney,NSW,Australia,-33.80202,151.28874
+633795,North Bondi,Sydney,NSW,Australia,-33.88146,151.27686
+634581,Denistone,Sydney,NSW,Australia,-33.80262,151.08719
+634590,Rose Bay,Sydney,NSW,Australia,-33.87613,151.26388
+639470,Darlinghurst,Sydney,NSW,Australia,-33.88194,151.21823
+641123,Waverley,Sydney,NSW,Australia,-33.9045,151.25699
+651495,Clovelly,Sydney,NSW,Australia,-33.91417,151.26264
+651796,Maroubra,Sydney,NSW,Australia,-33.94653,151.24243
+653240,Bondi Junction,Sydney,NSW,Australia,-33.89612,151.25326
+653534,North Bondi,Sydney,NSW,Australia,-33.8824,151.27103
+655953,Bondi Beach,Sydney,NSW,Australia,-33.8855,151.27462
+658720,Potts Point,Sydney,NSW,Australia,-33.86666,151.22624
+661144,Bondi Junction,Sydney,NSW,Australia,-33.89453,151.25174
+664353,Sydney,Sydney,NSW,Australia,-33.85583,151.19235
+677230,Elizabeth Bay,Sydney,NSW,Australia,-33.87123,151.23044
+686805,Darlinghurst,Sydney,NSW,Australia,-33.87591,151.22205
+698338,North Bondi,Sydney,NSW,Australia,-33.88458,151.2772
+698667,Manly,Sydney,NSW,Australia,-33.78682,151.28558
+699480,Bondi,Sydney,NSW,Australia,-33.89411,151.26974
+701180,Campsie,Sydney,NSW,Australia,-33.90874,151.11143
+701670,Kirrawee,Sydney,NSW,Australia,-34.04222,151.06819
+701914,Randwick,Sydney,NSW,Australia,-33.92305,151.24555
+706428,Bondi Beach,Sydney,NSW,Australia,-33.8905,151.27261
+706542,Beacon Hill,Sydney,NSW,Australia,-33.75376,151.26013
+708819,Pymble,Sydney,NSW,Australia,-33.74941,151.14481
+709066,Kingsford,Sydney,NSW,Australia,-33.92712,151.22327
+714131,Surry Hills,Sydney,NSW,Australia,-33.88687,151.20887
+718428,Horsley Park,Sydney,NSW,Australia,-33.85631,150.8302
+718597,Balgowlah,Sydney,NSW,Australia,-33.80125,151.26575
+725235,Birchgrove,Sydney,NSW,Australia,-33.84738,151.18481
+725541,Redfern,Sydney,NSW,Australia,-33.8921,151.20007
+726883,Annandale,Sydney,NSW,Australia,-33.88109,151.16801
+728222,Darling Point,Sydney,NSW,Australia,-33.87047,151.23587
+730113,Bronte,Sydney,NSW,Australia,-33.90422,151.25827
+67112,Marrickville,Sydney,NSW,Australia,-33.915,151.1403
+130970,Redfern,Sydney,NSW,Australia,-33.89338,151.20406
+196170,Bondi,Sydney,NSW,Australia,-33.8937,151.26738
+286949,Dover Heights,Sydney,NSW,Australia,-33.87946,151.27942
+297633,Hornsby,Sydney,NSW,Australia,-33.69359,151.09991
+324918,Erskineville,Sydney,NSW,Australia,-33.89867,151.1841
+340563,Waverton,Sydney,NSW,Australia,-33.83714,151.19659
+355773,Ultimo,Sydney,NSW,Australia,-33.8817,151.19539
+361899,Pennant Hills,Sydney,NSW,Australia,-33.73492,151.074
+379498,Surry Hills,Sydney,NSW,Australia,-33.88517,151.21264
+413968,Rosehill,Sydney,NSW,Australia,-33.82634,151.01843
+465977,Sydney,Sydney,NSW,Australia,-33.8862,151.21163
+475557,Ultimo,Sydney,NSW,Australia,-33.87975,151.20019
+589989,Bondi,Sydney,NSW,Australia,-33.89414,151.26715
+622670,Longueville,Sydney,NSW,Australia,-33.83205,151.16659
+659320,Bondi,Sydney,NSW,Australia,-33.89342,151.26657
+679121,Glebe,Sydney,NSW,Australia,-33.88074,151.18557
+66170,Ultimo,Sydney,NSW,Australia,-33.88333,151.19524
+80470,Neutral Bay,Sydney,NSW,Australia,-33.82999,151.21831
+85331,Miranda,Sydney,NSW,Australia,-34.03534,151.10388
+92853,Balmain,Sydney,NSW,Australia,-33.85999,151.17585
+105938,Newport,Sydney,NSW,Australia,-33.64964,151.31692
+143048,Newtown,Sydney,NSW,Australia,-33.9012,151.18031
+200868,Rosebery,Sydney,NSW,Australia,-33.91562,151.21134
+232188,North Narrabeen,Sydney,NSW,Australia,-33.70017,151.29355
+257847,Maianbar,Sydney,NSW,Australia,-34.07966,151.1257
+262191,Dawes Point,Sydney,NSW,Australia,-33.85659,151.20782
+264513,Willoughby East,Sydney,NSW,Australia,-33.79381,151.20263
+264925,Bondi Beach,Sydney,NSW,Australia,-33.88695,151.27846
+288305,Rooty Hill,Sydney,NSW,Australia,-33.78453,150.84881
+290146,Bellevue Hill,Sydney,NSW,Australia,-33.88596,151.25758
+291677,Newtown,Sydney,NSW,Australia,-33.90664,151.17598
+323999,Malabar,Sydney,NSW,Australia,-33.96851,151.2508
+329096,Newtown,Sydney,NSW,Australia,-33.89656,151.17296
+374072,North Bondi,Sydney,NSW,Australia,-33.88622,151.2761
+397905,Dover Heights,Sydney,NSW,Australia,-33.88526,151.28243
+408200,Rooty Hill,Sydney,NSW,Australia,-33.78439,150.84571
+412078,Church Point,Sydney,NSW,Australia,-33.64275,151.27917
+446497,Fairlight,Sydney,NSW,Australia,-33.79671,151.27045
+470500,Camperdown,Sydney,NSW,Australia,-33.88996,151.17949
+503025,Bondi Beach,Sydney,NSW,Australia,-33.8861,151.26959
+546595,Cremorne,Sydney,NSW,Australia,-33.82476,151.22943
+557967,Cromer,Sydney,NSW,Australia,-33.73696,151.27017
+587669,Palm Beach,Sydney,NSW,Australia,-33.60319,151.33141
+595031,Maroubra,Sydney,NSW,Australia,-33.9407,151.2577
+637986,Darlinghurst,Sydney,NSW,Australia,-33.87631,151.21944
+642749,Balmain,Sydney,NSW,Australia,-33.86104,151.18732
+644054,Collaroy Plateau,Sydney,NSW,Australia,-33.73137,151.28737
+698401,Redfern,Sydney,NSW,Australia,-33.8947,151.21428
+703003,Darlinghurst,Sydney,NSW,Australia,-33.87753,151.22585
+59297,Alexandria,Sydney,NSW,Australia,-33.90199,151.19305
+68999,Cherrybrook,Sydney,NSW,Australia,-33.72966,151.05226
+199043,Rosebery,Sydney,NSW,Australia,-33.91464,151.21125
+225478,Bundeena,Sydney,NSW,Australia,-34.08273,151.15598
+255059,Newtown,Sydney,NSW,Australia,-33.89436,151.17774
+262192,Dawes Point,Sydney,NSW,Australia,-33.8572,151.20619
+318591,Glebe,Sydney,NSW,Australia,-33.87743,151.17926
+330547,Drummoyne,Sydney,NSW,Australia,-33.85236,151.15955
+374069,Chippendale,Sydney,NSW,Australia,-33.88673,151.19781
+466383,North Curl Curl,Sydney,NSW,Australia,-33.76348,151.29739
+562837,Sydney,Sydney,NSW,Australia,-33.86949,151.22479
+655236,Pymble,Sydney,NSW,Australia,-33.76014,151.13592
+665778,Crows Nest,Sydney,NSW,Australia,-33.83029,151.20266
+14250,Balgowlah,Sydney,NSW,Australia,-33.80093,151.26172
+45440,Bondi Beach,Sydney,NSW,Australia,-33.88909,151.27451
+273477,North Bondi,Sydney,NSW,Australia,-33.88078,151.27255
+408202,Rooty Hill,Sydney,NSW,Australia,-33.78338,150.84675
+430526,Clovelly,Sydney,NSW,Australia,-33.9117,151.26153
+646516,Rose Bay,Sydney,NSW,Australia,-33.87873,151.27584
+659009,Darlinghurst,Sydney,NSW,Australia,-33.87698,151.22202
+677546,Linley Point,Sydney,NSW,Australia,-33.82805,151.14617

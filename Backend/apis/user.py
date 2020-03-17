@@ -6,72 +6,54 @@ from utils.helpers import *
 from utils.models import auth_details, update_userInfo
 
 
-api = Namespace('user', description='User Information')
+user = Namespace('user', description='User Information')
 
-@api.route('/')
+
+@user.route('/')
 class User(Resource):
 
-    @api.response(200, 'Success')
-    @api.response(400, 'Missing Arguments')
-    @api.response(403, 'Invalid Auth Token')
-    @api.expect(auth_details(api))
-    @api.param('user_id','the id of the user')
-    @api.doc(description='''Get user information.''')
+    @user.response(200, 'Success')
+    @user.response(400, 'Missing Arguments')
+    @user.response(403, 'Invalid Auth Token')
+    @user.expect(auth_details(user))
+    @user.doc(description='''Get user information.''')
     def get(self):
         user = authorize(request)
         user_id = request.args.get('user_id', None)
         if (user_id is not None):
             session = db.get_session()
-            user = session.query(db.User).filter_by(id = user_id).first()
+            user = session.query(db.User).filter_by(id=user_id).first()
             session.close()
         return {
             "id": user.id,
             'username': user.username,
-            'password': user.password,
-            'first_name': user.first_name,
-            'last_name': user.last_name,
-            'role': user.role,
             'email': user.email,
-            'telephone': user.telephone,
+            'phone': user.phone,
             'token': user.token
         }
 
-    @api.response(200, 'Success')
-    @api.response(400, 'Missing Arguments')
-    @api.response(403, 'Invalid Auth Token')
-    @api.expect(auth_details(api), update_userInfo(api))
-    @api.doc(description='''Update user information.''')
+    @user.response(200, 'Success')
+    @user.response(400, 'Missing Arguments')
+    @user.response(403, 'Invalid Auth Token')
+    @user.expect(auth_details(user), update_userInfo(user))
+    @user.doc(description='''Update user information. 
+        The given object can update username, password, email, or phone number.
+        At least one of above must be supplied or the request is considered malformed.''')
     def put(self):
         user = authorize(request)
-        # only username, password, email, telephone can be update
-        (username, password, email, telephone) = unpack(request.json, 'username', 'password', 'email', 'telephone', required=False)
-
-        if username == None and password == None and email == None:
-            abort(400, 'Malformed Request')
-        if username != None and username == '':
-            abort(400, 'Malformed Request')
-        if password != None and password == '':
-            abort(400, 'Malformed Request')
-        if email != None and email == '':
-            abort(400, 'Malformed Request')
-        if telephone != None and telephone == '':
-            abort(400, 'Malformed Request')
-
-        session = db.get_session()
-        user = session.query(db.User).filter_by(token = user.token).first()
-
-        # update information
-        if username != None:
-            user.username = username
-        if password != None:
-            user.password = password
-        if email != None:
-            user.email = email
-        if telephone != None:
-            user.telephone = telephone
-
-        session.commit()
-        session.close()
+        user_id = int(user[0])
+        if not request.json:
+            abort(400, 'Malformed request')
+        safe = {}
+        allowed_keys = ['username', 'password', 'email', 'phone']
+        valid_keys = [k for k in request.json.keys() if k in allowed_keys]
+        if len(valid_keys) < 1:
+            abort(400, 'Malformed request')
+        if "password" in valid_keys and request.json["password"] == "":
+            abort(400, 'Malformed request')
+        for k in valid_keys:
+            safe[k] = request.json[k]
+        db.update('User').set(**safe).where(id=user_id).execute()
         return {
             'message': 'success'
         }
