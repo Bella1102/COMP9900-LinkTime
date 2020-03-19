@@ -1,10 +1,13 @@
 import os
 import hashlib
 import json
+import time
+import datetime
 import pandas as pd
 from sqlalchemy import *
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+
 
 
 engine = create_engine('sqlite:///db/dataBase.db?check_same_thread=False', echo = False)
@@ -177,6 +180,7 @@ def init_user(session):
     session.commit()
 
 
+# the start date is seconds of 0:0 today
 def init_property(session):
     res = read_csv_return_dict('db/data/property.csv')
     for item in res:
@@ -191,7 +195,9 @@ def init_property(session):
                        minimum_nights=int(item['minimum_nights']),
                        description=item['description'],
                        notes=item['notes'],
-                       house_rules=item['house_rules'],)
+                       house_rules=item['house_rules'],
+                       start_time=str(round(time.mktime(datetime.date.today().timetuple()))),
+                       end_time=str(-1))
         session.add(property)
     session.commit()
 
