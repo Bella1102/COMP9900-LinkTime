@@ -7,7 +7,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
 
-engine = create_engine('sqlite:///db/dataBase.db?check_same_thread=False', echo = True)
+engine = create_engine('sqlite:///db/dataBase.db?check_same_thread=False', echo = False)
 Base = declarative_base()
 
 
@@ -35,9 +35,9 @@ class Property(Base):
                         Column('title', Text),
                         Column('property_type', VARCHAR(30)),
                         Column('amenities', Text),
-                        Column('price', Integer),
+                        Column('price', VARCHAR(20)),
                         Column('bedrooms', Integer),
-                        Column('bathrooms', Integer),
+                        Column('bathrooms', Float),
                         Column('accommodates', Integer),
                         Column('minimum_nights', Integer),
                         Column('description', Text),
@@ -46,7 +46,8 @@ class Property(Base):
                         Column('start_time', VARCHAR(20)),
                         Column('end_time', VARCHAR(20)))
     def __repr__(self):
-        return 'This is Property table'
+        # return 'This is Property table'
+        return 'property_id: %s' % (self.property_id)
 
 # 3
 class Host(Base):
@@ -179,15 +180,15 @@ def init_user(session):
 def init_property(session):
     res = read_csv_return_dict('db/data/property.csv')
     for item in res:
-        property = Property(property_id=item['property_id'],
+        property = Property(property_id=int(item['property_id']),
                        title=item['title'],
                        property_type=item['property_type'],
                        amenities=item['amenities'],
                        price=item['price'],
-                       bedrooms=item['bedrooms'],
-                       bathrooms=item['bathrooms'],
-                       accommodates=item['accommodates'],
-                       minimum_nights=item['minimum_nights'],
+                       bedrooms=int(item['bedrooms']),
+                       bathrooms=float(item['bathrooms']),
+                       accommodates=int(item['accommodates']),
+                       minimum_nights=int(item['minimum_nights']),
                        description=item['description'],
                        notes=item['notes'],
                        house_rules=item['house_rules'],)
@@ -198,8 +199,8 @@ def init_property(session):
 def init_host(session):
     res = read_csv_return_dict('db/data/host.csv')
     for item in res:
-        host = Host(property_id=item['property_id'],
-                    host_id=item['host_id'],
+        host = Host(property_id=int(item['property_id']),
+                    host_id=int(item['host_id']),
                     host_name=item['host_name'],
                     host_img_url=item['host_img_url'],
                     host_verifications=item['host_verifications'])
@@ -210,7 +211,7 @@ def init_host(session):
 def init_address(session):
     res = read_csv_return_dict('db/data/address.csv')
     for item in res:
-        address = Address(property_id=item['property_id'],
+        address = Address(property_id=int(item['property_id']),
                           suburb=item['suburb'],
                           city=item['city'],
                           state=item['state'],
@@ -226,7 +227,7 @@ def init_image(session):
         load_dict = json.load(f)
         for i in load_dict.keys():
             item = load_dict[i]
-            image = Image(property_id=i, img_alt=str(item[0]), img_url=str(item[1]))
+            image = Image(property_id=int(i), img_alt=str(item[0]), img_url=str(item[1]))
             session.add(image)
     session.commit()
 
@@ -234,8 +235,8 @@ def init_image(session):
 def init_review(session):
     res = read_csv_return_dict('db/data/review.csv')
     for item in res:
-        review = Review(property_id=item['property_id'],
-                        reviewer_id=item['reviewer_id'],
+        review = Review(property_id=int(item['property_id']),
+                        reviewer_id=int(item['reviewer_id']),
                         reviewer_name=item['reviewer_name'],
                         review_date=item['review_date'],
                         review_content=item['review_content'])

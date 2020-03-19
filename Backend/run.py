@@ -1,16 +1,18 @@
+import os
 from flask import Flask
 from flask_restplus import Api
 from flask_cors import CORS
 from flask_mail import Mail, Message
-import os
 
 import db.init_db as db
 from apis.auth import auth
 from apis.user import user
+from apis.home import home
 from apis.host import host
 from apis.order import order
 from apis.search import search
 from apis.request import request
+from apis.review import review
 
 # mail_settings = {
 #     "MAIL_SERVER": 'smtp.gmail.com',
@@ -36,10 +38,12 @@ api = Api(
 
 api.add_namespace(auth)
 api.add_namespace(user)
+api.add_namespace(home)
 api.add_namespace(host)
 api.add_namespace(order)
 api.add_namespace(search)
 api.add_namespace(request)
+api.add_namespace(review)
 
 # msg = Message(subject="Hello",
 #               recipients=["dxh1015@gmail.com"],

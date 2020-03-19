@@ -24,4 +24,23 @@ def authorize(request):
         abort(403, 'Invalid Authorization Token')
     return user
 
+def getAllPropInfo(data):
+    return{
+        "id": data.id,
+        "property_id": data.property_id,
+        'title': data.title,
+        'property_type': data.property_type,
+        'amenities': amenities,
+        'price': data.price,
+        'bedrooms': data.bedrooms,
+        'bathrooms': data.bathrooms,
+        'accommodates': data.accommodates,
+        'minimum_nights': data.minimum_nights,
+        'description': data.description,
+        'notes': data.notes,
+        'house_rules': data.house_rules,
+        'start_time': data.start_time,
+        'end_time': data.end_time
+    }
+
 

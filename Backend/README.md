@@ -1,7 +1,6 @@
-## Accommodation Booking Web Portal Backend
+# Accommodation Booking Web Portal Backend
 
 ### How to start?
-
 **Backend** 
 ```
     cd Backend
