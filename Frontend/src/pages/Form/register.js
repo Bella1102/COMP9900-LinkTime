@@ -3,8 +3,8 @@ import axios from 'axios';
 import {Form, Button, Select,Input, Upload, Icon, message} from 'antd';
 
 
-const FormItem = Form.Item;
 const { Option } = Select;
+const FormItem = Form.Item;
 const baseURL = 'http://127.0.0.1:5000';
 
 
@@ -111,7 +111,7 @@ class Register extends Component{
                                 initialValue: '',
                                 rules: [
                                     { required: true, message: 'Please input your Username!' },
-                                    { max: 18, message: 'Username should contain less than 18 characters!' },
+                                    { max: 18, message:  "Username cannot be longer than 18 characters" },
                                     { pattern: new RegExp('^\\w+$', 'g'), message: 'Username can only contain digitals or letters!' }
                                 ]
                             })( <Input allowClear/> )
@@ -123,7 +123,7 @@ class Register extends Component{
                                 initialValue: '',
                                 rules: [
                                     { required: true, message: 'Please input your Password!' },
-                                    { min: 6, max: 18, message: 'Password length is not valid!' },
+                                    { min: 6, max: 18, message: "Password must be between 6 and 18 characters!" },
                                     { validator: this.validateToNextPassword },
                                 ]
                             })( <Input.Password /> )
@@ -154,7 +154,7 @@ class Register extends Component{
                             getFieldDecorator('phone', {
                                 initialValue: '',
                                 rules: [{ required: true, message: 'Please input your phone number!' }],
-                            })(<Input allowClear/>)
+                            })(<Input addonBefore={prefixSelector}  allowClear/>)
                         }
                     </FormItem>
                     <FormItem style={{textAlign: "center"}}>

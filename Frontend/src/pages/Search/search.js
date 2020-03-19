@@ -1,54 +1,67 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { Cascader, DatePicker, Button } from 'antd';
+import { Form, DatePicker, Cascader, Button, Select} from 'antd';
+import { actionCreators } from './store';
 import './index.less';
 
 
-const options1 = [ {value: "Apartment", label: "Apartment"}, 
-                   {value: "Studio", label: "Studio"}, 
-                   {value: "Unit", label: "Unit"}, 
-                   {value: "House", label: "House"} ]
-
-const options2 = [
-    {
-      value: 'zhejiang', label: 'Zhejiang',
-      children: [{ value: 'jiangsu', label: 'Jiangsu'}],
-    }, {
-        value: 'jiangsu', label: 'Jiangsu',
-        children: [{ value: 'nanjing', label: 'Nanjing'}]
-      }
-];
+const { Option } = Select;
+const { RangePicker } = DatePicker;
 
 
 class Search extends Component {
 
+
     render() {
-        const { RangePicker } = DatePicker;
+        const { getFieldDecorator } = this.props.form;
+
+        const typeOptions = ['Apartment', 'Loft', 'House', 'Unit']
+        const locationOptions = [
+            {
+                value: 'jiangsu', label: 'Jiangsu',
+                children: [{ value: 'nanjing', label: 'Nanjing'}]
+            }
+        ];
 
         return (
-            <div>
-               <div className="content" >
-                    <div className="searchModule">
-                        <Cascader className="searchInner"
-                                options={options1} 
-                                onChange={this.onChange} 
-                                placeholder="House type" />
-                        <Cascader className="searchInner"
-                                options={options2} 
-                                onChange={this.onChange} 
-                                placeholder="Select location" />
-                        <RangePicker className="searchInner" 
-                                    onChange={this.onChange} />
-                        <Link to='/search'>
-                            <Button type="primary" 
-                                    onClick={() => {}} 
-                                    style={{width: 100}}>Search
-                            </Button>
-                        </Link>
-                    </div>
-                </div>
-            </div>
+            <div className="content">
+                <Form layout="inline" className="searchModule" onSubmit={this.handleSubmit}>
+                <Form.Item>
+                    {
+                        getFieldDecorator('location', {
+                            initialValue: '',
+                            rules: [
+                                { required: true, message: 'Please select location!'}
+                            ]
+                        })(<Cascader className="searchInner" options={locationOptions} placeholder="Select location" />)
+                    }
+                </Form.Item>
+                <Form.Item>
+                    {
+                        getFieldDecorator('type', {
+                            rules: []
+                        })(<Select allowClear style={{width: 205}} placeholder="Select type">
+                                {
+                                    typeOptions.map(item => (
+                                        <Option key={item} value={item}>{item}</Option>
+                                    ))
+                                }
+                            </Select>)
+                    }
+                </Form.Item>
+                <Form.Item>
+                    {
+                        getFieldDecorator('time', {
+                            initialValue: ''
+                        })( <RangePicker format="YYYY-MM-DD"/>)
+                    }
+                </Form.Item>
+                <Form.Item>
+                    <Link to='/search'><Button type="primary" style={{width: 100}}> Search</Button></Link>
+                </Form.Item>
+            </Form>
+        </div>
           );
     }
 }
@@ -57,15 +70,18 @@ class Search extends Component {
 
 const mapState = (state) => {
 	return {
-		
+        loginStatus: state.getIn(["login", "loginStatus"]),
+        allPropInfo: state.getIn(["home", "allPropInfo"]),
 	}
-};
+}
 
-const mapDispath = (dispatch) => {
-	return {
-
-	}
-};
+const mapDispatch = (dispatch) => ({
+    
+});
 
 
-export default connect(mapState, mapDispath)(Search);
+export default connect(mapState, mapDispatch)(Form.create()(Search));
+
+
+
+

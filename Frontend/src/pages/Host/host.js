@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import moment from 'moment';
 import {Form, Button, Input, Radio, Select, DatePicker, message } from 'antd';
 
 
+const { RangePicker } = DatePicker;
 const baseURL = 'http://127.0.0.1:5000';
 
 
@@ -33,6 +35,7 @@ class Host extends Component{
                         "price": propInfo.price, "state": propInfo.state, "suburb": propInfo.suburb, 
                         "locaion": propInfo.locaion, "postcode": propInfo.postcode, "bedrooms": propInfo.bedrooms, 
                         "barhtooms": propInfo.bathrooms, "start_time": start_time, "end_time": end_time, "description": propInfo.description}
+                        
         axios.post(propURL, propData, axiosConfig).then((res) => {
             console.log(res)
             this.propSuccess()
@@ -40,13 +43,6 @@ class Host extends Component{
             this.propFailure()
         }); 
     }
-
-    checkPrice = (rule, value, callback) => {
-        if (value.number > 0) {
-          return callback();
-        }
-        callback('Price must greater than zero!');
-      };
 
 
     render(){
@@ -120,6 +116,7 @@ class Host extends Component{
                     <Form.Item label="State" {...formItemLayout}>
                         {
                             getFieldDecorator('state', {
+                                initialValue: undefined,
                                 rules: [{ required: true, message: 'Please select your state!' }],
                             })( <Select allowClear placeholder='Please select state'>
                                     {
@@ -187,7 +184,12 @@ class Host extends Component{
                             getFieldDecorator('available_time', {
                                 initialValue: '',
                                 rules: [{ required: true, message: 'Please input available time!' }]
-                            })(<DatePicker.RangePicker style={{width: '100%'}} />)
+                            })( <RangePicker format="YYYY-MM-DD" 
+                                            ranges={{ Today: [moment(), moment()], 
+                                            'This Month': [moment().startOf('month'), moment().endOf('month')]}} />)
+                            
+                            
+                            // (<DatePicker.RangePicker style={{width: '100%'}} />)
                         }
                     </Form.Item>
                     <Form.Item label="Other Detail" {...formItemLayout}>

@@ -1,24 +1,14 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { Form, Row, Col, Carousel, DatePicker, Cascader, Button, Select } from 'antd';
+import moment from 'moment';
+import { Form, Row, Col, Carousel, DatePicker, Cascader, Button, Select, message} from 'antd';
 import { actionCreators } from './store';
 import './index.less';
 
 
-const { RangePicker } = DatePicker;
 const { Option } = Select;
-
-
-const options2 = [
-    {
-      value: 'zhejiang', label: 'Zhejiang',
-      children: [{ value: 'jiangsu', label: 'Jiangsu'}],
-    }, {
-        value: 'jiangsu', label: 'Jiangsu',
-        children: [{ value: 'nanjing', label: 'Nanjing'}]
-      }
-];
+const { RangePicker } = DatePicker;
 
 
 class Home extends Component {
@@ -26,8 +16,9 @@ class Home extends Component {
     handleSubmit = () => {
         this.props.form.validateFields((err, values) => {
             if(!err){
-                this.props.search(values.username, values.password)
+                this.props.search(values.type, values.location, values.time)
             }
+            message.error('Please select location!')
         })
     }
     
@@ -37,6 +28,14 @@ class Home extends Component {
         const { getFieldDecorator } = this.props.form;
 
         const typeOptions = ['Apartment', 'Loft', 'House', 'Unit']
+        const locationOptions = [
+            {
+                value: 'NSW', label: 'NSW',
+                children: [
+                    { value: 'Nanjing', label: 'Nanjing'}
+                ]
+            }
+        ];
 
         return (
             <div className="content" >
@@ -49,11 +48,23 @@ class Home extends Component {
                      <Form layout="inline" className="homeSearchModule" onSubmit={this.handleSubmit}>
                         <Form.Item>
                             {
-                                getFieldDecorator('type') 
-                                (<Select allowClear style={{width: 200}} placeholder="Select type">
+                                getFieldDecorator('location', {
+                                    initialValue: '',
+                                    rules: [
+                                        { required: true }
+                                    ]
+                                })(<Cascader className="searchInner" options={locationOptions} placeholder="Select location" />)
+                            }
+                        </Form.Item>
+                        <Form.Item>
+                            {
+                                 getFieldDecorator('type', {
+                                    initialValue: undefined,
+                                    rules: []
+                                })(<Select allowClear style={{width: 205}} placeholder="Select type">
                                     {
                                         typeOptions.map(item => (
-                                            <Option value={item}>{item}</Option>
+                                            <Option key={item} value={item}>{item}</Option>
                                         ))
                                     }
                                 </Select>)
@@ -61,16 +72,13 @@ class Home extends Component {
                         </Form.Item>
                         <Form.Item>
                             {
-                                getFieldDecorator('location', {
-                                    initialValue: ''
-                                })(<Cascader className="searchInner" options={options2} placeholder="Select location" />)
-                            }
-                        </Form.Item>
-                        <Form.Item>
-                            {
                                 getFieldDecorator('time', {
                                     initialValue: ''
-                                })( <RangePicker />)
+                                })
+                                (<RangePicker/>)
+                                // ( <RangePicker format="YYYY-MM-DD" 
+                                //                 ranges={{ Today: [moment(), moment()], 
+                                //                 'This Month': [moment().startOf('month'), moment().endOf('month')]}} />)
                             }
                         </Form.Item>
                         <Form.Item>
@@ -108,7 +116,6 @@ class Home extends Component {
                         </Col>
                     </Row>
                 </div >
-
                 {/* Recommend hotels */}
                 <div className="recommendList">
                     <div>
@@ -122,7 +129,7 @@ class Home extends Component {
                                     const price = item.get("price").split('.')[0]
                                     return (
                                         <Col span={4} key={index}>
-                                            <div style={{textAlign: "center"}}><img src={item.get("image")} alt=""/></div>
+                                            <div style={{textAlign: "center"}}><img src={item.get("image")[0]} alt=""/></div>
                                             <div className="title">{item.get("title")}</div>
                                             <div style={{textAlign: "center", marginBottom: 2}}>{item.get("location")}</div>
                                             <div style={{textAlign: "center", marginBottom: 25}}>{`${price} per/night`}</div>
@@ -160,3 +167,4 @@ const mapDispatch = (dispatch) => ({
 
 
 export default connect(mapState, mapDispatch)(Form.create()(Home));
+
