@@ -74,8 +74,8 @@ class Address(Base):
                         Column('suburb', VARCHAR(50)),
                         Column('location', VARCHAR(50)),
                         Column('postcode', Integer),
-                        Column('latitude', NUMERIC),
-                        Column('longitude', NUMERIC))
+                        Column('latitude', Float),
+                        Column('longitude', Float))
     def __repr__(self):
         return 'This is Property Address Table'
 
