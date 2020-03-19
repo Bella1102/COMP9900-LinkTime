@@ -46,31 +46,18 @@ class Search(Resource):
     def get(self):
         [location, house_type, start_date, end_date] = get_params(request)
         session = db.get_session()
+
+        # one parameter location
         if location and not house_type and not start_date and not end_date:
-            loc_info = session.query(db.Address).filter_by(suburb="Potts Point").all()
+            loc_info = session.query(db.Address).filter_by(suburb=location).all()
 
-        result = []
-        for i in loc_info:
-
-            one_pro_info = session.query(db.Property).filter_by(property_id=i.property_id).first()
-            one_img_info = session.query(db.Image).filter_by(property_id=i.property_id).first()
-            # one_img_list = one_img_info.img_url[1:-1].split(', ')
-            # one_img_list = [ele[1:-1] for ele in one_img_list]
-            # temp = {
-            #     "property_id": i.property_id,
-            #     "latitude":round(i.latitude, 5),
-            #     "longitude": round(i.longitude, 5),
-            #     "image":one_img_list,
-            #     "property_type": one_pro_info.property_type,
-            #     "amenities":one_pro_info.amenities.replace('"', ''),
-            #     "price":one_pro_info.price,
-            #     "bedrooms":one_pro_info.bedrooms,
-            #     "bathrooms":one_pro_info.bathrooms,
-            #     "title":one_pro_info.title
-            #     }
-            # print(temp)
-            # pro_obj, img_obj, add_obj
-            temp = search_res(one_pro_info,one_img_info, i)
-            result.append(temp)
-        session.close()
-        return result
+            result = []
+            for add_obj in loc_info:
+                pro_obj = session.query(db.Property).filter_by(property_id=add_obj.property_id).first()
+                img_obj = session.query(db.Image).filter_by(property_id=add_obj.property_id).first()
+                temp = search_res(pro_obj, img_obj, add_obj)
+                result.append(temp)
+            session.close()
+            return result
+        # two parameters location and house_type
+        if
