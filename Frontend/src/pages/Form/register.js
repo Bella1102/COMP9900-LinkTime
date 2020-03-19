@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import {Form, Button, Select,Input, message} from 'antd';
+import {Form, Button, Select,Input, Upload, Icon, message} from 'antd';
 
 
 const FormItem = Form.Item;
@@ -12,7 +12,13 @@ const baseURL = 'http://127.0.0.1:5000';
 class Register extends Component{
 
     state = {
-        imgList: []
+        imgList: [],
+        confirmDirty: false
+    };
+
+    handleConfirmBlur = e => {
+        const { value } = e.target;
+        this.setState({ confirmDirty: this.state.confirmDirty || !!value });
     };
 
     compareToFirstPassword = (rule, value, callback) => {
@@ -30,7 +36,14 @@ class Register extends Component{
             form.validateFields(['confirm'], { force: true });
         }
             callback();
-      };
+    };
+    
+    normFile = e => {
+        if (Array.isArray(e)) {
+            return e;
+        }
+        return e && e.fileList;
+    };
 
     regSuccess = () => {
         message.success('Register Success');
@@ -79,42 +92,44 @@ class Register extends Component{
       
         return (
             <div>
-                {/* <Alert message="Register Success" type="success" showIcon style={{ width: 200, marginLeft: 620, marginTop: 20, textAlign: "center"}}/> */}
                 <Form layout="horizontal" style={{marginTop: 120, minHeight: 600}}>
-                    {/* <FormItem label="Photo" {...formItemLayout}>
-                        {
-                            getFieldDecorator('photo')(
-                                <Upload
-                                    listType="picture-card"
-                                    showUploadList={false}
-                                    fileList={this.state.imgList}
-                                    action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                                    onChange={this.handleChange}>
-                                    {this.state.userImg ? <img src={this.state.userImg} alt=""/> : <Icon type="plus"/>}
-                                </Upload>
-                            )
-                        }
-                    </FormItem> */}
+
+                    <FormItem label="Upload" {...formItemLayout}>
+                        {getFieldDecorator('upload', {
+                            valuePropName: 'fileList',
+                            getValueFromEvent: this.normFile,
+                        })(
+                            <Upload name="logo" action="/upload.do" listType="picture">
+                                <Button style={{width: 180}}><Icon type="upload" /> Click to upload</Button>
+                            </Upload>,
+                        )}
+                    </FormItem>
+
                     <FormItem label="UserName" {...formItemLayout}>
                         {
                             getFieldDecorator('username', {
                                 initialValue: '',
-                                rules: [{ required: true, message: 'Please input your Username!' }]
-                            })( <Input /> )
+                                rules: [
+                                    { required: true, message: 'Please input your Username!' },
+                                    { max: 18, message: 'Username should contain less than 18 characters!' },
+                                    { pattern: new RegExp('^\\w+$', 'g'), message: 'Username can only contain digitals or letters!' }
+                                ]
+                            })( <Input allowClear/> )
                         }
                     </FormItem>
-                    <FormItem label="Password" {...formItemLayout}>
+                    <FormItem label="Password" {...formItemLayout} hasFeedback>
                         {
                             getFieldDecorator('password', {
                                 initialValue: '',
                                 rules: [
                                     { required: true, message: 'Please input your Password!' },
-                                    { min: 6, max: 18, message: 'Password length is not valid!' }
+                                    { min: 6, max: 18, message: 'Password length is not valid!' },
+                                    { validator: this.validateToNextPassword },
                                 ]
-                            })( <Input.Password type="password" /> )
+                            })( <Input.Password /> )
                         }
                     </FormItem>
-                    <FormItem label="Confirm Password" {...formItemLayout}>
+                    <FormItem label="Confirm Password" {...formItemLayout} hasFeedback>
                         {
                         getFieldDecorator('confirm', {
                             rules: [
@@ -128,9 +143,10 @@ class Register extends Component{
                             getFieldDecorator('email', {
                                 initialValue: '',
                                 rules: [
-                                    { required: true, message: 'Please input your Email!' }
+                                    { required: true, message: 'Please input your Email!' },
+                                    { type: 'email', message: 'The input is not a valid email!'},
                                 ]
-                            })( <Input /> )
+                            })( <Input allowClear/> )
                         }
                     </FormItem>
                     <FormItem label="Phone Number" {...formItemLayout}>
@@ -138,7 +154,7 @@ class Register extends Component{
                             getFieldDecorator('phone', {
                                 initialValue: '',
                                 rules: [{ required: true, message: 'Please input your phone number!' }],
-                            })(<Input addonBefore={prefixSelector} />)
+                            })(<Input allowClear/>)
                         }
                     </FormItem>
                     <FormItem style={{textAlign: "center"}}>
@@ -152,3 +168,6 @@ class Register extends Component{
 
 
 export default Form.create()(Register);
+
+
+

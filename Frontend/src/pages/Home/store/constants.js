@@ -1,2 +1,2 @@
 
-// export const SEARCH_FOCUS = 'header/SEARCH_FOCUS';
+export const ALL_PROP_INFO = 'home/ALL_PROP_INFO';

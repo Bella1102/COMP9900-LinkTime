@@ -1,16 +1,14 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { Row, Col, Carousel, DatePicker, Cascader, Button } from 'antd';
+import { Form, Row, Col, Carousel, DatePicker, Cascader, Button, Select } from 'antd';
+import { actionCreators } from './store';
 import './index.less';
 
 
 const { RangePicker } = DatePicker;
+const { Option } = Select;
 
-const options1 = [ {value: "Apartment", label: "Apartment"}, 
-                   {value: "Studio", label: "Studio"}, 
-                   {value: "Unit", label: "Unit"}, 
-                   {value: "House", label: "House"} ]
 
 const options2 = [
     {
@@ -23,60 +21,69 @@ const options2 = [
 ];
 
 
-
-
 class Home extends Component {
+
+    handleSubmit = () => {
+        this.props.form.validateFields((err, values) => {
+            if(!err){
+                this.props.search(values.username, values.password)
+            }
+        })
+    }
     
 
-    onChange(date, dateString) {
-        console.log(date, dateString);
-    }
-
     render() {
+        
+        const { getFieldDecorator } = this.props.form;
+
+        const typeOptions = ['Apartment', 'Loft', 'House', 'Unit']
 
         return (
             <div className="content" >
-
                 <div className="contentUp">
                     {
                         this.props.loginStatus ?
                         <h1 className="book">Hi {this.props.userInfo.get("username")}, Welcome to book your trip!</h1> :
                         <h1 className="book">Welcome to book your trip!</h1>
-
                     }
-                    <div className="homeSearchModule">
-                        <Cascader className="searchInner"
-                                options={options1} 
-                                onChange={this.onChange} 
-                                placeholder="House type" />
-                        <Cascader className="searchInner"
-                                options={options2} 
-                                onChange={this.onChange} 
-                                placeholder="Select location" />
-                        <RangePicker className="searchInner" 
-                                    onChange={this.onChange} />
-                        <Link to='/search'>
-                            <Button type="primary" 
-                                    onClick={() => {}} 
-                                    style={{width: 100}}>Search
-                            </Button>
-                        </Link>
-                    </div>
+                     <Form layout="inline" className="homeSearchModule" onSubmit={this.handleSubmit}>
+                        <Form.Item>
+                            {
+                                getFieldDecorator('type') 
+                                (<Select allowClear style={{width: 200}} placeholder="Select type">
+                                    {
+                                        typeOptions.map(item => (
+                                            <Option value={item}>{item}</Option>
+                                        ))
+                                    }
+                                </Select>)
+                            }
+                        </Form.Item>
+                        <Form.Item>
+                            {
+                                getFieldDecorator('location', {
+                                    initialValue: ''
+                                })(<Cascader className="searchInner" options={options2} placeholder="Select location" />)
+                            }
+                        </Form.Item>
+                        <Form.Item>
+                            {
+                                getFieldDecorator('time', {
+                                    initialValue: ''
+                                })( <RangePicker />)
+                            }
+                        </Form.Item>
+                        <Form.Item>
+                            <Link to='/search'><Button type="primary" style={{width: 100}}> Search</Button></Link>
+                        </Form.Item>
+                    </Form>
                 </div>
-
-                {/* 轮播图 */}
+                {/* carousel */}
                 <Carousel autoplay>
-                    <div>
-                        <img src="/carousel-img/1.jpg" alt=""/>
-                    </div>
-                    <div>
-                        <img src="/carousel-img/2.jpg" alt="" />
-                    </div>
-                    <div>
-                        <img src="/carousel-img/3.jpeg" alt="" />
-                    </div>
+                    <div><img src="/carousel-img/1.jpg" alt=""/></div>
+                    <div><img src="/carousel-img/2.jpg" alt="" /></div>
+                    <div><img src="/carousel-img/3.jpeg" alt="" /></div>
                 </Carousel>
-
                 {/* space type */}
                 <div className="spaceType">
                     <div>
@@ -84,24 +91,20 @@ class Home extends Component {
                     </div>
                     <Row className="typePics">
                         <Col span={6}>
-                            <div className="imgCenter"><img src="/space-type/house.png" alt=""/></div>
-                            <div className="allTypes">Houses</div>
-                            <p className="moreCenter">explore more houses</p>
+                            <div style={{textAlign: "center"}}><img src="/space-type/house.png" alt=""/></div>
+                            <div className="allTypes">House</div>
                         </Col>
                         <Col span={6}>
-                            <div className="imgCenter"><img src="/space-type/apartment.png" alt=""/></div>
-                            <div className="allTypes">Apartments</div>
-                            <p className="moreCenter">explore more apartments</p>
+                            <div style={{textAlign: "center"}}><img src="/space-type/apartment.png" alt=""/></div>
+                            <div className="allTypes">Apartment</div>
                         </Col>
                         <Col span={6}>
-                            <div className="imgCenter"><img src="/space-type/studio.png" alt=""/></div>
-                            <div className="allTypes">Studios</div>
-                            <p className="moreCenter">explore more studios</p>
+                            <div style={{textAlign: "center"}}><img src="/space-type/studio.png" alt=""/></div>
+                            <div className="allTypes">Studio</div>
                         </Col>
                         <Col span={6}>
-                            <div className="imgCenter"><img src="/space-type/unit.png" alt=""/></div>
-                            <div className="allTypes">Units</div>
-                            <p className="moreCenter">explore more units</p>
+                            <div style={{textAlign: "center"}}><img src="/space-type/unit.png" alt=""/></div>
+                            <div className="allTypes">Unit</div>
                         </Col>
                     </Row>
                 </div >
@@ -109,44 +112,34 @@ class Home extends Component {
                 {/* Recommend hotels */}
                 <div className="recommendList">
                     <div>
-                        <h2 className="listTitle">Top-rated experiences in Sydney</h2>
+                        <h2 className="listTitle">Places to stay in Sydney</h2>
                     </div>
                     <Row>
-                        <div className="oneRec">
-                            <img src="/space-type/house.png" alt=""/>
-                            <div className="allTypes">Beautiful separate private 1B suite</div>
-                            <div>61 Marian Pl, Prospect SA 5082</div>
-                            <div>$90 AUD/night</div>
-                        </div>
-                        <div className="oneRec">
-                            <img src="/space-type/apartment.png" alt=""/>
-                            <div className="allTypes">Beautiful separate private 1B suite</div>
-                            <div>61 Marian Pl, Prospect SA 5082</div>
-                            <div>$90 AUD/night</div>
-                        </div>
-                        <div className="oneRec">
-                            <img src="/space-type/studio.png" alt=""/>
-                            <div className="allTypes">Beautiful separate private 1B suite</div>
-                            <div>61 Marian Pl, Prospect SA 5082</div>
-                            <div>$90 AUD/night</div>
-                        </div>
-                        <div className="oneRec">
-                            <img src="/space-type/unit.png" alt=""/>
-                            <div className="allTypes">Beautiful separate private 1B suite</div>
-                            <div>61 Marian Pl, Prospect SA 5082</div>
-                            <div>$90 AUD/night</div>
-                        </div>
-                        <div className="lastRec">
-                            <img src="/space-type/house.png" alt=""/>
-                            <div className="allTypes">Beautiful separate private 1B suite</div>
-                            <div>61 Marian Pl, Prospect SA 5082</div>
-                            <div>$90 AUD/night</div>
-                        </div>
+                        {
+                            this.props.allPropInfo !== null ?
+                            this.props.allPropInfo.map((item, index) => {
+                                if (index !== 0){
+                                    const price = item.get("price").split('.')[0]
+                                    return (
+                                        <Col span={4} key={index}>
+                                            <div style={{textAlign: "center"}}><img src={item.get("image")} alt=""/></div>
+                                            <div className="title">{item.get("title")}</div>
+                                            <div style={{textAlign: "center", marginBottom: 2}}>{item.get("location")}</div>
+                                            <div style={{textAlign: "center", marginBottom: 25}}>{`${price} per/night`}</div>
+                                        </Col>
+                                    )
+                                }
+                                return null
+                            }) : null 
+                        }
                     </Row>
                 </div>
-
              </div>
           );
+    }
+
+    UNSAFE_componentWillMount(){
+        this.props.getAllPropInfo();
     }
 }
 
@@ -154,12 +147,16 @@ const mapState = (state) => {
 	return {
         loginStatus: state.getIn(["login", "loginStatus"]),
         userInfo: state.getIn(["login", "userInfo"]),
+        allPropInfo: state.getIn(["home", "allPropInfo"]),
 	}
 }
 
 const mapDispatch = (dispatch) => ({
+    getAllPropInfo() {
+		dispatch(actionCreators.getAllPropInfo())
+	}
     
 });
 
 
-export default connect(mapState, mapDispatch)(Home);
+export default connect(mapState, mapDispatch)(Form.create()(Home));

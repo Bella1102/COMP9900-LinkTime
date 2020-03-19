@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { actionCreators } from './store';
 import { Form, Input, Button, Icon, Checkbox } from "antd";
 
@@ -30,21 +30,21 @@ class Login extends Component{
                                     initialValue:'', 
                                     rules:[
                                             { required: true, message: 'Please input your username!' },
-                                            { max: 18, message: 'Username length is not valid!' },
+                                            { max: 18, message: 'Username should contain less than 18 characters!' },
                                             { pattern: new RegExp('^\\w+$', 'g'), message: 'Username can only contain digitals or letters!' }
                                         ]
-                                })( <Input prefix={<Icon type="user"/>} placeholder="Username" /> )
+                                })( <Input prefix={<Icon type="user"/>} placeholder="Username" allowClear/> )
                             }
                         </Form.Item>
-                        <Form.Item>
+                        <Form.Item hasFeedback >
                             {
                                 getFieldDecorator('password', {
                                     initialValue: '',
                                     rules: [
                                         { required: true, message: 'Please input your Password!' },
-                                        { min: 6, max: 18, message: 'Password length is not valid!' }
+                                        { min: 6, max: 18, message: 'Password should contain more than 6 and less than 18 characters!' }
                                     ]
-                                })( <Input.Password prefix={<Icon type="lock"/>} type="password" placeholder="Password" /> )
+                                })( <Input.Password prefix={<Icon type="lock"/>} placeholder="Password"/> )
                             }
                         </Form.Item>
                         <Form.Item>
@@ -54,9 +54,9 @@ class Login extends Component{
                                     initialValue: true
                                 })( <Checkbox>Remember me</Checkbox> )
                             }
-                            <a href="/forgotPassword" style={{float: 'right'}}>Forgot password</a>
+                            <Link to="/forgotPassword" style={{float: 'right'}}>Forgot password</Link>
                             <Button type="primary" onClick={ this.handleSubmit } style={{width: '100%'}}>Log in</Button>
-                            Or <a href="/register">register now!</a>
+                            Or <Link to="/signup">register now!</Link>
                         </Form.Item>
                     </Form>
                 </div>

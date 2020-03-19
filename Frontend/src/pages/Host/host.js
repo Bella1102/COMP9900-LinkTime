@@ -1,91 +1,53 @@
 import React, { Component } from 'react';
-import {Form, Button, Input, Radio, Checkbox, Select, 
-    Menu, Cascader, DatePicker, Icon, message } from 'antd';
+import axios from 'axios';
+import {Form, Button, Input, Radio, Select, DatePicker, message } from 'antd';
 
 
-const { Option } = Select;
-const { RangePicker } = DatePicker;
-
-const plainOptions = ['TV', 'Intenet', 'Wifi', 'Air Conditioning', 'Washer', 'Dryer', 'Hair dryer', 'Kitchen', 'Smoke detector', 'Free parking on premises']
-
-function handleMenuClick(e) {
-    message.info('Click on menu item.');
-    console.log('click', e);
-}
-
-
-const menu = (
-    <Menu onClick={handleMenuClick}>
-        <Menu.Item key="1"><Icon type="user" />1st menu item</Menu.Item>
-        <Menu.Item key="2"><Icon type="user" />2nd menu item</Menu.Item>
-        <Menu.Item key="3"><Icon type="user" />3rd menu item</Menu.Item>
-    </Menu>
-);
-
-const options1 = [ {value: "Apartment", label: "New South Wales"}, 
-                {value: "Studio", label: "New South Wales New South Wales"}, 
-                {value: "Unit", label: "New South Wales"}, 
-                {value: "House", label: "New South Wales"} ]
+const baseURL = 'http://127.0.0.1:5000';
 
 
 class Host extends Component{
 
-    state = {
-        value: 'apartment',
-        checkedList: [],
+    propSuccess = () => {
+        message.success('Post Property Success');
+    };
+
+    propFailure = () => {
+        message.error('Post Property Failure');
     };
 
     handleSubmit = () => {
-        let userInfo = this.props.form.getFieldsValue();
-        message.success(`${userInfo.amenity}`)
+        
+        let propInfo = this.props.form.getFieldsValue();
+        const propURL = baseURL + '/host/';
+        const axiosConfig = {
+            headers: {
+                "accept": "application/json",
+                'Content-Type':'application/json'
+            }
+        };
+        const rangeValue = propInfo.available_time;
+        const start_time = rangeValue[0].format('YYYY-MM-DD');
+        const end_time = rangeValue[1].format('YYYY-MM-DD');
+        const propData = {"title": propInfo.title, "property_type": propInfo.type, "amenities": propInfo.amenity, 
+                        "price": propInfo.price, "state": propInfo.state, "suburb": propInfo.suburb, 
+                        "locaion": propInfo.locaion, "postcode": propInfo.postcode, "bedrooms": propInfo.bedrooms, 
+                        "barhtooms": propInfo.bathrooms, "start_time": start_time, "end_time": end_time, "description": propInfo.description}
+        axios.post(propURL, propData, axiosConfig).then((res) => {
+            console.log(res)
+            this.propSuccess()
+        }).catch(() => {
+            this.propFailure()
+        }); 
     }
 
-    radioChange = e => {
-        console.log('radio checked', e.target.value);
-        this.setState({
-          value: e.target.value,
-        });
-    };
-
-    checkBoxChange = checkedList => {
-        this.setState({
-          checkedList,
-          indeterminate: !!checkedList.length && checkedList.length < plainOptions.length,
-          checkAll: checkedList.length === plainOptions.length,
-        });
-    };
-
-    onCheckAllChange = e => {
-        this.setState({
-          checkedList: e.target.checked ? plainOptions : [],
-          indeterminate: false,
-          checkAll: e.target.checked,
-        });
-    };
-
-    onChange(checkedValues) {
-        console.log('checked = ', checkedValues);
-    }
-
-    getBase64 = (img, callback) => {
-        const reader = new FileReader();
-        reader.addEventListener('load', () => callback(reader.result));
-        reader.readAsDataURL(img);
-    }
-
-    handleChange = (info) => {
-        if (info.file.status === 'uploading') {
-            this.setState({ loading: true });
-            return;
+    checkPrice = (rule, value, callback) => {
+        if (value.number > 0) {
+          return callback();
         }
-        if (info.file.status === 'done') {
-            // Get this url from response in real world.
-            this.getBase64(info.file.originFileObj, imageUrl => this.setState({
-                userImg: imageUrl,
-                loading: false,
-            }));
-        }
-    }
+        callback('Price must greater than zero!');
+      };
+
 
     render(){
         
@@ -95,6 +57,13 @@ class Host extends Component{
             labelCol: { xs: 24, sm: 9, xl: 9 },
             wrapperCol: { xs: 16, sm: 9, xl: 6 }
         }
+        const typeOptions = ['Apartment', 'Loft', 'House', 'Unit']
+        const amenityOptions = ['TV', 'Internet', 'Wifi', 'Washer', 'Dryer', 
+                                'Hair dryer', 'Kitchen', 'Smoke detector', 'Air Conditioning', 'Free parking on premises']
+        const stateOptions = ['New South Wales', 'Victoria','Queensland', 'South Australia']
+        const bedroomNum = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
+        const bathroomNum = ['0', '1', '2', '3', '4', '5', '6']
+
       
         return (
             <div style={{minHeight: 900}}>
@@ -105,48 +74,60 @@ class Host extends Component{
                             getFieldDecorator('title', {
                                 initialValue: '',
                                 rules: [{ required: true, message: 'Please input title!' }]
-                            })( <Input /> )
+                            })( <Input placeholder="Please input title"/> )
                         }
                     </Form.Item>
                     <Form.Item label="Type" {...formItemLayout}>
                         {
                             getFieldDecorator('type', {
-                                initialValue: '',
-                                rules: [{ required: true, message: 'Please select your property type!' }]
-                            })( <Radio.Group onChange={this.radioChange} value={this.state.value}>
-                                    <Radio value={'Apartment'}>Apartment</Radio>
-                                    <Radio value={'Loft'}>Loft</Radio>
-                                    <Radio value={'House'}>House</Radio>
-                                    <Radio value={'Unit'}>Unit</Radio>
+                                initialValue: 'Apartment',
+                                rules: [{ required: true, message: 'Please select property type!' }]
+                            })( <Radio.Group>
+                                {
+                                    typeOptions.map(item => (
+                                        <Radio key={item} value={item}>{item}</Radio>
+                                    ))
+                                }
                                 </Radio.Group>)
                         }
                     </Form.Item>
+
                     <Form.Item label="Amenities" {...formItemLayout}>
                         {
                             getFieldDecorator('amenity', {
-                                initialValue: '',
-                                rules: [{ required: true, message: 'Please select your facilities!' }]
-                            })(
-                            <Checkbox.Group
-                                    options={plainOptions}
-                                    value={this.state.checkedList}
-                                    onChange={this.checkBoxChange}/>)
+                                initialValue: [],
+                                rules: [{ required: true, message: 'Please select your amenities!', type: 'array' }],
+                            })( <Select mode="multiple" placeholder='Please select amenities' allowClear>
+                                {
+                                    amenityOptions.map(item => (
+                                        <Select.Option key={item} value={item}>{item}</Select.Option>
+                                    ))
+                                }
+                                </Select>)
                         }
                     </Form.Item>
                     <Form.Item label="Price" {...formItemLayout}>
                         {
                             getFieldDecorator('price', {
                                 initialValue: '',
-                                rules: [{ required: true, message: 'Please input price!' }]
-                            })(<Input addonAfter="$ / Per Day" defaultValue="" />)
+                                rules: [
+                                    { required: true, message: 'Please input price!' },
+                                    { pattern: new RegExp("^\\$[1-9][0-9]*$", 'g'), message: 'The input price format is not Valid!' }
+                                ]
+                            })(<Input placeholder="$100"/>)
                         }
                     </Form.Item>
                     <Form.Item label="State" {...formItemLayout}>
                         {
                             getFieldDecorator('state', {
-                                initialValue: '',
-                                rules: [{ required: true, message: 'Please select state!' }]
-                            })(<Cascader options={options1} onChange={this.onChange}/>)
+                                rules: [{ required: true, message: 'Please select your state!' }],
+                            })( <Select allowClear placeholder='Please select state'>
+                                    {
+                                        stateOptions.map(item => (
+                                            <Select.Option key={item} value={item}>{item}</Select.Option>
+                                        ))
+                                    }
+                                </Select>)
                         }
                     </Form.Item>
                     <Form.Item label="Suburb" {...formItemLayout}>
@@ -175,27 +156,29 @@ class Host extends Component{
                     </Form.Item>
                     <Form.Item label="Bedroom number" {...formItemLayout}>
                         {
-                            getFieldDecorator('room_num', {
-                                initialValue: ''
-                            })(<Select onChange={this.onChange}>
-                                    <Option value="1">1</Option>
-                                    <Option value="2">2</Option>
-                                    <Option value="3">3</Option>
-                                    <Option value="4">4</Option>
-                                    <Option value="5">5</Option>
-                                    <Option value="6">6</Option>
+                            getFieldDecorator('bedrooms', {
+                                initialValue: '1',
+                                rules: [{ required: true, message: 'Please select bedroom number!' }]
+                            })(<Select allowClear>
+                                {
+                                    bedroomNum.map(item => (
+                                        <Select.Option key={item} value={item}>{item}</Select.Option>
+                                    ))
+                                }
                                 </Select>)
                         }
                     </Form.Item>
                     <Form.Item label="Bathroom number" {...formItemLayout}>
                         {
-                            getFieldDecorator('bath_num', {
-                                initialValue: ''
-                            })(<Select onChange={this.onChange}>
-                                    <Option value="1">1</Option>
-                                    <Option value="2">2</Option>
-                                    <Option value="3">3</Option>
-                                    <Option value="4">4</Option>
+                            getFieldDecorator('bathrooms', {
+                                initialValue: '1',
+                                rules: [{ required: true, message: 'Please select bathroom number!' }]
+                            })(<Select allowClear>
+                                {
+                                    bathroomNum.map(item => (
+                                        <Select.Option key={item} value={item}>{item}</Select.Option>
+                                    ))
+                                }
                                 </Select>)
                         }
                     </Form.Item>
@@ -204,14 +187,14 @@ class Host extends Component{
                             getFieldDecorator('available_time', {
                                 initialValue: '',
                                 rules: [{ required: true, message: 'Please input available time!' }]
-                            })(<RangePicker className="searchInner" onChange={this.onChange} />)
+                            })(<DatePicker.RangePicker style={{width: '100%'}} />)
                         }
                     </Form.Item>
                     <Form.Item label="Other Detail" {...formItemLayout}>
                         {
-                            getFieldDecorator('detail',{
+                            getFieldDecorator('description',{
                                 initialValue: ''
-                            })( <Input.TextArea autoSize={{ minRows: 1, maxRows: 3 }} /> )
+                            })( <Input.TextArea autoSize={{ minRows: 2, maxRows: 5 }} placeholder="Please input other detail"/> )
                         }
                     </Form.Item>
 
