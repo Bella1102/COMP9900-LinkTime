@@ -60,4 +60,4 @@ class Search(Resource):
             session.close()
             return result
         # two parameters location and house_type
-        if
+

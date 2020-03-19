@@ -2,3 +2,5 @@
 */.DS_Store
 __pycache__
 */__pycache__
+/Backend/*/__pycache__
+Backend/db/dataBase.db
