@@ -6,6 +6,8 @@ from utils.helpers import *
 from utils.models import search_params
 
 search = Namespace('search', description='Search results')
+
+
 def get_params(r):
     location = r.args.get('location')
     house_type = r.args.get('house_type')
@@ -37,7 +39,6 @@ class Search(Resource):
     @search.response(200, 'Success')
     @search.response(400, 'Missing Arguments')
     @search.response(403, 'Invalid Auth Token')
-
     @search.param('end_date', 'The end date of rent')
     @search.param('start_date', 'The start date of rent')
     @search.param('house_type', 'Apartment, Loft, House, Unit')
