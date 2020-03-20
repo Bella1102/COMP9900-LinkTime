@@ -17,7 +17,7 @@ class Order extends Component {
 
 const mapState = (state) => {
 	return {
-		loginStatus: state.getIn(["login", "loginStatus"])
+		loginStatus: state.getIn(["combo", "loginStatus"])
 	}
 }
 
@@ -27,3 +27,5 @@ const mapDispatch = (dispatch) => ({
 
 
 export default connect(mapState, mapDispatch)(Order);
+
+

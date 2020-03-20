@@ -4,10 +4,9 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import moment from 'moment';
 import { Form, DatePicker, Cascader, Button, Select, message} from 'antd';
-// import { actionCreators } from './store';
-import { actionCreators as homeActionCreators } from '../../pages/Home/store';
+import { actionCreators } from '../../redux/oneStore';
 import './index.less';
-
+// import SimpleMap from './map';
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
@@ -103,6 +102,8 @@ class Search extends Component {
                         <Button type="primary" style={{width: 100}} onClick={this.handleSubmit}> Search</Button>
                     </Form.Item>
                 </Form>
+
+                {/* <SimpleMap/> */}
             </div>
           );
     }
@@ -125,20 +126,23 @@ class Search extends Component {
 
 const mapState = (state) => {
 	return {
-        loginStatus: state.getIn(["login", "loginStatus"]),
-        searchResults: state.getIn(["home", "searchResults"]),
+        loginStatus: state.getIn(["combo", "loginStatus"]),
+        searchResults: state.getIn(["combo", "searchResults"]),
 	}
 }
 
 const mapDispatch = (dispatch) => ({
     search(location, house_type, start_date, end_date) {
-		dispatch(homeActionCreators.search(location, house_type, start_date, end_date))
+		dispatch(actionCreators.search(location, house_type, start_date, end_date))
 	}
     
 });
 
 
 export default connect(mapState, mapDispatch)(Form.create()(Search));
+
+
+
 
 
 

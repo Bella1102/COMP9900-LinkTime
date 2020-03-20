@@ -3,8 +3,9 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import moment from 'moment';
-import { Form, Row, Col, Carousel, DatePicker, Cascader, Button, Select, message} from 'antd';
-import { actionCreators } from './store';
+import { Form, Row, Col, Button, Select, Carousel, 
+    DatePicker, Cascader, message} from 'antd';
+import { actionCreators } from '../../redux/oneStore';
 import './index.less';
 
 
@@ -188,8 +189,8 @@ class Home extends Component {
 
 const mapState = (state) => {
 	return {
-        loginStatus: state.getIn(["login", "loginStatus"]),
-        userInfo: state.getIn(["login", "userInfo"])
+        loginStatus: state.getIn(["combo", "loginStatus"]),
+        userInfo: state.getIn(["combo", "userInfo"])
 	}
 }
 

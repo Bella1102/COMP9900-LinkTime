@@ -5,12 +5,13 @@ import Admin from './admin';
 import Home from './pages/Home/home';
 import Login from './pages/Form/login';
 import Register from './pages/Form/register';
-import Search from './pages/Search/search';
-import Order from './pages/Order/order';
-import Request from './pages/Request/request';
-import Host from './pages/Host/host';
-import Property from './pages/Host/property';
-import PropDeatil from './pages/Host/propDetail';
+
+import Search from './pages/Prop/search';
+import OneProp from './pages/Prop/oneProp';
+import Order from './pages/Prop/order';
+import Host from './pages/Prop/postProp';
+import MyProp from './pages/Prop/myProp';
+import Request from './pages/Prop/request';
 
 
 
@@ -32,8 +33,8 @@ class App extends Component {
 							<Route path='/order' exact component={ Order }></Route>
 							<Route path='/request' exact component={ Request }></Route>
 							<Route path='/host' exact component={ Host }></Route>
-							<Route path='/property' exact component={ Property }></Route>
-							<Route path='/property/:detail' exact component={ PropDeatil }></Route>
+							<Route path='/myProp' exact component={ MyProp }></Route>
+							<Route path='/myProp/:detail' exact component={ OneProp }></Route>
 						</Switch>
 					</Admin> }>
 				</Route>

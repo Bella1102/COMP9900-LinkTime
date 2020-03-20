@@ -5,7 +5,8 @@ import * as constants from './constants';
 const defaultState = fromJS({
 	loginStatus: false,
 	userInfo: null,
-	token: ''
+	token: '',
+	searchResults: null
 });
 
 export default (state = defaultState, action) => {
@@ -18,6 +19,8 @@ export default (state = defaultState, action) => {
 			});
 		case constants.LOGOUT:
 			return state.set('loginStatus', action.loginStatus);
+		case constants.SEARCH_RES:
+			return state.set('searchResults', action.searchResults);
 
 		default:
 			return state;

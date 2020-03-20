@@ -4,12 +4,12 @@ import './index.less';
 
 
 
-class Request extends Component {
+class OneProp extends Component {
 
     render() {
         return (
             <div style={{minHeight: 660, textAlign: "center", marginTop: 10}}>
-                all requests
+                property details
             </div>
           );
     }
@@ -17,7 +17,7 @@ class Request extends Component {
 
 const mapState = (state) => {
 	return {
-		loginStatus: state.getIn(["login", "loginStatus"])
+		loginStatus: state.getIn(["combo", "loginStatus"])
 	}
 }
 
@@ -26,4 +26,4 @@ const mapDispatch = (dispatch) => ({
 });
 
 
-export default connect(mapState, mapDispatch)(Request);
+export default connect(mapState, mapDispatch)(OneProp);
