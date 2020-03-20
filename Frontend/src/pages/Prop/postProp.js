@@ -28,9 +28,8 @@ class Host extends Component{
                 'Content-Type':'application/json'
             }
         };
-        const rangeValue = propInfo.available_time;
-        const start_time = rangeValue[0].format('YYYY-MM-DD');
-        const end_time = rangeValue[1].format('YYYY-MM-DD');
+        const start_time = propInfo.available_time[0].format('YYYY-MM-DD');
+        const end_time = propInfo.available_time[1].format('YYYY-MM-DD');
         const propData = {"title": propInfo.title, "property_type": propInfo.type, "amenities": propInfo.amenity, 
                         "price": propInfo.price, "state": propInfo.state, "suburb": propInfo.suburb, 
                         "locaion": propInfo.locaion, "postcode": propInfo.postcode, "bedrooms": propInfo.bedrooms, 

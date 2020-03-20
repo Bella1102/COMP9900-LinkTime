@@ -5,13 +5,13 @@ import './index.less';
 
 
 
-class Property extends Component {
+class MyProp extends Component {
 
     render() {
         const para = "propdetail";
         return (
             <div style={{minHeight: 660, textAlign: "center", marginTop: 10}}>
-                <Link to={`/property/${para}`}>my properties</Link>
+                <Link to={`/myProp/${para}`}>my properties</Link>
             </div>
           );
     }
@@ -20,7 +20,7 @@ class Property extends Component {
 
 const mapState = (state) => {
 	return {
-		loginStatus: state.getIn(["login", "loginStatus"])
+		loginStatus: state.getIn(["combo", "loginStatus"])
 	}
 }
 
@@ -29,4 +29,5 @@ const mapDispatch = (dispatch) => ({
 });
 
 
-export default connect(mapState, mapDispatch)(Property);
+export default connect(mapState, mapDispatch)(MyProp);
+

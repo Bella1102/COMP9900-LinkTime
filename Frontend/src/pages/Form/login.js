@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
-import { actionCreators } from './store';
+import { actionCreators } from '../../redux/oneStore';
 import { Form, Input, Button, Icon, Checkbox } from "antd";
 
 
@@ -71,7 +71,7 @@ class Login extends Component{
 
 const mapState = (state) => {
 	return {
-		loginStatus: state.getIn(["login", "loginStatus"])
+		loginStatus: state.getIn(["combo", "loginStatus"])
 	}
 }
 

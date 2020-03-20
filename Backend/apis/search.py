@@ -28,8 +28,8 @@ class Search(Resource):
     @search.response(200, 'Success')
     @search.response(400, 'Missing Arguments')
     @search.response(403, 'Invalid Auth Token')
-    @search.param('end_date', 'end date formular: %Y-%M-%D')
-    @search.param('start_date', 'start date formular: %Y-%M-%D')
+    @search.param('end_date', 'The end date of rent')
+    @search.param('start_date', 'The start date of rent')
     @search.param('house_type', 'Apartment, Loft, House, Unit')
     @search.param('location', '[Bondi,Pyrmont,Paddington...]')
     @search.doc(description="Search rule:\n"

@@ -4,12 +4,12 @@ import './index.less';
 
 
 
-class PropDetail extends Component {
+class Request extends Component {
 
     render() {
         return (
             <div style={{minHeight: 660, textAlign: "center", marginTop: 10}}>
-                property details
+                all requests
             </div>
           );
     }
@@ -17,7 +17,7 @@ class PropDetail extends Component {
 
 const mapState = (state) => {
 	return {
-		loginStatus: state.getIn(["login", "loginStatus"])
+		loginStatus: state.getIn(["combo", "loginStatus"])
 	}
 }
 
@@ -26,4 +26,5 @@ const mapDispatch = (dispatch) => ({
 });
 
 
-export default connect(mapState, mapDispatch)(PropDetail);
+export default connect(mapState, mapDispatch)(Request);
+
