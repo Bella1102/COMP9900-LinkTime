@@ -17,23 +17,6 @@ def get_params(r):
     end_date = r.args.get('end_date')
     return [location, house_type, start_date, end_date]
 
-def search_res(pro_obj, img_obj, add_obj):
-    img_list = img_obj.img_url[1:-1].split(', ')
-    img_list = [ele[1:-1] for ele in img_list]
-    temp = {
-        "property_id": add_obj.property_id,
-        "latitude": round(add_obj.latitude, 5),
-        "longitude": round(add_obj.longitude, 5),
-        "image": img_list,
-        "property_type": pro_obj.property_type,
-        "amenities": pro_obj.amenities.replace('"', ''),
-        "price": pro_obj.price,
-        "bedrooms": pro_obj.bedrooms,
-        "bathrooms": pro_obj.bathrooms,
-        "title": pro_obj.title,
-    }
-    return temp
-
 def change_date_to_time(str_date):
     dateTime = datetime.datetime.strptime(str_date, '%Y-%m-%d')
     return time.mktime(dateTime.timetuple())
@@ -65,7 +48,7 @@ class Search(Resource):
             for add_obj in loc_info:
                 pro_obj = session.query(db.Property).filter_by(property_id=add_obj.property_id).first()
                 img_obj = session.query(db.Image).filter_by(property_id=add_obj.property_id).first()
-                temp = search_res(pro_obj, img_obj, add_obj)
+                temp = searchResult(pro_obj, img_obj, add_obj)
                 result.append(temp)
 
 
@@ -75,7 +58,7 @@ class Search(Resource):
             for add_obj in loc_info:
                 pro_obj = session.query(db.Property).filter_by(property_id=add_obj.property_id).first()
                 img_obj = session.query(db.Image).filter_by(property_id=add_obj.property_id).first()
-                temp = search_res(pro_obj, img_obj, add_obj)
+                temp = searchResult(pro_obj, img_obj, add_obj)
                 result.append(temp)
 
         # two parameters location and house_type
@@ -85,7 +68,7 @@ class Search(Resource):
                 pro_obj = session.query(db.Property).filter_by(property_id=add_obj.property_id, property_type=house_type).first()
                 if pro_obj:
                     img_obj = session.query(db.Image).filter_by(property_id=pro_obj.property_id).first()
-                    temp = search_res(pro_obj, img_obj, add_obj)
+                    temp = searchResult(pro_obj, img_obj, add_obj)
                     result.append(temp)
 
         # three parameters location start_date end_date
@@ -98,7 +81,7 @@ class Search(Resource):
                                                     .filter(db.Property.start_time<=str(second_time)).first()
                 if pro_obj:
                     img_obj = session.query(db.Image).filter_by(property_id=pro_obj.property_id).first()
-                    temp = search_res(pro_obj, img_obj, add_obj)
+                    temp = searchResult(pro_obj, img_obj, add_obj)
                     result.append(temp)
 
         # four parameters
@@ -112,7 +95,7 @@ class Search(Resource):
                                                     .filter(db.Property.start_time<=str(second_time)).first()
                 if pro_obj:
                     img_obj = session.query(db.Image).filter_by(property_id=pro_obj.property_id).first()
-                    temp = search_res(pro_obj, img_obj, add_obj)
+                    temp = searchResult(pro_obj, img_obj, add_obj)
                     result.append(temp)
 
         session.close()
