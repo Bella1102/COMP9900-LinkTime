@@ -6,6 +6,10 @@ import './index.less';
 
 class Request extends Component {
 
+    state = {
+        
+    };
+
     render() {
         return (
             <div style={{minHeight: 660, textAlign: "center", marginTop: 10}}>

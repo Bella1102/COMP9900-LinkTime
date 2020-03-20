@@ -3,14 +3,16 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import moment from 'moment';
-import { Form, DatePicker, Cascader, Button, Select, message} from 'antd';
+import { Form, DatePicker, Cascader, Button, Select } from 'antd';
 import { actionCreators } from '../../redux/oneStore';
-import './index.less';
+import * as helpers from '../../utils/helpers';
 // import SimpleMap from './map';
+import './index.less';
+
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
-const baseURL = 'http://127.0.0.1:5000';
+const baseURL = helpers.BACKEND_URL;
 
 
 class Search extends Component {
@@ -19,54 +21,32 @@ class Search extends Component {
         homePropInfo: null
     };
 
-    locationTips = () => {
-        message.error('Please select a location!');
-    };
-
+    // same as home page1: both need to submit search form
     handleSubmit = () => {
         this.props.form.validateFields((err, values) => {
             if(!err){
-                if (values.type === undefined) {
-                    var house_type = '';
-                } else {
-                    house_type = values.type;
-                }
-                if (values.time === '' || values.time[0] === undefined) {
-                    var start_date = '';
-                    var end_date = '';
-                } else {
-                    start_date = values.time[0].format('YYYY-MM-DD');
-                    end_date = values.time[1].format('YYYY-MM-DD');
-                }
-                if (values.location === '' || values.location === undefined ) {
-                    var location = '';
-                } else {
-                    location = values.location[1];
-                }
+                let location, house_type, start_date, end_date;
+                [location, house_type, start_date, end_date] = helpers.searchSubmit(values)
                 this.props.search(location, house_type, start_date, end_date)
             }
         })
     }
 
     render() {
+
+        const { homePropInfo } = this.state;
         const { getFieldDecorator } = this.props.form;
 
         const typeOptions = ['Apartment', 'Studio', 'House', 'Unit']
+        // same as home page2: same locationOptions
         let locationOptions = []
-        if (this.state.homePropInfo !== null){
-            let states = this.state.homePropInfo[0].state
-            for (let key in states){
-                let suburb = []
-                states[key].map((val) => {
-                    suburb.push({value: val, label: val})
-                    return null
-                })
-                locationOptions.push({value: key, label: key, children: suburb })
-            }
+        if (homePropInfo !== null){
+            locationOptions =  helpers.getLocationOptions(homePropInfo)
         }
 
         return (
             <div className="content">
+                {/* same as home page3: same search from  */}
                 <Form layout="inline" className="searchModule">
                     <Form.Item>
                         {
@@ -108,6 +88,7 @@ class Search extends Component {
           );
     }
 
+    // same as home page4: only for location form use 
     UNSAFE_componentWillMount(){
         const URL = baseURL + '/home/';
         const config = { headers: { "accept": "application/json" } };

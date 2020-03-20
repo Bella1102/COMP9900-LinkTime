@@ -75,6 +75,7 @@ const mapState = (state) => {
 	}
 }
 
+// 把store的dispatch方法挂载到props上
 const mapDispatch = (dispatch) => ({
     login(username, password) {
 		dispatch(actionCreators.login(username, password))

@@ -2,13 +2,18 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import moment from 'moment';
 import {Form, Button, Input, Radio, Select, DatePicker, message } from 'antd';
+import * as helpers from '../../utils/helpers';
 
 
 const { RangePicker } = DatePicker;
-const baseURL = 'http://127.0.0.1:5000';
+const baseURL = helpers.BACKEND_URL;
 
 
 class Host extends Component{
+
+    state = {
+        
+    };
 
     propSuccess = () => {
         message.success('Post Property Success');

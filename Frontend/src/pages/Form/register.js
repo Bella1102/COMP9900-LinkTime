@@ -1,18 +1,19 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { Redirect } from 'react-router-dom';
 import {Form, Button, Select,Input, Upload, Icon, message} from 'antd';
+import * as helpers from '../../utils/helpers';
 
 
 const { Option } = Select;
 const FormItem = Form.Item;
-const baseURL = 'http://127.0.0.1:5000';
+const baseURL = helpers.BACKEND_URL;
 
 
 
 class Register extends Component{
 
     state = {
-        imgList: [],
         confirmDirty: false
     };
 
