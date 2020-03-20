@@ -7,11 +7,15 @@ import './index.less';
 
 class MyProp extends Component {
 
+    state = {
+        
+    };
+
     render() {
         const para = "propdetail";
         return (
             <div style={{minHeight: 660, textAlign: "center", marginTop: 10}}>
-                <Link to={`/myProp/${para}`}>my properties</Link>
+                <Link to={`/prop/${para}`}>my properties</Link>
             </div>
           );
     }

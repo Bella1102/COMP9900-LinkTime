@@ -5,7 +5,6 @@ import Admin from './admin';
 import Home from './pages/Home/home';
 import Login from './pages/Form/login';
 import Register from './pages/Form/register';
-
 import Search from './pages/Prop/search';
 import OneProp from './pages/Prop/oneProp';
 import Order from './pages/Prop/order';
@@ -22,7 +21,6 @@ class App extends Component {
       return (
         <BrowserRouter> 
           	<Switch>
-
 				<Route path='/' render = {() => 
 					<Admin>
 						<Switch>
@@ -34,7 +32,7 @@ class App extends Component {
 							<Route path='/request' exact component={ Request }></Route>
 							<Route path='/host' exact component={ Host }></Route>
 							<Route path='/myProp' exact component={ MyProp }></Route>
-							<Route path='/myProp/:detail' exact component={ OneProp }></Route>
+							<Route path='/prop/:detail' exact component={ OneProp }></Route>
 						</Switch>
 					</Admin> }>
 				</Route>
@@ -45,6 +43,7 @@ class App extends Component {
 }
 
 export default App;
+
 
 
 

@@ -2,10 +2,10 @@ import axios from 'axios';
 import { fromJS } from 'immutable';
 import {message} from 'antd';
 import * as constants from './constants';
+import * as helpers from '../../utils/helpers';
 
 
-const baseURL = 'http://127.0.0.1:5000';
-
+const baseURL = helpers.BACKEND_URL;
 
 
 export const logout = () => ({
