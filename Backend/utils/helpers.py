@@ -24,6 +24,11 @@ def authorize(request):
         abort(403, 'Invalid Authorization Token')
     return user
 
+# rsplit from right to right
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1] in set(['png', 'jpg', 'jpeg', 'gif'])
+
 def getAllPropInfo(data):
     return{
         "id": data.id,
