@@ -63,7 +63,7 @@ class Host(Base):
                         Column('host_img_url', Text),
                         Column('host_verifications', Text))
     def __repr__(self):
-        return 'This is Host Table'
+        return 'property_id: %s' % (self.property_id)
 
 # 4
 class Address(Base):
