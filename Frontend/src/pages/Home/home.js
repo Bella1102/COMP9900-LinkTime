@@ -104,7 +104,7 @@ class Home extends Component {
                         </Col>
                         <Col span={6}>
                             <Link to="/search">
-                                <div style={{textAlign: "center"}} onClick={() => {this.props.search('', 'Apartmnet', '', '')}}>
+                                <div style={{textAlign: "center"}} onClick={() => {this.props.search('', 'Apartment', '', '')}}>
                                     <img src="/space-type/apartment.png" alt=""/>
                                 </div>
                             </Link>
