@@ -103,7 +103,8 @@ class Review(Base):
                         Column('reviewer_id', Integer),
                         Column('reviewer_name',  VARCHAR(20)),
                         Column('review_date', VARCHAR(20)),
-                        Column('review_content', Text))
+                        Column('review_content', Text),
+                        Column('head_picture', Text))
     def __repr__(self):
         return 'This is Review Table'
 
@@ -247,7 +248,8 @@ def init_review(session):
                         reviewer_id=int(item['reviewer_id']),
                         reviewer_name=item['reviewer_name'],
                         review_date=item['review_date'],
-                        review_content=item['review_content'])
+                        review_content=item['review_content'],
+                        head_picture=item['head_picture'])
         session.add(review)
     session.commit()
 

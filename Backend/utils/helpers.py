@@ -68,7 +68,8 @@ def getReviewOneProperty(rev_obj):
             "reviewer_id": i.reviewer_id,
             "reviewer_name": i.reviewer_name,
             "review_date": i.review_date,
-            "review_content": i.review_content
+            "review_content": i.review_content,
+            "head_picture": i.head_picture
         }
         out.append(temp)
     return out
