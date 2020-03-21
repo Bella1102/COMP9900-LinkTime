@@ -95,19 +95,35 @@ class Home extends Component {
                     </div>
                     <Row className="typePics">
                         <Col span={6}>
-                            <div style={{textAlign: "center"}}><img src="/space-type/house.png" alt=""/></div>
+                            <Link to="/search">
+                                <div style={{textAlign: "center"}} onClick={() => {this.props.search('', 'House', '', '')}}>
+                                        <img src="/space-type/house.png" alt=""/>
+                                </div>
+                            </Link>
                             <div className="allTypes">House</div>
                         </Col>
                         <Col span={6}>
-                            <div style={{textAlign: "center"}}><img src="/space-type/apartment.png" alt=""/></div>
+                            <Link to="/search">
+                                <div style={{textAlign: "center"}} onClick={() => {this.props.search('', 'Apartmnet', '', '')}}>
+                                    <img src="/space-type/apartment.png" alt=""/>
+                                </div>
+                            </Link>
                             <div className="allTypes">Apartment</div>
                         </Col>
                         <Col span={6}>
-                            <div style={{textAlign: "center"}}><img src="/space-type/studio.png" alt=""/></div>
-                            <div className="allTypes">Studio</div>
+                            <Link to="/search">
+                                <div style={{textAlign: "center"}} onClick={() => {this.props.search('', 'Studio', '', '')}}>
+                                    <img src="/space-type/studio.png" alt=""/>
+                                </div>
+                                <div className="allTypes">Studio</div>
+                            </Link> 
                         </Col>
                         <Col span={6}>
-                            <div style={{textAlign: "center"}}><img src="/space-type/unit.png" alt=""/></div>
+                            <Link to="/search">
+                                <div style={{textAlign: "center"}} onClick={() => {this.props.search('', 'Unit', '', '')}}>
+                                    <img src="/space-type/unit.png" alt=""/>
+                                </div>
+                            </Link>
                             <div className="allTypes">Unit</div>
                         </Col>
                     </Row>
@@ -127,8 +143,11 @@ class Home extends Component {
                                         <Col span={6} key={index}>
                                             <div style={{textAlign: "center"}}><img src={item.get('image').get(1)} alt=""/></div>
                                             <div className="title">{item.get('title')}</div>
-                                            <div style={{textAlign: "center", marginBottom: 2}}>{item.get('location')}</div>
-                                            <div style={{textAlign: "center", marginBottom: 25}}>{`${price} AUD/night`}</div>
+                                            <div className="location">{item.get('location')}</div>
+                                            <p className="price">
+                                                <span style={{color: "black", fontSize: 14, fontWeight: "bold"}}>{`${price} AUD `}</span>
+                                                <span>/night</span>
+                                            </p>
                                         </Col>
                                     )
                                 }

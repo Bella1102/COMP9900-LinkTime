@@ -56,49 +56,41 @@ class Search extends Component {
             current: page
         })
     }
-    onShowSizeChange=(current, pageSize)=>{
+    onShowSizeChange = (current, pageSize) => {
         this.setState({
             pageSize:pageSize
         })
-        console.log('pagesize:' + pageSize)
     }
 
     render() {
 
+        const { homePropInfo, searchResults } = this.props;
+        const { getFieldDecorator } = this.props.form;
+
         const AnyReactComponent = ({ text, index }) =>
             <div className = {`item ${index === this.state.target ? "item_hover" : "null"}`}>
                 <span className='map_item_text'>{text}</span>
-            </div>
-        ;
+            </div>;
 
-        const { homePropInfo, searchResults } = this.props;
-        const { getFieldDecorator } = this.props.form;
-        let part = [];
+        let part_results = [];
         if (searchResults){
-            console.log(searchResults.size)
-            if (this.state.current == 1) {
-                part = searchResults.slice(0,this.state.pageSize - 1)
+            if (this.state.current === 1) {
+                part_results = searchResults.slice(0, this.state.pageSize)
 
             } else {
-                let start = (this.state.current - 1) * this.state.pageSize - 1;
+                let start = (this.state.current - 1) * this.state.pageSize;
                 let end = start + this.state.pageSize;
-                part = searchResults.slice(start, end)
-                console.log('hhhh')
-                console.log(start, end)
+                part_results = searchResults.slice(start, end)
             }
-            console.log(part)
         }
-        // if (part){
-        //     part.map((item, index) => {
-        //         console.log(item.get('price'))
-        //     })
-        // }
+
         const typeOptions = ['Apartment', 'Studio', 'House', 'Unit']
         // same as home page2: same locationOptions
         let locationOptions = []
         if (homePropInfo !== null){
             locationOptions =  helpers.getLocationOptions(homePropInfo)
         }
+
         return (
             <div className="content">
                 {/* same as home page3: same search from  */}
@@ -151,8 +143,8 @@ class Search extends Component {
                     <Col span={12} style={{height: "120vh"}}>
                         <div style={{height: "110vh", overflow: "auto"}}>
                         {   
-                            part !== null ?
-                            part.map((item, index) => {
+                            part_results !== null ?
+                            part_results.map((item, index) => {
                                 const price = item.get('price').split('.')[0]
                                 const amenities = item.get('amenities').slice(1, -1).split(',')
                                 return (
@@ -162,7 +154,7 @@ class Search extends Component {
                                         onMouseEnter={this.handleMouseOver.bind(this, index, item.get('latitude'), item.get('longitude'))}
                                         onMouseLeave={this.handleMouseLeave}
                                         >
-                                        <img src={item.get('image').get(0)} alt=""/>
+                                        <img src={item.get('image').get(1)} alt=""/>
                                         <div className="detail">
                                             <div style={{ marginTop: 5 }}>{item.get('suburb')}</div>
                                             <div className="title">{item.get('title')}</div>
@@ -187,7 +179,7 @@ class Search extends Component {
                             }) : null
                         }
                         </div>
-                         <Pagination
+                        <Pagination
                             showSizeChanger
                             onShowSizeChange={this.onShowSizeChange}
                             defaultCurrent={1}
@@ -206,8 +198,8 @@ class Search extends Component {
                             center={this.state.center}
                             defaultZoom={this.state.zoom}>   
                             {
-                                part !== null ?
-                                part.map((item, index) => {
+                                part_results !== null ?
+                                part_results.map((item, index) => {
                                     return (<AnyReactComponent
                                                 key={index}
                                                 index={index}
