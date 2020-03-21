@@ -1,6 +1,8 @@
 import secrets
 from flask_restplus import abort
 import db.init_db as db
+import requests
+
 
 
 def gen_token():
@@ -28,6 +30,14 @@ def authorize(request):
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1] in set(['png', 'jpg', 'jpeg', 'gif'])
+
+# def getGeoInfo(latitude,longitude):
+#     key = 'AIzaSyDsg88VPvJzXpu_6S3ycJpfipLcm1FG_xk'
+#     base_url = 'https://maps.googleapis.com/maps/api/geocode/json?'
+#     parameters = 'latlng=' + str(latitude) + ',' + str(longitude)
+#     geo_info = requests.get(base_url + parameters + '&key=' + key).json()
+#     res = geo_info["results"][0]["formatted_address"].rsplit(',', 1)[0]
+#     return res
 
 def getAllPropInfo(data):
     return{
@@ -71,6 +81,7 @@ def searchResult(pro_obj, img_obj, add_obj):
         "property_id": add_obj.property_id,
         "latitude": round(add_obj.latitude, 5),
         "longitude": round(add_obj.longitude, 5),
+        "suburb": add_obj.suburb,
         "image": img_list,
         "property_type": pro_obj.property_type,
         "amenities": pro_obj.amenities.replace('"', ''),
@@ -104,8 +115,9 @@ def getPropertyInfo(pro_obj, img_obj, add_obj, rev_obj, host_obj):
         "img_alt": img_url_list,
         "img_url": img_alt_list,
         # address information
-        "latitude": round(add_obj.latitude, 5),
-        "longitude": round(add_obj.longitude, 5),
+        "latitude": round(add_obj.latitude, 6),
+        "longitude": round(add_obj.longitude, 6),
+        "location": add_obj.location,
         #review
         "reviews": all_review,
         #host

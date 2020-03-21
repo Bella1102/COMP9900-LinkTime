@@ -4,3 +4,4 @@
 __pycache__
 */__pycache__
 db/dataBase.db
+db/data/.ipynb_checkpoints

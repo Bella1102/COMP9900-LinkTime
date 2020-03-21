@@ -41,7 +41,7 @@ class Property(Resource):
                 "property_id":i.property_id,
                 "title": i.title,
                 "price": i.price,
-                "location": add_info.suburb + ', ' + add_info.city + ', ' + add_info.state,
+                "location": add_info.location,
                 "image": img_list
             })
 

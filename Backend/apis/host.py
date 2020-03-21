@@ -17,7 +17,7 @@ class Property(Resource):
     @host.response(400, 'Missing Arguments')
     @host.response(403, 'Invalid Auth Token')
     @host.param('property_id', 'like "11156"')
-    @host.param('img_name', 'like "11156"')
+    @host.param('img_name', 'like "pic.jpg"')
     @host.doc(description="Get property information. \n"
     "There has an exapmple output data in \"/Backend/db/one_property.json\"")
     # if the parameter is property_id. return the property information
@@ -49,8 +49,8 @@ class Property(Resource):
     def post(self):
         file = request.files['img']
         filename= file.filename
-        print(filename)
         if file and allowed_file(filename):
+            # print(os.path.join(os.getcwd() + '/uploads', filename))
             file.save(os.path.join(os.getcwd() + '/uploads', filename))
             return 200
 

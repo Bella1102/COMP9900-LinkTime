@@ -8,6 +8,7 @@ from sqlalchemy import *
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
+from utils.helpers import *
 
 
 engine = create_engine('sqlite:///db/dataBase.db?check_same_thread=False', echo = False)
@@ -222,8 +223,9 @@ def init_address(session):
                           city=item['city'],
                           state=item['state'],
                           country=item['country'],
-                          latitude=item['latitude'],
-                          longitude=item['longitude'])
+                          latitude=round(item['latitude'], 6),
+                          longitude=round(item['longitude'], 6),
+                          location=item['location'],)
         session.add(address)
     session.commit()
 
