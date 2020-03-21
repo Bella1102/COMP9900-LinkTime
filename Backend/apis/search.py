@@ -43,6 +43,7 @@ class Search(Resource):
         session = db.get_session()
         result = []
 
+        # no parameter
         if not location and not house_type and not start_date and not end_date:
             loc_info = session.query(db.Address).all()
             for add_obj in loc_info:
@@ -51,6 +52,14 @@ class Search(Resource):
                 temp = searchResult(pro_obj, img_obj, add_obj)
                 result.append(temp)
 
+        # one parameter house_type
+        if not location and house_type and not start_date and not end_date:
+            pro_info = session.query(db.Property).filter_by(property_type=house_type).all()
+            for pro_obj in pro_info:
+                img_obj = session.query(db.Image).filter_by(property_id=pro_obj.property_id).first()
+                add_obj = session.query(db.Address).filter_by(property_id=pro_obj.property_id).first()
+                temp = searchResult(pro_obj, img_obj, add_obj)
+                result.append(temp)
 
         # one parameter location
         elif location and not house_type and not start_date and not end_date:
