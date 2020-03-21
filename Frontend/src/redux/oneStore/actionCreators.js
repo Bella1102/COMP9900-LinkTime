@@ -13,14 +13,13 @@ export const logout = () => ({
 	loginStatus: false
 });
 
-
+// login and get user data
 const getUserData = (data, token) => ({
 	type: constants.GET_USER_DATA,
 	loginStatus: true,
 	userInfo: fromJS(data),
 	token: fromJS(token)
 });
-
 
 const loginSuccess = () => {
 	message.success('Login Success');
@@ -65,12 +64,31 @@ export const login = (username, password) => {
 	}
 };
 
+// get home info
+const getHomeProp = (data) => ({
+	type: constants.HOME_PROP_INFO,
+	homePropInfo: fromJS(data),
 
+});
+
+export const getHomeInfo = () => {
+	const URL = baseURL + '/home/';
+	const config = { headers: { "accept": "application/json" } };
+	return (dispatch) => {
+		axios.get(URL, config).then((res) => {
+			console.log(res)
+			dispatch(getHomeProp(res.data));
+		}).catch(() => {
+			console.log('Get home property data failure');
+		})
+	}
+};
+
+// get search results
 const searchRes = (data) => ({
 	type: constants.SEARCH_RES,
 	searchResults: fromJS(data),
 });
-
 
 export const search = (location, house_type, start_date, end_date) => {
 	const URL = baseURL + '/search?location=' + location
@@ -87,3 +105,5 @@ export const search = (location, house_type, start_date, end_date) => {
 		})
 	}
 };
+
+

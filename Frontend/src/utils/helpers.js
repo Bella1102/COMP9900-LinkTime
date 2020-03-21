@@ -1,7 +1,6 @@
 // import React from 'react';
 
 
-
 export const BACKEND_URL = 'http://127.0.0.1:5000';
 
 
@@ -48,7 +47,9 @@ export function searchSubmit(values) {
 
 export function getLocationOptions(homePropInfo) {
     let locationList = [];
-    let states = homePropInfo[0].state
+    // 先将immutable数据类型转化为普通数据类型
+    let propInfo = homePropInfo.toJS();
+    let states = propInfo[0].state;
     for (let key in states){
         let suburb = []
         states[key].map((val) => {
@@ -59,6 +60,7 @@ export function getLocationOptions(homePropInfo) {
     }
     return locationList;
 }
+
 
 
 

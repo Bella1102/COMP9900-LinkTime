@@ -11,10 +11,6 @@ const baseURL = helpers.BACKEND_URL;
 
 class Host extends Component{
 
-    state = {
-        
-    };
-
     propSuccess = () => {
         message.success('Post Property Success');
     };
