@@ -6,6 +6,7 @@ const defaultState = fromJS({
 	loginStatus: false,
 	userInfo: null,
 	token: '',
+	homePropInfo: null,
 	searchResults: null
 });
 
@@ -21,6 +22,8 @@ export default (state = defaultState, action) => {
 		case constants.LOGOUT:
 			// return { loginStatus: action.loginStatus };
 			return state.set('loginStatus', action.loginStatus);
+		case constants.HOME_PROP_INFO:
+			return state.set('homePropInfo', action.homePropInfo);
 		case constants.SEARCH_RES:
 			return state.set('searchResults', action.searchResults);
 

@@ -66,6 +66,7 @@ def searchResult(pro_obj, img_obj, add_obj):
         "property_id": add_obj.property_id,
         "latitude": round(add_obj.latitude, 5),
         "longitude": round(add_obj.longitude, 5),
+        "suburb": add_obj.suburb,
         "image": img_list,
         "property_type": pro_obj.property_type,
         "amenities": pro_obj.amenities.replace('"', ''),

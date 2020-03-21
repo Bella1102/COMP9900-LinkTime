@@ -1,15 +1,74 @@
+@import '../../style/default.less';
 
 .content{
     padding: 20px 30px;
     min-height: 660px;
     .searchModule {
-        margin-bottom: 20px;
+        margin-bottom: 5px;
         .searchInner {
             margin-right: 20px;
         }
     }
 }
 
+.filterBar {
+    width: 1380;
+    height: 50px;
+    line-height: 50px;
+    border-top: solid 1px #d9d9d9;
+    border-bottom: solid 1px #d9d9d9;
+    background-color: #f0f0f0;
+    margin-bottom: 10px;
+    .filterButton {
+        color: white;
+        font-size: 16px;
+        min-width: 6%;
+        height: 36px;
+        margin-right: 0.5%;
+        border-radius: 15px;
+        background-color: black;
+    }
+}
+
+.searchResult {
+    height: 660px;
+    .oneProp{
+        height: 210px;
+        margin-bottom: 10px;
+    }
+    img {
+        float: left;
+        width: 42%;
+        height: 100%;
+    }
+    .detail {
+        float: left;
+        width: 56%;
+        height: 100%;
+        padding: 0 2%;
+        background-color: #f5f5f5;
+        .title {
+            color: @colorA;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .type {
+            font-size: 16px;
+            font-weight: bold;
+            margin-right: 5px;
+        }
+        .price {
+            font-size: 18px;
+            font-weight: bold;
+        }
+    }
+    .pagination{
+        width: 98%;
+        text-align: center;
+        padding: 4vh 0 2vh 0;
+        background-color: #f5f5f5;
+    }
+}
 
 .item {
     align-items: center;
@@ -25,6 +84,13 @@
     position: relative;
     white-space: nowrap;
 }
+
+.item_hover {
+    color: white;
+    background-color: black;
+    z-index: 100;
+}
+
 .map_item_text {
     overflow-wrap: break-word !important;
     font-size: 14px !important;
@@ -33,15 +99,9 @@
     color: inherit !important;
     margin: 0px !important;
 }
-.pro {
-    height: 228px;
-    width:500px;
-    background:pink;
-    float: left;
-    margin-top:20px;
-}
-.item_hover {
-    background-color: yellow;
-}
+
+
+
+
 
 

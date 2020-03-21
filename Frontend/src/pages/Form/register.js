@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Redirect } from 'react-router-dom';
+// import { Redirect } from 'react-router-dom';
 import {Form, Button, Select,Input, Upload, Icon, message} from 'antd';
 import * as helpers from '../../utils/helpers';
 

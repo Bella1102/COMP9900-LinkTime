@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import axios from 'axios';
 import moment from 'moment';
-import { Form, Row, Col, Button, Select, Carousel, 
-    DatePicker, Cascader } from 'antd';
+import { Form, Row, Col, Button, Select, Carousel, DatePicker, Cascader } from 'antd';
 import { actionCreators } from '../../redux/oneStore';
 import * as helpers from '../../utils/helpers';
 import './index.less';
@@ -12,14 +10,10 @@ import './index.less';
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
-const baseURL = helpers.BACKEND_URL;
 
 
 class Home extends Component {
 
-    state = {
-        homePropInfo: null
-    };
 
     handleSubmit = () => {
         this.props.form.validateFields((err, values) => {
@@ -32,9 +26,8 @@ class Home extends Component {
     }
     
     render() {
-        const { homePropInfo } = this.state;
+        const { homePropInfo } = this.props;
         const { getFieldDecorator } = this.props.form;
-
 
         const typeOptions = ['Apartment', 'Studio', 'House', 'Unit']
         let locationOptions = []
@@ -51,7 +44,7 @@ class Home extends Component {
                         <h1 className="book">Hi {this.props.userInfo.get("username")}, Welcome to book your trip!</h1> :
                         <h1 className="book">Welcome to book your trip!</h1>
                     }
-                     <Form layout="inline" className="searchModule">
+                     <Form layout="inline" className="searchModule" style={{marginBottom: 20}}>
                         <Form.Item>
                             {
                                 getFieldDecorator('location', {
@@ -126,15 +119,15 @@ class Home extends Component {
                     </div>
                     <Row>
                         {
-                            this.state.homePropInfo !== null ?
-                            this.state.homePropInfo.map((item, index) => {
+                            homePropInfo !== null ?
+                            homePropInfo.map((item, index) => {
                                 if (index !== 0){
-                                    const price = item.price.split('.')[0]
+                                    const price = item.get('price').split('.')[0]
                                     return (
-                                        <Col span={4} key={index}>
-                                            <div style={{textAlign: "center"}}><img src={item.image[0]} alt=""/></div>
-                                            <div className="title">{item.title}</div>
-                                            <div style={{textAlign: "center", marginBottom: 2}}>{item.location}</div>
+                                        <Col span={6} key={index}>
+                                            <div style={{textAlign: "center"}}><img src={item.get('image').get(1)} alt=""/></div>
+                                            <div className="title">{item.get('title')}</div>
+                                            <div style={{textAlign: "center", marginBottom: 2}}>{item.get('location')}</div>
                                             <div style={{textAlign: "center", marginBottom: 25}}>{`${price} AUD/night`}</div>
                                         </Col>
                                     )
@@ -149,27 +142,23 @@ class Home extends Component {
     }
 
     UNSAFE_componentWillMount(){
-        const URL = baseURL + '/home/';
-        const config = { headers: { "accept": "application/json" } };
-        axios.get(URL, config).then((res) => {
-            this.setState({
-				homePropInfo: res.data
-			})
-        }).catch(() => {
-            console.log('Get home property data failure');
-        })
-        
+        this.props.getHomeInfo();   
     }
+
 }
 
 const mapState = (state) => {
 	return {
         loginStatus: state.getIn(["combo", "loginStatus"]),
-        userInfo: state.getIn(["combo", "userInfo"])
+        userInfo: state.getIn(["combo", "userInfo"]),
+        homePropInfo: state.getIn(["combo", "homePropInfo"])
 	}
 }
 
 const mapDispatch = (dispatch) => ({
+    getHomeInfo() {
+        dispatch(actionCreators.getHomeInfo())
+    },
     search(location, house_type, start_date, end_date) {
 		dispatch(actionCreators.search(location, house_type, start_date, end_date))
 	}
