@@ -141,8 +141,10 @@ class Home extends Component {
                                     const price = item.get('price').split('.')[0]
                                     return (
                                         <Col span={6} key={index}>
-                                            <div style={{textAlign: "center"}}><img src={item.get('image').get(1)} alt=""/></div>
-                                            <div className="title">{item.get('title')}</div>
+                                            <Link to={`/prop/${ item.get('property_id')}`}>
+                                                <div style={{textAlign: "center"}}><img src={item.get('image').get(1)} alt=""/></div>
+                                                <div className="title">{item.get('title')}</div>
+                                            </Link>
                                             <div className="location">{item.get('location')}</div>
                                             <p className="price">
                                                 <span style={{color: "black", fontSize: 14, fontWeight: "bold"}}>{`${price} AUD `}</span>

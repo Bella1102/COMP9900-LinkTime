@@ -187,9 +187,6 @@ class Host extends Component{
                             })( <RangePicker format="YYYY-MM-DD" 
                                             ranges={{ Today: [moment(), moment()], 
                                             'This Month': [moment().startOf('month'), moment().endOf('month')]}} />)
-                            
-                            
-                            // (<DatePicker.RangePicker style={{width: '100%'}} />)
                         }
                     </Form.Item>
                     <Form.Item label="Other Detail" {...formItemLayout}>

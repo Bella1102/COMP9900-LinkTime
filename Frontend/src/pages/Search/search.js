@@ -157,28 +157,29 @@ class Search extends Component {
                                         onMouseLeave={this.handleMouseLeave}
                                     >
                                         <Link to={`/prop/${ item.get('property_id')}`}>
-                                            {/* picture */}
                                             <img src={item.get('image').get(1)} alt=""/>
-                                            {/* detail */}
-                                            <div className="detail">
-                                                <div style={{ marginTop: 5 }}>{item.get('suburb')}</div>
-                                                <div className="title">{item.get('title')}</div>
-                                                <p>
-                                                    <span className="type">{`${item.get('property_type')}:`}</span>
-                                                    <span>{`${item.get('bedrooms')} bedroom · `}</span>
-                                                    <span>{`${item.get('bathrooms')} bath`}</span>
-                                                </p>
-                                                <p>
-                                                    <span style={{ marginRight: 5}}>{`${amenities[0]}`}</span>
-                                                    <span style={{ marginRight: 5}}>{`${amenities[1]}`}</span>
-                                                    <span style={{ marginRight: 5}}>{`${amenities[2]}`}</span>
-                                                </p>
-                                                <p>
-                                                    <span className="price">{`${price} AUD `}</span>
-                                                    <span>/night</span>
-                                                </p>
-                                            </div>
                                         </Link>
+                                        {/* detail */}
+                                        <div className="detail">
+                                            <div style={{ marginTop: 5 }}>{item.get('suburb')}</div>
+                                            <Link to={`/prop/${ item.get('property_id')}`}>
+                                                <div className="title">{item.get('title')}</div>
+                                            </Link>
+                                            <p>
+                                                <span className="type">{`${item.get('property_type')}:`}</span>
+                                                <span>{`${item.get('bedrooms')} bedroom · `}</span>
+                                                <span>{`${item.get('bathrooms')} bath`}</span>
+                                            </p>
+                                            <p>
+                                                <span style={{ marginRight: 5}}>{`${amenities[0]}`}</span>
+                                                <span style={{ marginRight: 5}}>{`${amenities[1]}`}</span>
+                                                <span style={{ marginRight: 5}}>{`${amenities[2]}`}</span>
+                                            </p>
+                                            <p>
+                                                <span className="price">{`${price} AUD `}</span>
+                                                <span>/night</span>
+                                            </p>
+                                        </div>
                                     </div>
                                 )
                             }) : null

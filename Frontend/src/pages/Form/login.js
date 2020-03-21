@@ -17,8 +17,9 @@ class Login extends Component{
     }
 
     render(){
-        const { getFieldDecorator } = this.props.form;
+        
         const { loginStatus } = this.props;
+        const { getFieldDecorator } = this.props.form;
 
 		if (!loginStatus) {
             return (
