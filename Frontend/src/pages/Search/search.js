@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-// import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import GoogleMapReact from 'google-map-react';
 import { Form, DatePicker, Cascader, Button, Select, Row, Col, Pagination } from 'antd';
 import { actionCreators } from '../../redux/oneStore';
 import * as helpers from '../../utils/helpers';
-import './index.less';
+import './search.less';
 
 
 const { Option } = Select;
@@ -58,7 +58,7 @@ class Search extends Component {
     }
     onShowSizeChange = (current, pageSize) => {
         this.setState({
-            pageSize:pageSize
+            pageSize: pageSize
         })
     }
 
@@ -147,33 +147,38 @@ class Search extends Component {
                             part_results.map((item, index) => {
                                 const price = item.get('price').split('.')[0]
                                 const amenities = item.get('amenities').slice(1, -1).split(',')
+                                let latitude = item.get('latitude')
+                                let longitude = item.get('longitude')
                                 return (
                                     <div 
                                         key={index}
                                         className="oneProp" 
-                                        onMouseEnter={this.handleMouseOver.bind(this, index, item.get('latitude'), item.get('longitude'))}
+                                        onMouseEnter={this.handleMouseOver.bind(this, index, latitude, longitude)}
                                         onMouseLeave={this.handleMouseLeave}
-                                        >
-                                        <img src={item.get('image').get(1)} alt=""/>
-                                        <div className="detail">
-                                            <div style={{ marginTop: 5 }}>{item.get('suburb')}</div>
-                                            <div className="title">{item.get('title')}</div>
-                                            <p>
-                                                <span className="type">{`${item.get('property_type')}:`}</span>
-                                                <span>{`${item.get('bedrooms')} bedroom · `}</span>
-                                                <span>{`${item.get('bathrooms')} bath`}</span>
-                                            </p>
-                                            <p>
-                                                <span style={{ marginRight: 5}}>{`${amenities[0]}`}</span>
-                                                <span style={{ marginRight: 5}}>{`${amenities[1]}`}</span>
-                                                <span style={{ marginRight: 5}}>{`${amenities[2]}`}</span>
-                                            </p>
-                                            <p>
-                                                <span className="price">{`${price} AUD`}</span>
-                                                <span>/night</span>
-                                            </p>
-                                            
-                                        </div>
+                                    >
+                                        <Link to={`/prop/${ item.get('property_id')}`}>
+                                            {/* picture */}
+                                            <img src={item.get('image').get(1)} alt=""/>
+                                            {/* detail */}
+                                            <div className="detail">
+                                                <div style={{ marginTop: 5 }}>{item.get('suburb')}</div>
+                                                <div className="title">{item.get('title')}</div>
+                                                <p>
+                                                    <span className="type">{`${item.get('property_type')}:`}</span>
+                                                    <span>{`${item.get('bedrooms')} bedroom · `}</span>
+                                                    <span>{`${item.get('bathrooms')} bath`}</span>
+                                                </p>
+                                                <p>
+                                                    <span style={{ marginRight: 5}}>{`${amenities[0]}`}</span>
+                                                    <span style={{ marginRight: 5}}>{`${amenities[1]}`}</span>
+                                                    <span style={{ marginRight: 5}}>{`${amenities[2]}`}</span>
+                                                </p>
+                                                <p>
+                                                    <span className="price">{`${price} AUD `}</span>
+                                                    <span>/night</span>
+                                                </p>
+                                            </div>
+                                        </Link>
                                     </div>
                                 )
                             }) : null
@@ -216,6 +221,10 @@ class Search extends Component {
           );
     }
 
+    UNSAFE_componentWillMount(){
+        this.props.getHomeInfo();   
+    }
+
 }
 
 
@@ -225,6 +234,7 @@ const mapState = (state) => {
         loginStatus: state.getIn(["combo", "loginStatus"]),
         homePropInfo: state.getIn(["combo", "homePropInfo"]),
         searchResults: state.getIn(["combo", "searchResults"]),
+        propDetail: state.getIn(["combo", "propDetail"]),
 	}
 }
 
@@ -234,8 +244,7 @@ const mapDispatch = (dispatch) => ({
     },
     search(location, house_type, start_date, end_date) {
 		dispatch(actionCreators.search(location, house_type, start_date, end_date))
-	}
-    
+    } 
 });
 
 

@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import './index.less';
 
 
 
-class Request extends Component {
+class Order extends Component {
 
     state = {
         
@@ -13,7 +12,7 @@ class Request extends Component {
     render() {
         return (
             <div style={{minHeight: 660, textAlign: "center", marginTop: 10}}>
-                all requests
+                my orders
             </div>
           );
     }
@@ -30,5 +29,6 @@ const mapDispatch = (dispatch) => ({
 });
 
 
-export default connect(mapState, mapDispatch)(Request);
+export default connect(mapState, mapDispatch)(Order);
+
 

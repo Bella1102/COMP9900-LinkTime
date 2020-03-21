@@ -7,7 +7,8 @@ const defaultState = fromJS({
 	userInfo: null,
 	token: '',
 	homePropInfo: null,
-	searchResults: null
+	searchResults: null,
+	propDetail: null
 });
 
 export default (state = defaultState, action) => {
@@ -26,6 +27,8 @@ export default (state = defaultState, action) => {
 			return state.set('homePropInfo', action.homePropInfo);
 		case constants.SEARCH_RES:
 			return state.set('searchResults', action.searchResults);
+		case constants.GET_PROP_DETAIL:
+			return state.set('propDetail', action.propDetail);
 
 		default:
 			return state;

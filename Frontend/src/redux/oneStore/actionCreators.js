@@ -51,13 +51,11 @@ export const login = (username, password) => {
 				}
 			};
 			axios.get(userURL, AxiosConfig).then((response) => {
-				console.log(response)
 				const userData = response.data;
 				dispatch(getUserData(userData, res.data.token));
 			}).catch(() => {
 				console.log("Get UserInfo Failure!");
 			});
-
 		}).catch(() => {
 			loginFailure()
 		});
@@ -76,7 +74,6 @@ export const getHomeInfo = () => {
 	const config = { headers: { "accept": "application/json" } };
 	return (dispatch) => {
 		axios.get(URL, config).then((res) => {
-			console.log(res)
 			dispatch(getHomeProp(res.data));
 		}).catch(() => {
 			console.log('Get home property data failure');
@@ -98,12 +95,35 @@ export const search = (location, house_type, start_date, end_date) => {
 	};
 	return (dispatch) => {
 		axios.get(URL, config).then((res) => {
-			console.log(res)
 			dispatch(searchRes(res.data));
 		}).catch(() => {
 			console.log('Search Failure');
 		})
 	}
 };
+
+
+// get property detail
+const getDetailProp = (data) => ({
+	type: constants.GET_PROP_DETAIL,
+	propDetail: fromJS(data),
+});
+
+export const getPropDetail = (property_id) => {
+	const URL = baseURL + '/host/?property_id=' + property_id;
+	const config = {
+		headers: { "accept": "application/json" }
+	};
+	return (dispatch) => {
+		axios.get(URL, config).then((res) => {
+			console.log(res)
+			dispatch(getDetailProp(res.data));
+		}).catch(() => {
+			console.log('Get Property Detail Failure');
+		})
+	}
+};
+
+
 
 

@@ -5,7 +5,7 @@ import moment from 'moment';
 import { Form, Row, Col, Button, Select, Carousel, DatePicker, Cascader } from 'antd';
 import { actionCreators } from '../../redux/oneStore';
 import * as helpers from '../../utils/helpers';
-import './index.less';
+import './home.less';
 
 
 const { Option } = Select;

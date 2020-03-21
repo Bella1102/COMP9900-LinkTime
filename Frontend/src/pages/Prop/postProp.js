@@ -53,7 +53,7 @@ class Host extends Component{
             labelCol: { xs: 24, sm: 9, xl: 9 },
             wrapperCol: { xs: 16, sm: 9, xl: 6 }
         }
-        const typeOptions = ['Apartment', 'Loft', 'House', 'Unit']
+        const typeOptions = ['Apartment', 'Studio', 'House', 'Unit']
         const amenityOptions = ['TV', 'Internet', 'Wifi', 'Washer', 'Dryer', 
                                 'Hair dryer', 'Kitchen', 'Smoke detector', 'Air Conditioning', 'Free parking on premises']
         const stateOptions = ['New South Wales', 'Victoria','Queensland', 'South Australia']

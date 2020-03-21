@@ -62,7 +62,7 @@ class Search(Resource):
                 result.append(temp)
 
         # one parameter location
-        elif location and not house_type and not start_date and not end_date:
+        if location and not house_type and not start_date and not end_date:
             loc_info = session.query(db.Address).filter_by(suburb=location).all()
             for add_obj in loc_info:
                 pro_obj = session.query(db.Property).filter_by(property_id=add_obj.property_id).first()
@@ -71,7 +71,7 @@ class Search(Resource):
                 result.append(temp)
 
         # two parameters location and house_type
-        elif location and house_type and not start_date and not end_date:
+        if location and house_type and not start_date and not end_date:
             loc_info = session.query(db.Address).filter_by(suburb=location).all()
             for add_obj in loc_info:
                 pro_obj = session.query(db.Property).filter_by(property_id=add_obj.property_id, property_type=house_type).first()
@@ -81,7 +81,7 @@ class Search(Resource):
                     result.append(temp)
 
         # three parameters location start_date end_date
-        elif location and not house_type and start_date and end_date:
+        if location and not house_type and start_date and end_date:
             loc_info = session.query(db.Address).filter_by(suburb=location).all()
             second_time = change_date_to_time(start_date)
 
@@ -94,8 +94,7 @@ class Search(Resource):
                     result.append(temp)
 
         # four parameters
-        # if location and house_type and start_date and end_date:
-        else:
+        if location and house_type and start_date and end_date:
             second_time = change_date_to_time(start_date)
             loc_info = session.query(db.Address).filter_by(suburb=location).all()
             for add_obj in loc_info:

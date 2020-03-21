@@ -112,8 +112,8 @@ def getPropertyInfo(pro_obj, img_obj, add_obj, rev_obj, host_obj):
         "house_rules": pro_obj.house_rules,
         "start_time": pro_obj.start_time,
         # image information
-        "img_alt": img_url_list,
-        "img_url": img_alt_list,
+        "img_alt": img_alt_list,
+        "img_url": img_url_list,
         # address information
         "latitude": round(add_obj.latitude, 6),
         "longitude": round(add_obj.longitude, 6),

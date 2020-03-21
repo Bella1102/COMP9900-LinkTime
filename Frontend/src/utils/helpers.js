@@ -52,7 +52,8 @@ export function getLocationOptions(homePropInfo) {
     let states = propInfo[0].state;
     for (let key in states){
         let suburb = []
-        states[key].map((val) => {
+        let sort_suburb = states[key].sort()
+        sort_suburb.map((val) => {
             suburb.push({value: val, label: val})
             return null
         })
