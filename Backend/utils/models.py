@@ -46,20 +46,18 @@ def search_params(api):
 def property_details(api):
     return api.model('property_details', {
     # need to be updated
+    'token': fields.String(example='Get a token through the login API'),
     'title': fields.String(example='Perfect Apartment'),
-    'house_type': fields.String(example='House'),
-    'amenities': fields.String(example='Heater'),
-    'price': fields.String(example='Heater'),
-    'bedrooms': fields.String(example='Heater'),
-    'bathrooms': fields.String(example='Heater'),
-    'accommodates': fields.String(example='Heater'),
-    'minimum_nights': fields.String(example='Heater'),
-    'description': fields.String(example='Heater'),
-    'house_rules': fields.String(example='Heater'),
-    'location': fields.String(example='Sydney'),
+    'type': fields.String(example='House or Studio or Apartment'),
+    'amenities': fields.String(example="{'TV', 'Wifi', 'Iron'...}"),
+    'price': fields.String(example='$160'),
+    'state': fields.String(example='New South Wales'),
+    'suburb': fields.String(example='Maroubra'),
+    'location': fields.String(example='123 Anzac Rd'),
+    'postcode': fields.String(example='2035'),
+    'bedrooms': fields.String(example='1'),
+    'bathrooms': fields.String(example='1'),
     'start_date': fields.String(example='2020-05-10'),
     'end_date': fields.String(example='2020-05-15'),
+    'other_details': fields.String(example='Room available in a family home in a lovely safe leafy suburb'),
     })
-
-
-

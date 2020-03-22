@@ -2,8 +2,10 @@ import secrets
 from flask_restplus import abort
 import db.init_db as db
 import requests
+import random
+import time
 
-
+head_picture_url = 'https://www.logoshirt-shop.de/out/pictures/master/product/1/kuehlschrankmagnet-mickey_mouse_portrait_farbig.jpg'
 
 def gen_token():
     token = secrets.token_hex(32)
@@ -26,6 +28,21 @@ def authorize(request):
         abort(403, 'Invalid Authorization Token')
     return user
 
+# '2020-3-22' -> 1584795600
+def getTimeStamp(time_str):
+    timeArray = time.strptime(time_str, '%Y-%m-%d')
+    res = time.mktime(timeArray)
+    return str(round(res))
+
+def generatePropertyId():
+    while True:
+        pro_id = random.randint(10000, 100000)
+        session = db.get_session()
+        pro_info = session.query(db.Property).filter_by(property_id=pro_id).first()
+        if not pro_info:
+            break
+    return pro_id
+
 # rsplit from right to right
 def allowed_file(filename):
     return '.' in filename and \
@@ -38,6 +55,13 @@ def allowed_file(filename):
 #     geo_info = requests.get(base_url + parameters + '&key=' + key).json()
 #     res = geo_info["results"][0]["formatted_address"].rsplit(',', 1)[0]
 #     return res
+def getLatLng(state, suburb, location,):
+    key = 'AIzaSyDsg88VPvJzXpu_6S3ycJpfipLcm1FG_xk'
+    base_url = 'https://maps.googleapis.com/maps/api/geocode/json?'
+    parameters = 'address=%s+%s+%s' % (location, suburb,state)
+    geo_info = requests.get(base_url + parameters + '&key=' + key).json()
+    res = geo_info["results"][0]['geometry']['location']
+    return [round(res['lat'], 6), round(res['lng'], 6)]
 
 def getAllPropInfo(data):
     return{
@@ -94,38 +118,66 @@ def searchResult(pro_obj, img_obj, add_obj):
     return temp
 def getPropertyInfo(pro_obj, img_obj, add_obj, rev_obj, host_obj):
 
-    img_url_list = changeTextToList(img_obj.img_url)
-    img_alt_list = changeTextToList(img_obj.img_alt)
-    all_review   = getReviewOneProperty(rev_obj)
-    pro_info = {
-        # property information
-        "property_id": pro_obj.property_id,
-        "title": pro_obj.title,
-        "property_type": pro_obj.property_type,
-        "amenities": pro_obj.amenities.replace('"', ''),
-        "price": pro_obj.price,
-        "bedrooms": pro_obj.bedrooms,
-        "bathrooms": pro_obj.bathrooms,
-        "accommodates": pro_obj.accommodates,
-        "minimum_nights": pro_obj.minimum_nights,
-        "description": pro_obj.description,
-        "notes": pro_obj.notes,
-        "house_rules": pro_obj.house_rules,
-        "start_time": pro_obj.start_time,
-        # image information
-        "img_alt": img_alt_list,
-        "img_url": img_url_list,
-        # address information
-        "latitude": round(add_obj.latitude, 6),
-        "longitude": round(add_obj.longitude, 6),
-        "location": add_obj.location,
-        #review
-        "reviews": all_review,
-        #host
-        "host_id": host_obj.host_id,
-        "host_name": host_obj.host_name,
-        "host_img_url": host_obj.host_img_url,
-        "host_verifications": host_obj.host_verifications,
-    }
+    if pro_obj and img_obj and add_obj and rev_obj and host_obj:
+        img_url_list = changeTextToList(img_obj.img_url)
+        img_alt_list = changeTextToList(img_obj.img_alt)
+        all_review   = getReviewOneProperty(rev_obj)
+        pro_info = {
+            # property information
+            "property_id": pro_obj.property_id,
+            "title": pro_obj.title,
+            "property_type": pro_obj.property_type,
+            "amenities": pro_obj.amenities.replace('"', ''),
+            "price": pro_obj.price,
+            "bedrooms": pro_obj.bedrooms,
+            "bathrooms": pro_obj.bathrooms,
+            "accommodates": pro_obj.accommodates,
+            "minimum_nights": pro_obj.minimum_nights,
+            "description": pro_obj.description,
+            "notes": pro_obj.notes,
+            "house_rules": pro_obj.house_rules,
+            "start_time": pro_obj.start_time,
+            # image information
+            "img_alt": img_alt_list,
+            "img_url": img_url_list,
+            # address information
+            "latitude": round(add_obj.latitude, 6),
+            "longitude": round(add_obj.longitude, 6),
+            "location": add_obj.location,
+            #review
+            "reviews": all_review,
+            #host
+            "host_id": host_obj.host_id,
+            "host_name": host_obj.host_name,
+            "host_img_url": host_obj.host_img_url,
+            "host_verifications": host_obj.host_verifications,
+        }
+    if pro_obj and not img_obj and add_obj and not rev_obj and host_obj:
+        pro_info = {
+            # property information
+            "property_id": pro_obj.property_id,
+            "title": pro_obj.title,
+            "property_type": pro_obj.property_type,
+            "amenities": pro_obj.amenities.replace('"', ''),
+            "price": pro_obj.price,
+            "bedrooms": pro_obj.bedrooms,
+            "bathrooms": pro_obj.bathrooms,
+            "accommodates": pro_obj.accommodates,
+            "minimum_nights": pro_obj.minimum_nights,
+            "description": pro_obj.description,
+            "notes": pro_obj.notes,
+            "house_rules": pro_obj.house_rules,
+            "start_time": pro_obj.start_time,
+            # address information
+            "latitude": round(add_obj.latitude, 6),
+            "longitude": round(add_obj.longitude, 6),
+            "location": add_obj.location,
+            # host
+            "host_id": host_obj.host_id,
+            "host_name": host_obj.host_name,
+            "host_img_url": host_obj.host_img_url,
+            "host_verifications": host_obj.host_verifications,
+        }
+
     return pro_info
 

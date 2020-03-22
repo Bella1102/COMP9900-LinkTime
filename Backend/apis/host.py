@@ -25,7 +25,7 @@ class Property(Resource):
     def get(self):
         property_id = request.args.get('property_id')
         img_name = request.args.get('img_name')
-        print(property_id, img_name)
+        # print(property_id, img_name)
         if property_id:
             session = db.get_session()
 
@@ -47,13 +47,68 @@ class Property(Resource):
     @host.doc(description='''Post new property.''')
     # one image is fine. many images is not working
     def post(self):
-        file = request.files['img']
-        filename= file.filename
-        if file and allowed_file(filename):
-            # print(os.path.join(os.getcwd() + '/uploads', filename))
-            file.save(os.path.join(os.getcwd() + '/uploads', filename))
-            return 200
+        session = db.get_session()
+
+        if not request.json:
+            abort(400, 'Malformed Request')
+
+        post_pro_info = (token, title, property_type, amenities, price, state, suburb, location, postcode,bedrooms, bathrooms, start_time, end_time, description)= unpack(request.json,\
+                        'token', 'title', 'type', 'amenities', 'price', 'state', 'suburb', 'location', 'postcode','bedrooms', 'bathrooms', 'start_date', 'end_date', 'other_details')
+
+        userInfo = session.query(db.User).filter_by(token=token).first()
+
+        if not userInfo:
+            abort(403, 'Invalid Auth Token')
+
+        # because description is not required
+        if '' in post_pro_info[:-1]:
+            abort(400, 'Missing Arguments')
+
+        property_id = generatePropertyId()
+        [latitude, longitude] = getLatLng(state, suburb, location, )
+
+        new_property = db.Property(property_id=property_id,
+                                   title=title,
+                                   property_type=property_type,
+                                   amenities=amenities,
+                                   price=price,
+                                   bedrooms=bedrooms,
+                                   bathrooms=bathrooms,
+                                   accommodates='hhh',
+                                   minimum_nights=1,
+                                   description=description,
+                                   notes='hello',
+                                   house_rules='world',
+                                   start_time=getTimeStamp(start_time),
+                                   end_time=getTimeStamp(end_time))
+
+        new_address = db.Address(property_id=property_id,
+                                 state=state,
+                                 suburb=suburb,
+                                 location=location,
+                                 latitude=latitude,
+                                 longitude=longitude)
+
+        new_host = db.Host(property_id=property_id,
+                           host_id=userInfo.id,
+                           host_name=userInfo.username,
+                           host_img_url=head_picture_url,
+                           host_verifications="['email', 'phone', 'reviews']")
+
+        session.add(new_property)
+        session.add(new_address)
+        session.add(new_host)
+        session.commit()
+        session.close()
+        return {'Property id': property_id}
 
 
+
+        # file = request.files['img']
+        # filename= file.filename
+        # if file and allowed_file(filename):
+        #     # print(os.path.join(os.getcwd() + '/uploads', filename))
+        #     file.save(os.path.join(os.getcwd() + '/uploads', filename))
+        #     return 200
 
 
