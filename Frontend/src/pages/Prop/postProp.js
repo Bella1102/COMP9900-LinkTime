@@ -183,7 +183,7 @@ class Host extends Component{
                         {
                             getFieldDecorator('available_time', {
                                 initialValue: '',
-                                rules: [{ required: true, message: 'Please input available time!' }]
+                                rules: [{ required: true, message: 'Please select available time!' }]
                             })( <RangePicker format="YYYY-MM-DD" 
                                             ranges={{ Today: [moment(), moment()], 
                                             'This Month': [moment().startOf('month'), moment().endOf('month')]}} />)

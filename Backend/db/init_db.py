@@ -115,10 +115,10 @@ class Order(Base):
                         Column('id', Integer, primary_key=True),
                         Column('user_id', Integer),
                         Column('property_id', Integer),
-                        Column('guests_num', Integer),
-                        Column('start_time', VARCHAR(20)),
-                        Column('end_time', VARCHAR(20)),
                         Column('order_time', VARCHAR(20)),
+                        Column('checkIn', VARCHAR(20)),
+                        Column('checkOut', VARCHAR(20)),
+                        Column('guests', Integer),
                         Column('order_status', VARCHAR(20)))
     def __repr__(self):
         return 'This is Orders Table'
