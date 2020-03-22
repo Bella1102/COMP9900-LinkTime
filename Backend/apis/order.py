@@ -83,13 +83,11 @@ class Order(Resource):
             abort(400, 'Invalid order_id')
 
         proInfo = session.query(db.Property).filter_by(property_id=orderInfo.property_id).first()
-
         orderInfo.order_status='Cancel'
         proInfo.start_time=round(time.mktime(datetime.date.today().timetuple()))
 
         session.commit()
         session.close()
-
         return { 'message': 'success'}
 
 
