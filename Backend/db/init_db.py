@@ -119,9 +119,9 @@ class Order(Base):
                         Column('checkIn', VARCHAR(20)),
                         Column('checkOut', VARCHAR(20)),
                         Column('guests', Integer),
-                        Column('order_status', Integer))
+                        Column('order_status', VARCHAR(20)))
     def __repr__(self):
-        return 'This is Orders Table'
+        return 'user_id: %s' % (self.user_id)
 
 # 8
 class Request(Base):

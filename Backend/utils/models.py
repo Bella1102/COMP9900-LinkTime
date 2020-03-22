@@ -64,7 +64,6 @@ def property_details(api):
 
 def order_details(api):
     return api.model('order_details', {
-        'token': fields.String(example='Get a token through the login API'),
         'property_id': fields.String(example='11156'),
         'checkIn':  fields.String(example='2020-05-10'),
         'checkOut': fields.String(example='2020-05-15'),

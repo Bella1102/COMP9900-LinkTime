@@ -182,3 +182,16 @@ def getPropertyInfo(pro_obj, img_obj, add_obj, rev_obj, host_obj):
 
     return pro_info
 
+def getOrderInfo(order_info):
+    res = []
+    for order_obj in order_info:
+        print(order_obj)
+        temp={"order_id": order_obj.id,
+              "property_id": order_obj.property_id,
+              "order_time": order_obj.order_time,
+              "checkIn": order_obj.checkIn,
+              "checkOut": order_obj.checkOut,
+              "guests": order_obj.guests,
+              "order_status": order_obj.order_status}
+        res.append(temp)
+    return res
