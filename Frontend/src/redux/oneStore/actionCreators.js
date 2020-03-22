@@ -5,7 +5,17 @@ import * as constants from './constants';
 import * as helpers from '../../utils/helpers';
 
 
+
 const baseURL = helpers.BACKEND_URL;
+const getConfig = {
+	headers: { "accept": "application/json" }
+};
+const postConfig = {
+	headers: {
+		"accept": "application/json",
+		'Content-Type':'application/json'
+	}
+};
 
 
 export const logout = () => ({
@@ -31,17 +41,11 @@ const loginFailure = () => {
 
 export const login = (username, password) => {
 	const loginURL = baseURL + '/auth/login';
-	const loginAxiosConfig = {
-		headers: {
-			"accept": "application/json",
-			'Content-Type':'application/json'
-		}
-	};
 	const loginData = {"username": username, "password": password}
 	return (dispatch) => {
 		// login auth post
-		axios.post(loginURL, loginData, loginAxiosConfig).then((res) => {
-			loginSuccess()
+		axios.post(loginURL, loginData, postConfig).then((res) => {
+			loginSuccess();
 			// get user info
 			const userURL = baseURL + '/user/';
 			const AxiosConfig = {
@@ -57,7 +61,7 @@ export const login = (username, password) => {
 				console.log("Get UserInfo Failure!");
 			});
 		}).catch(() => {
-			loginFailure()
+			loginFailure();
 		});
 	}
 };
@@ -71,9 +75,8 @@ const getHomeProp = (data) => ({
 
 export const getHomeInfo = () => {
 	const URL = baseURL + '/home/';
-	const config = { headers: { "accept": "application/json" } };
 	return (dispatch) => {
-		axios.get(URL, config).then((res) => {
+		axios.get(URL, getConfig).then((res) => {
 			dispatch(getHomeProp(res.data));
 		}).catch(() => {
 			console.log('Get home property data failure');
@@ -90,18 +93,14 @@ const searchRes = (data) => ({
 export const search = (location, house_type, start_date, end_date) => {
 	const URL = baseURL + '/search?location=' + location
 				+ '&house_type=' + house_type + '&start_date=' + start_date + '&end_date=' + end_date;
-	const config = {
-		headers: { "accept": "application/json" }
-	};
 	return (dispatch) => {
-		axios.get(URL, config).then((res) => {
+		axios.get(URL, getConfig).then((res) => {
 			dispatch(searchRes(res.data));
 		}).catch(() => {
 			console.log('Search Failure');
 		})
 	}
 };
-
 
 // get property detail
 const getDetailProp = (data) => ({
@@ -111,11 +110,8 @@ const getDetailProp = (data) => ({
 
 export const getPropDetail = (property_id) => {
 	const URL = baseURL + '/host/?property_id=' + property_id;
-	const config = {
-		headers: { "accept": "application/json" }
-	};
 	return (dispatch) => {
-		axios.get(URL, config).then((res) => {
+		axios.get(URL, getConfig).then((res) => {
 			console.log(res)
 			dispatch(getDetailProp(res.data));
 		}).catch(() => {
@@ -124,6 +120,35 @@ export const getPropDetail = (property_id) => {
 	}
 };
 
+const orderSuccess = () => {
+	message.success('Order Success');
+};
+
+const orderFailure = () => {
+	message.error('Order Failure');
+};
+
+// post order
+export const comfirmOrder = (token, user_id, property_id, order_time, checkIn, checkOut, guests) => {
+	const URL = baseURL + '/order/';
+	const orderInfo = {
+		"user_id": user_id, "property_id": property_id, "order_time": order_time,
+		"checkIn": checkIn, "checkOut": checkOut, "guests": guests }
+	const axiosConfig = {
+		headers: {
+			"accept": "application/json",
+			"Authorization": token
+		}
+	};
+	return (dispatch) => {
+		axios.post(URL, orderInfo, axiosConfig).then((res) => {
+			orderSuccess();
+		}).catch(() => {
+			orderFailure();
+			console.log('Post Order Failure');
+		})
+	}
+};
 
 
 

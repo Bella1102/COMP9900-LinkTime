@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import { Form, Button, Row, Col, Collapse, DatePicker, Select } from 'antd';
 import { actionCreators } from '../../redux/oneStore';
+// import * as helpers from '../../utils/helpers';
 import './oneProp.less';
 
 
@@ -14,10 +15,20 @@ const { RangePicker } = DatePicker;
 
 class OneProp extends Component {
 
+    handleSubmit = (token, user_id, property_id, order_time) => {
+        // let orderInfo = this.props.form.getFieldsValue();
+        this.props.form.validateFields((err, values) => {
+            let checkIn = values.checkInOut[0].format('YYYY-MM-DD');
+            let checkOut = values.checkInOut[1].format('YYYY-MM-DD');
+            let guests = values.guests.split(' ')[0];
+            // this.props.comfirmOrder(token, user_id, property_id, order_time, checkIn, checkOut, guests);
+        })
+    }
 
     render() {
-        const { propDetail } = this.props;
+        const { token, userInfo, propDetail } = this.props;
         const { getFieldDecorator } = this.props.form;
+        const prop_id = this.props.match.params.id;
         const guestNum = ['1 Guest', '2 Guests', '3  Guests', '4  Guests']
 
         if (propDetail) {
@@ -108,11 +119,11 @@ class OneProp extends Component {
                                     <span>per night</span>
                                 </p>
                                 <Form>
-                                    <Form.Item label="Dates" style={{marginBottom: 10}}>
+                                    <Form.Item label="Dates" >
                                         {
                                             getFieldDecorator('checkInOut', {
                                                 initialValue: '',
-                                                rules: [ ]
+                                                rules: [{ required: true } ]
                                             })( <RangePicker 
                                                     style={{width: "100%"}}
                                                     size="large"
@@ -125,7 +136,7 @@ class OneProp extends Component {
                                         {
                                             getFieldDecorator('guests', {
                                                 initialValue: '1 Guest',
-                                                rules: [],
+                                                rules: [{ required: true }],
                                             })( <Select size="large" >
                                                     {
                                                         guestNum.map(item => (
@@ -136,13 +147,15 @@ class OneProp extends Component {
                                         }
                                     </Form.Item>
                                     <Form.Item>
-                                        <Button type="primary" 
+                                        <Button
+                                                // onClick={ this.handleSubmit(token, userInfo.id, propDetail.property_id, helpers.formatTime(new Date().getTime())) }
+                                                onClick={ this.handleSubmit }
                                                 style={{color: "black", width: "100%", height: 42, marginTop: 20, fontSize: 20, fontWeight: "bold", backgroundColor: "#ffc53d"}}>
                                             Reserve
                                         </Button>
                                     </Form.Item>
                                 </Form>
-                                <div className="checkNotes">Enter dates and number of guests to check the total trip price, including additional fees and any taxes.</div>
+                                <div className="checkNotes">Enter dates and number of guests to check the total trip price, no extra charge and any taxes.</div>
                             </div>
                         </Col>
                     </Row>
@@ -161,6 +174,8 @@ class OneProp extends Component {
 const mapState = (state) => {
 	return {
         loginStatus: state.getIn(["combo", "loginStatus"]),
+        userInfo: state.getIn(["combo", "userInfo"]),
+        token: state.getIn(["combo", "token"]),
         propDetail: state.getIn(["combo", "propDetail"]),
 	}
 }
@@ -168,6 +183,9 @@ const mapState = (state) => {
 const mapDispatch = (dispatch) => ({
     getPropDetail(property_id) {
         dispatch(actionCreators.getPropDetail(property_id))
+    },
+    comfirmOrder(token, user_id, property_id, order_time, checkIn, checkOut, guests) {
+        dispatch(actionCreators.comfirmOrder(token, user_id, property_id, order_time, checkIn, checkOut, guests))
     }
 });
 

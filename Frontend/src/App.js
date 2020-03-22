@@ -14,8 +14,9 @@ import Search from './pages/Search/search';
 import Order from './pages/Order/order';
 import Request from './pages/Request/request';
 
-
-
+import Success from './pages/success';
+import FourOFour from './pages/404';
+import FourOThree from './pages/403';
 
 class App extends Component {
 
@@ -37,6 +38,10 @@ class App extends Component {
 							<Route path='/host' exact component={ Host }></Route>
 							<Route path='/myProp' exact component={ MyProp }></Route>
 							<Route path='/prop/:id' exact component={ OneProp }></Route>
+
+							<Route path='/success' exact component={ Success }></Route>
+							<Route path='/404' exact component={ FourOFour }></Route>
+							<Route path='/403' exact component={ FourOThree }></Route>
 						</Switch>
 					</Admin> }>
 				</Route>
