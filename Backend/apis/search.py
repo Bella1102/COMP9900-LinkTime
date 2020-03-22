@@ -17,11 +17,6 @@ def get_params(r):
     end_date = r.args.get('end_date')
     return [location, house_type, start_date, end_date]
 
-def change_date_to_time(str_date):
-    dateTime = datetime.datetime.strptime(str_date, '%Y-%m-%d')
-    return time.mktime(dateTime.timetuple())
-
-
 @search.route('')
 class Search(Resource):
 
@@ -83,11 +78,10 @@ class Search(Resource):
         # three parameters location start_date end_date
         if location and not house_type and start_date and end_date:
             loc_info = session.query(db.Address).filter_by(suburb=location).all()
-            second_time = change_date_to_time(start_date)
-
+            second_time = getTimeStamp(start_date)
             for add_obj in loc_info:
                 pro_obj = session.query(db.Property).filter(db.Property.property_id==add_obj.property_id)\
-                                                    .filter(db.Property.start_time<=str(second_time)).first()
+                                                    .filter(db.Property.start_time<=second_time).first()
                 if pro_obj:
                     img_obj = session.query(db.Image).filter_by(property_id=pro_obj.property_id).first()
                     temp = searchResult(pro_obj, img_obj, add_obj)
@@ -95,12 +89,12 @@ class Search(Resource):
 
         # four parameters
         if location and house_type and start_date and end_date:
-            second_time = change_date_to_time(start_date)
+            second_time = getTimeStamp(start_date)
             loc_info = session.query(db.Address).filter_by(suburb=location).all()
             for add_obj in loc_info:
                 pro_obj = session.query(db.Property).filter(db.Property.property_id==add_obj.property_id)\
                                                     .filter(db.Property.property_type==house_type)\
-                                                    .filter(db.Property.start_time<=str(second_time)).first()
+                                                    .filter(db.Property.start_time<=second_time).first()
                 if pro_obj:
                     img_obj = session.query(db.Image).filter_by(property_id=pro_obj.property_id).first()
                     temp = searchResult(pro_obj, img_obj, add_obj)

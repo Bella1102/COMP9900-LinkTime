@@ -32,7 +32,8 @@ def authorize(request):
 def getTimeStamp(time_str):
     timeArray = time.strptime(time_str, '%Y-%m-%d')
     res = time.mktime(timeArray)
-    return str(round(res))
+    return round(res)
+
 
 def generatePropertyId():
     while True:

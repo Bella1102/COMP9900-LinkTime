@@ -47,7 +47,7 @@ class Property(Base):
                         Column('description', Text),
                         Column('notes', Text),
                         Column('house_rules', Text),
-                        Column('start_time', VARCHAR(20)),
+                        Column('start_time', Integer),
                         Column('end_time', VARCHAR(20)))
     def __repr__(self):
         # return 'This is Property table'
@@ -119,7 +119,7 @@ class Order(Base):
                         Column('checkIn', VARCHAR(20)),
                         Column('checkOut', VARCHAR(20)),
                         Column('guests', Integer),
-                        Column('order_status', VARCHAR(20)))
+                        Column('order_status', Integer))
     def __repr__(self):
         return 'This is Orders Table'
 
@@ -198,7 +198,7 @@ def init_property(session):
                        description=item['description'],
                        notes=item['notes'],
                        house_rules=item['house_rules'],
-                       start_time=str(round(time.mktime(datetime.date.today().timetuple()))),
+                       start_time=round(time.mktime(datetime.date.today().timetuple())),
                        end_time=str(-1))
         session.add(property)
     session.commit()
@@ -247,10 +247,9 @@ def init_review(session):
         review = Review(property_id=int(item['property_id']),
                         reviewer_id=int(item['reviewer_id']),
                         reviewer_name=item['reviewer_name'],
-                        review_date=item['review_date'],
+                        review_date=time.strftime("%d %b %Y", time.strptime(item['review_date'], '%Y-%m-%d')),
                         review_content=item['review_content'],
                         head_picture=item['head_picture'])
         session.add(review)
     session.commit()
-
 

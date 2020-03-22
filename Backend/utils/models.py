@@ -46,18 +46,27 @@ def search_params(api):
 def property_details(api):
     return api.model('property_details', {
     # need to be updated
-    'token': fields.String(example='Get a token through the login API'),
-    'title': fields.String(example='Perfect Apartment'),
-    'type': fields.String(example='House or Studio or Apartment'),
-    'amenities': fields.String(example="{'TV', 'Wifi', 'Iron'...}"),
-    'price': fields.String(example='$160'),
-    'state': fields.String(example='New South Wales'),
-    'suburb': fields.String(example='Maroubra'),
-    'location': fields.String(example='123 Anzac Rd'),
-    'postcode': fields.String(example='2035'),
-    'bedrooms': fields.String(example='1'),
-    'bathrooms': fields.String(example='1'),
-    'start_date': fields.String(example='2020-05-10'),
-    'end_date': fields.String(example='2020-05-15'),
-    'other_details': fields.String(example='Room available in a family home in a lovely safe leafy suburb'),
+        'token': fields.String(example='Get a token through the login API'),
+        'title': fields.String(example='Perfect Apartment'),
+        'type': fields.String(example='House or Studio or Apartment'),
+        'amenities': fields.String(example="{'TV', 'Wifi', 'Iron'...}"),
+        'price': fields.String(example='$160'),
+        'state': fields.String(example='New South Wales'),
+        'suburb': fields.String(example='Maroubra'),
+        'location': fields.String(example='123 Anzac Rd'),
+        'postcode': fields.String(example='2035'),
+        'bedrooms': fields.String(example='1'),
+        'bathrooms': fields.String(example='1'),
+        'start_date': fields.String(example='2020-05-10'),
+        'end_date': fields.String(example='2020-05-15'),
+        'other_details': fields.String(example='Room available in a family home in a lovely safe leafy suburb'),
+    })
+
+def order_details(api):
+    return api.model('order_details', {
+        'token': fields.String(example='Get a token through the login API'),
+        'property_id': fields.String(example='11156'),
+        'checkIn':  fields.String(example='2020-05-10'),
+        'checkOut': fields.String(example='2020-05-15'),
+        'guests': fields.String(example='2')
     })

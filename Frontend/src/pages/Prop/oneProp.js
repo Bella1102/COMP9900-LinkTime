@@ -24,7 +24,10 @@ class OneProp extends Component {
             // this.props.comfirmOrder(token, user_id, property_id, order_time, checkIn, checkOut, guests);
         })
     }
-
+    disabledDate=(current)=>{
+        //必须设置start_time之前的和end_time之后的不能选择
+        return current && current < moment().endOf('day');
+    }
     render() {
         const { token, userInfo, propDetail } = this.props;
         const { getFieldDecorator } = this.props.form;
@@ -126,6 +129,7 @@ class OneProp extends Component {
                                                 rules: [{ required: true } ]
                                             })( <RangePicker 
                                                     style={{width: "100%"}}
+                                                    disabledDate={this.disabledDate}
                                                     size="large"
                                                     placeholder={["Check-In", "Check-Out"]}
                                                     ranges={{ Today: [moment(), moment()], 
