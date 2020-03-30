@@ -163,7 +163,11 @@ class Home extends Component {
     }
 
     UNSAFE_componentWillMount(){
-        this.props.getHomeInfo();   
+        if (localStorage.linkToken){
+            console.log('token')
+            this.props.isLogin(localStorage.linkToken)
+        }
+        this.props.getHomeInfo()  
     }
 
 }
@@ -177,6 +181,9 @@ const mapState = (state) => {
 }
 
 const mapDispatch = (dispatch) => ({
+    isLogin(token){
+        dispatch(actionCreators.isLogin(token))
+    },
     getHomeInfo() {
         dispatch(actionCreators.getHomeInfo())
     },

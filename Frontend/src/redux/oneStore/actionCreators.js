@@ -13,15 +13,22 @@ const getConfig = {
 const postConfig = {
 	headers: {
 		"accept": "application/json",
-		'Content-Type':'application/json'
+		'Content-Type':'application/json',
 	}
 };
 
 
-export const logout = () => ({
+const userLogout = () => ({
 	type: constants.LOGOUT,
 	loginStatus: false
 });
+
+export const logout = () => {
+	localStorage.removeItem('linkToken')
+	return (dispatch) => {
+		dispatch(userLogout());
+	}
+};
 
 // login and get user data
 const getUserData = (data, token) => ({
@@ -43,9 +50,12 @@ export const login = (username, password) => {
 	const loginURL = baseURL + '/auth/login';
 	const loginData = {"username": username, "password": password}
 	return (dispatch) => {
+		
 		// login auth post
 		axios.post(loginURL, loginData, postConfig).then((res) => {
 			loginSuccess();
+			console.log(res.data.token)
+			localStorage.setItem('linkToken', res.data.token)
 			// get user info
 			const userURL = baseURL + '/user/';
 			const AxiosConfig = {
@@ -62,6 +72,25 @@ export const login = (username, password) => {
 			});
 		}).catch(() => {
 			loginFailure();
+		});
+	}
+};
+
+export const isLogin = (token) => {
+	return (dispatch) => {
+		// get user info
+		const userURL = baseURL + '/user/';
+		const AxiosConfig = {
+			headers: {
+				"accept": "application/json",
+				"Authorization": token
+			}
+		};
+		axios.get(userURL, AxiosConfig).then((response) => {
+			const userData = response.data;
+			dispatch(getUserData(userData, token));
+		}).catch(() => {
+			console.log("Get UserInfo Failure!");
 		});
 	}
 };

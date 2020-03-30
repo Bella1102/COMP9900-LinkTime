@@ -10,7 +10,6 @@ const FormItem = Form.Item;
 const baseURL = helpers.BACKEND_URL;
 
 
-
 class Register extends Component{
 
     state = {
@@ -65,8 +64,11 @@ class Register extends Component{
         };
         const regData = {"username": regInfo.username, "password": regInfo.password, 
                         "email": regInfo.email, "phone": regInfo.phone}
-        axios.post(regURL, regData, axiosConfig).then((res) => {
+        axios.post(regURL, regData, axiosConfig)
+        .then((res) => {
             this.regSuccess()
+        }).then(() => {
+            window.location.href = '/'
         }).catch(() => {
             this.regFailure()
         }); 

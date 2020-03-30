@@ -28,11 +28,13 @@ class Search(Resource):
     @search.param('house_type', 'Apartment, Loft, House, Unit')
     @search.param('location', '[Bondi,Pyrmont,Paddington...]')
     @search.doc(description="Search rule:\n"
-                            "1. no parameters: /search\n"
-                            "2. one parameters(location is required and the location need to be a suburb): /search?location=Bondi\n"
-                            "3. two parameters(location and house_type): /search?location=Bondi&house_type=House\n"
-                            "4. three parameters(location, start_date, end_date):/search?location=Bondi&start_date=2020-3-20&end_date=2020-3-23\n"
-                            "5. four parameters(location, house_type,start_date, end_date)")
+                            "1. no parameters\n"
+                            "2. one parameters(location is required and the location need to be a suburb): \n"
+                            "3. one parameters(house_type)\n"
+                            "4. two parameters(start_date and end date): " 
+                            "5. two parameters(location and house_type): /search?location=Bondi&house_type=House\n"
+                            "6. three parameters(location, start_date, end_date):/search?location=Bondi&start_date=2020-3-20&end_date=2020-3-23\n"
+                            "7. four parameters(location, house_type,start_date, end_date)")
     def get(self):
         [location, house_type, start_date, end_date] = get_params(request)
         session = db.get_session()
@@ -64,6 +66,17 @@ class Search(Resource):
                 img_obj = session.query(db.Image).filter_by(property_id=add_obj.property_id).first()
                 temp = searchResult(pro_obj, img_obj, add_obj)
                 result.append(temp)
+
+        # two parameters start_date and end_date
+        if not location and not house_type and start_date and end_date:
+            second_time = getTimeStamp(end_date)
+            pro_info = session.query(db.Property).filter(db.Property.start_time <= second_time).all()
+            if pro_info:
+                for pro_obj in pro_info:
+                    img_obj = session.query(db.Image).filter_by(property_id=pro_obj.property_id).first()
+                    loc_obj = session.query(db.Address).filter_by(property_id=pro_obj.property_id).first()
+                    temp = searchResult(pro_obj, img_obj, add_obj)
+                    result.append(temp)
 
         # two parameters location and house_type
         if location and house_type and not start_date and not end_date:

@@ -12,10 +12,9 @@ const { Option } = Select;
 const { Panel } = Collapse;
 const { RangePicker } = DatePicker;
 
+
 class OneProp extends Component {
-    state={
-        gapDay:0
-    }
+
     handleSubmit = (token, user_id, property_id, order_time) => {
         // let orderInfo = this.props.form.getFieldsValue();
         this.props.form.validateFields((err, values) => {
@@ -25,23 +24,27 @@ class OneProp extends Component {
             // this.props.comfirmOrder(token, user_id, property_id, order_time, checkIn, checkOut, guests);
         })
     }
-    disabledDate=(current)=>{
-        //必须设置start_time之前的和end_time之后的不能选择
-        return current && current < moment().add(this.state.gapDay, 'days');
-    }
+
     render() {
+        console.log(this.state)
         const { token, userInfo, propDetail } = this.props;
         const { getFieldDecorator } = this.props.form;
         const prop_id = this.props.match.params.id;
         const guestNum = ['1 Guest', '2 Guests', '3  Guests', '4  Guests']
-        //获得start_time 和今天相差的天数
-        // console.log('hhhhhh')
-        // if (propDetail){
-        //     let seconds = Math.abs(propDetail.get('start_time') - Date.parse(new Date())/1000);
-        //     let gapDay = Math.round(seconds/(24*60*60));
-        //     console.log(gapDay)
-        // }
-        // console.log('hhhhhh')
+        // 获得start_time 和今天相差的天数
+        let gapDay;
+        if (propDetail){
+            let seconds = Math.abs(propDetail.get('start_time') - Date.parse(new Date())/1000);
+            // gapDay = Math.round(seconds/(24*60*60));
+            gapDay = 5;
+            console.log(gapDay)
+        }
+        const disabledDate = (current) => {
+            //必须设置start_time之前的和end_time之后的不能选择
+            // console.log(current)
+            return current && current < moment().add(gapDay, 'days');
+        }
+
         if (propDetail) {
             let amenities = propDetail.get('amenities').slice(1, -1).split(',')
             return (
@@ -137,7 +140,7 @@ class OneProp extends Component {
                                                 rules: [{ required: true } ]
                                             })( <RangePicker 
                                                     style={{width: "100%"}}
-                                                    disabledDate={this.disabledDate}
+                                                    disabledDate={disabledDate}
                                                     size="large"
                                                     placeholder={["Check-In", "Check-Out"]}
                                                     ranges={{ Today: [moment(), moment()], 

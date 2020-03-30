@@ -48,7 +48,7 @@ class Property(Base):
                         Column('notes', Text),
                         Column('house_rules', Text),
                         Column('start_time', Integer),
-                        Column('end_time', VARCHAR(20)))
+                        Column('end_time', Integer))
     def __repr__(self):
         # return 'This is Property table'
         return 'property_id: %s' % (self.property_id)
