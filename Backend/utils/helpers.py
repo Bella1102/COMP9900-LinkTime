@@ -119,6 +119,7 @@ def searchResult(pro_obj, img_obj, add_obj):
     }
     return temp
 def getPropertyInfo(pro_obj, img_obj, add_obj, rev_obj, host_obj):
+    pro_info = {}
     if pro_obj and img_obj and add_obj and rev_obj and host_obj:
         img_url_list = changeTextToList(img_obj.img_url)
         img_alt_list = changeTextToList(img_obj.img_alt)

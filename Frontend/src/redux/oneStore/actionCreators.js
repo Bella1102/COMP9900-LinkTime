@@ -5,7 +5,6 @@ import * as constants from './constants';
 import * as helpers from '../../utils/helpers';
 
 
-
 const baseURL = helpers.BACKEND_URL;
 const getConfig = {
 	headers: { "accept": "application/json" }
@@ -17,10 +16,12 @@ const postConfig = {
 	}
 };
 
-
+// user logout
 const userLogout = () => ({
 	type: constants.LOGOUT,
-	loginStatus: false
+	loginStatus: false,
+	userInfo: null,
+	token: null
 });
 
 export const logout = () => {
@@ -42,8 +43,8 @@ const loginSuccess = () => {
 	message.success('Login Success');
 };
 
-const loginFailure = () => {
-	message.error('Login Failure');
+const loginFailure = (err) => {
+	message.error('Login Failure: ' + err);
 };
 
 export const login = (username, password) => {
@@ -54,7 +55,6 @@ export const login = (username, password) => {
 		// login auth post
 		axios.post(loginURL, loginData, postConfig).then((res) => {
 			loginSuccess();
-			console.log(res.data.token)
 			localStorage.setItem('linkToken', res.data.token)
 			// get user info
 			const userURL = baseURL + '/user/';
@@ -70,8 +70,8 @@ export const login = (username, password) => {
 			}).catch(() => {
 				console.log("Get UserInfo Failure!");
 			});
-		}).catch(() => {
-			loginFailure();
+		}).catch((error) => {
+			loginFailure(error.response.data.message);
 		});
 	}
 };
@@ -141,7 +141,6 @@ export const getPropDetail = (property_id) => {
 	const URL = baseURL + '/host/?property_id=' + property_id;
 	return (dispatch) => {
 		axios.get(URL, getConfig).then((res) => {
-			console.log(res)
 			dispatch(getDetailProp(res.data));
 		}).catch(() => {
 			console.log('Get Property Detail Failure');
@@ -153,16 +152,14 @@ const orderSuccess = () => {
 	message.success('Order Success');
 };
 
-const orderFailure = () => {
-	message.error('Order Failure');
+const orderFailure = (err) => {
+	message.error('Order Failure: ' + err);
 };
 
 // post order
-export const comfirmOrder = (token, user_id, property_id, order_time, checkIn, checkOut, guests) => {
+export const comfirmOrder = (token, property_id, checkIn, checkOut, guests) => {
 	const URL = baseURL + '/order/';
-	const orderInfo = {
-		"user_id": user_id, "property_id": property_id, "order_time": order_time,
-		"checkIn": checkIn, "checkOut": checkOut, "guests": guests }
+	const orderInfo = { "property_id": property_id, "checkIn": checkIn, "checkOut": checkOut, "guests": guests }
 	const axiosConfig = {
 		headers: {
 			"accept": "application/json",
@@ -172,9 +169,9 @@ export const comfirmOrder = (token, user_id, property_id, order_time, checkIn, c
 	return (dispatch) => {
 		axios.post(URL, orderInfo, axiosConfig).then((res) => {
 			orderSuccess();
-		}).catch(() => {
-			orderFailure();
-			console.log('Post Order Failure');
+			console.log(res)
+		}).catch((error) => {
+			orderFailure(error.response.data.message);
 		})
 	}
 };

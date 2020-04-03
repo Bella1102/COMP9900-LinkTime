@@ -223,7 +223,8 @@ class Search extends Component {
     }
 
     UNSAFE_componentWillMount(){
-        this.props.getHomeInfo();   
+        this.props.getHomeInfo();
+
     }
 
 }

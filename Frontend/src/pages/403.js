@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { Result, Button } from 'antd';
 
 
@@ -10,7 +11,7 @@ class FourOThree extends Component {
                 status="403"
                 title="403"
                 subTitle="Sorry, you are not authorized to access this page."
-                extra={<Button type="primary">Back Home</Button>}
+                extra={<Link to="/"><Button type="primary">Back Home</Button></Link>}
             />
         );
     }

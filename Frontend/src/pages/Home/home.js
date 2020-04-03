@@ -164,10 +164,9 @@ class Home extends Component {
 
     UNSAFE_componentWillMount(){
         if (localStorage.linkToken){
-            console.log('token')
             this.props.isLogin(localStorage.linkToken)
         }
-        this.props.getHomeInfo()  
+        this.props.getHomeInfo()
     }
 
 }

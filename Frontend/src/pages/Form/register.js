@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-// import { Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import {Form, Button, Select,Input, Upload, Icon, message} from 'antd';
 import * as helpers from '../../utils/helpers';
 
@@ -15,7 +15,7 @@ class Register extends Component{
 
     state = {
         confirmDirty: false,
-        // flag:0
+        regFlag: 0
     };
 
     handleConfirmBlur = e => {
@@ -48,11 +48,11 @@ class Register extends Component{
     };
 
     regSuccess = () => {
-        message.success('Register Success');
+        message.success('Register Success, Please Login!');
     };
 
-    regFailure = () => {
-        message.error('Register Failure');
+    regFailure = (err) => {
+        message.error('Register Failure: ' + err);
     };
 
     handleSubmit = () => {
@@ -69,20 +69,14 @@ class Register extends Component{
         axios.post(regURL, regData, axiosConfig)
         .then((res) => {
             this.regSuccess()
-            // this.setState({
-            //     flag: 1
-            // })
-        }).catch(() => {
-            this.regFailure()
+            this.setState({regFlag: 1})
+        }).catch((error) => {
+            this.regFailure(error.response.data.message)
         }); 
     }
 
 
     render(){
-        console.log(this.state.flag)
-        // if(this.state.flag){
-        //     return <Redirect to='/login'/>
-        // }
         const { getFieldDecorator } = this.props.form;
 
         const formItemLayout = {
@@ -98,7 +92,10 @@ class Register extends Component{
                 <Option value="86">+86</Option>
             </Select>,
         );
-      
+
+        if (this.state.regFlag){
+            return (<Redirect to="/login" />)
+        }
         return (
             <div>
                 <Form layout="horizontal" style={{marginTop: 120, minHeight: 600}}>
