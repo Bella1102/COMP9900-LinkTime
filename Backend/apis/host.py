@@ -80,7 +80,8 @@ class Property(Resource):
                                    notes='hello',
                                    house_rules='world',
                                    start_time=getTimeStamp(start_time),
-                                   end_time=getTimeStamp(end_time))
+                                   end_time=getTimeStamp(end_time),
+                                   available_dates=','.join(dateRange(start_time, end_time)))
 
         new_address = db.Address(property_id=property_id,
                                  state=state,
