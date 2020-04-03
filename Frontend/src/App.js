@@ -32,12 +32,12 @@ class App extends Component {
 							<Route path='/signup' exact component={ Register }></Route>
 
 							<Route path='/search' exact component={ Search }></Route>
-							<Route path='/order' exact component={ Order }></Route>
-							<Route path='/request' exact component={ Request }></Route>
+							<Route path='/orders' exact component={ Order }></Route>
+							<Route path='/requests' exact component={ Request }></Route>
 							
-							<Route path='/host' exact component={ Host }></Route>
-							<Route path='/myProp' exact component={ MyProp }></Route>
-							<Route path='/prop/:id' exact component={ OneProp }></Route>
+							<Route path='/postProp' exact component={ Host }></Route>
+							<Route path='/myProps' exact component={ MyProp }></Route>
+							<Route path='/props/:id' exact component={ OneProp }></Route>
 
 							<Route path='/success' exact component={ Success }></Route>
 							<Route path='/404' exact component={ FourOFour }></Route>

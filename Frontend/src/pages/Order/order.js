@@ -25,7 +25,7 @@ class Order extends Component {
                             const price = item.get('price').split('.')[0]
                             return (
                                 <Col span={12} key={index} className="allOrders">
-                                    <Link to={`/prop/${ item.get('property_id')}`}>
+                                    <Link to={`/props/${ item.get('property_id')}`}>
                                         <img src={item.get('img_url')} alt="" className="image"/>
                                     </Link>
                                     <div className="detail">

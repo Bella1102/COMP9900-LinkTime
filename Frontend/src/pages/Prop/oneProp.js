@@ -30,6 +30,10 @@ class OneProp extends Component {
         message.error('Order Failure: ' + err);
     };
 
+    goToLogin = () => {
+        message.success('Go To Login Please');
+    };
+
     comfirmOrder = (token, property_id, checkIn, checkOut, guests) => {
         const URL = baseURL + '/order/';
         const orderInfo = { "property_id": property_id, "checkIn": checkIn, "checkOut": checkOut, "guests": guests }
@@ -43,7 +47,8 @@ class OneProp extends Component {
             this.orderSuccess();
             this.setState({orderFlag: 1})
         }).catch((error) => {
-            this.orderFailure(error.response.data.message);
+            // this.orderFailure(error.response.data.message);
+            this.goToLogin()
         })
     };
     

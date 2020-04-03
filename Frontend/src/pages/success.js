@@ -13,7 +13,7 @@ class Success extends Component {
                 subTitle="Order configuration takes 1-5 minutes, please wait."
                 extra={[
                     <Link to="/" key="Home"><Button type="primary">Go Home Page</Button></Link>,
-                    <Link to="/order" key="Order"><Button type="primary">Go Order Page</Button></Link>
+                    <Link to="/orders" key="Order"><Button type="primary">Go Order Page</Button></Link>
                 ]}
             />
         );

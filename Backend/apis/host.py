@@ -50,6 +50,7 @@ class Property(Resource):
         session = db.get_session()
 
         if not request.json:
+            print('helloworld')
             abort(400, 'Malformed Request')
 
         post_pro_info = (title, property_type, amenities, price, state, suburb, location, postcode,bedrooms, bathrooms, start_time, end_time, description)= unpack(request.json,\
@@ -66,7 +67,6 @@ class Property(Resource):
 
         property_id = generatePropertyId()
         [latitude, longitude] = getLatLng(state, suburb, location, )
-
         new_property = db.Property(property_id=property_id,
                                    title=title,
                                    property_type=property_type,

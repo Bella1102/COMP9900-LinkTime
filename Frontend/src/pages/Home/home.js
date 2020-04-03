@@ -141,7 +141,7 @@ class Home extends Component {
                                     const price = item.get('price').split('.')[0]
                                     return (
                                         <Col span={6} key={index}>
-                                            <Link to={`/prop/${ item.get('property_id')}`}>
+                                            <Link to={`/props/${ item.get('property_id')}`}>
                                                 <div style={{textAlign: "center"}}><img src={item.get('image').get(1)} alt=""/></div>
                                                 <div className="title">{item.get('title')}</div>
                                             </Link>

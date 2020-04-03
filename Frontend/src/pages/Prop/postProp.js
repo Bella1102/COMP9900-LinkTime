@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import moment from 'moment';
 import {Form, Button, Input, Radio, Select, DatePicker, message } from 'antd';
+import { actionCreators } from '../../redux/oneStore';
 import * as helpers from '../../utils/helpers';
 
 
@@ -11,42 +14,20 @@ const baseURL = helpers.BACKEND_URL;
 
 class Host extends Component{
 
+    state = {
+        postPropFlag: 0
+    }
+
     propSuccess = () => {
         message.success('Post Property Success');
     };
 
-    propFailure = () => {
-        message.error('Post Property Failure');
+    propFailure = (err) => {
+        message.error('Post Property Failure: ' + err);
     };
 
-    handleSubmit = () => {
-        
-        let propInfo = this.props.form.getFieldsValue();
-        const propURL = baseURL + '/host/';
-        const axiosConfig = {
-            headers: {
-                "accept": "application/json",
-                'Content-Type':'application/json'
-            }
-        };
-        const start_time = propInfo.available_time[0].format('YYYY-MM-DD');
-        const end_time = propInfo.available_time[1].format('YYYY-MM-DD');
-        const propData = {"title": propInfo.title, "property_type": propInfo.type, "amenities": propInfo.amenity, 
-                        "price": propInfo.price, "state": propInfo.state, "suburb": propInfo.suburb, 
-                        "locaion": propInfo.locaion, "postcode": propInfo.postcode, "bedrooms": propInfo.bedrooms, 
-                        "barhtooms": propInfo.bathrooms, "start_time": start_time, "end_time": end_time, "description": propInfo.description}
-                        
-        axios.post(propURL, propData, axiosConfig).then((res) => {
-            console.log(res)
-            this.propSuccess()
-        }).catch(() => {
-            this.propFailure()
-        }); 
-    }
-
-
     render(){
-        
+        const { token } = this.props;
         const { getFieldDecorator } = this.props.form;
 
         const formItemLayout = {
@@ -60,6 +41,35 @@ class Host extends Component{
         const bedroomNum = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
         const bathroomNum = ['0', '1', '2', '3', '4', '5', '6']
 
+        const handleSubmit = () => {
+        
+            let propInfo = this.props.form.getFieldsValue();
+            const propURL = baseURL + '/host/';
+            const axiosConfig = {
+                headers: {
+                    "accept": "application/json",
+                    'Content-Type':'application/json',
+                    "Authorization": token
+                }
+            };
+            const start_date = propInfo.available_time[0].format('YYYY-MM-DD');
+            const end_date = propInfo.available_time[1].format('YYYY-MM-DD');
+            const propData = {"title": propInfo.title, "type": propInfo.type, "amenities": '{' + propInfo.amenity.toString() + '}', 
+                            "price": propInfo.price, "state": propInfo.state, "suburb": propInfo.suburb, 
+                            "location": propInfo.location, "postcode": propInfo.postcode, "bedrooms": propInfo.bedrooms, 
+                            "bathrooms": propInfo.bathrooms, "start_date": start_date, "end_date": end_date, "other_details": propInfo.description}
+                            
+            axios.post(propURL, propData, axiosConfig).then((res) => {
+                this.propSuccess()
+                this.setState({postPropFlag: 1})
+            }).catch((error) => {
+                this.propFailure(error.response.data.message)
+            }); 
+        }
+
+        if (this.state.postPropFlag){
+            return (<Redirect to="/myProps" />)
+        }
       
         return (
             <div style={{minHeight: 900}}>
@@ -200,7 +210,7 @@ class Host extends Component{
 
                     <Form.Item style={{textAlign: "center"}}>
                         <Button type="primary" 
-                                onClick={this.handleSubmit} 
+                                onClick={handleSubmit} 
                                 style={{fontWeight: 600}}>Confirm Post
                         </Button>
                     </Form.Item>
@@ -208,9 +218,30 @@ class Host extends Component{
             </div>
         );
     }
+
+    UNSAFE_componentWillMount(){
+        if (localStorage.linkToken){
+            this.props.isLogin(localStorage.linkToken)
+        }
+    }
 }
 
 
-export default Form.create()(Host);
+const mapState = (state) => {
+	return {
+        loginStatus: state.getIn(["combo", "loginStatus"]),
+        token: state.getIn(["combo", "token"]),
+	}
+}
+
+// 把store的dispatch方法挂载到props上
+const mapDispatch = (dispatch) => ({
+    isLogin(token){
+        dispatch(actionCreators.isLogin(token))
+    },
+});
+
+
+export default connect(mapState, mapDispatch)(Form.create()(Host));
 
 

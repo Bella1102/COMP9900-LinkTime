@@ -156,12 +156,12 @@ class Search extends Component {
                                         onMouseEnter={this.handleMouseOver.bind(this, index, latitude, longitude)}
                                         onMouseLeave={this.handleMouseLeave}
                                     >
-                                        <Link to={`/prop/${ item.get('property_id')}`}>
+                                        <Link to={`/props/${ item.get('property_id')}`}>
                                             <img src={item.get('image').get(1)} alt="" className="image"/>
                                         </Link>
                                         {/* detail */}
                                         <div className="detail">
-                                            <Link to={`/prop/${ item.get('property_id')}`}>
+                                            <Link to={`/props/${ item.get('property_id')}`}>
                                                 <div className="title">{item.get('title')}</div>
                                             </Link>
                                             <div className="location"> <Icon type="environment"/> {item.get('suburb')} · NSW</div>

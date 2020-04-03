@@ -21,7 +21,7 @@ class Header extends Component {
                     <Link to='/signup'><Icon type="user-add" style={{color: '#f9c700', marginRight: 10}}/>Sign Up</Link>
                 </Menu.Item>
                 <Menu.Item style={{width: 180, height: 35, fontWeight: 600 }}>
-                    <Link to='/request' style={{color: '#f9c700'}}>
+                    <Link to='/requests' style={{color: '#f9c700'}}>
                         <Icon type="message" theme="filled" style={{marginRight: 10}}/>Post Request
                     </Link>
                 </Menu.Item>
@@ -36,16 +36,16 @@ class Header extends Component {
                     <Link to='/profile'>Profile</Link>
                 </Menu.Item>
                 <Menu.Item style={{width: 180, height: 35, fontWeight: 600}}>
-                    <Link to='/order'>My orders</Link>
+                    <Link to='/orders'>My orders</Link>
                 </Menu.Item>
                 <Menu.Item style={{width: 180, height: 35, fontWeight: 600 }}>
-                    <Link to='/host'>Become a host</Link>
+                    <Link to='/postProp'>Become a host</Link>
                 </Menu.Item>
                 <Menu.Item style={{width: 180, height: 35, fontWeight: 600 }}>
-                    <Link to='/myProp'>My properties</Link>
+                    <Link to='/myProps'>My properties</Link>
                 </Menu.Item>
                 <Menu.Item style={{width: 180, height: 35, fontWeight: 600 }}>
-                    <Link to='/request'>Post Request</Link>
+                    <Link to='/requests'>Post Request</Link>
                 </Menu.Item>
                 <Menu.Item style={{width: 180, height: 35, fontWeight: 600}}>
                     <Link to='/' style={{color: '#f9c700'}} onClick={this.props.logout} >
@@ -83,7 +83,7 @@ class Header extends Component {
                 <Row className="header-top">
                     <Col span={24}>
                         <Link to='/' className="logo">LinkTime</Link>
-                        <Link to='/order'>
+                        <Link to='/orders'>
                             <Button type="primary" className="orders">My orders</Button>
                         </Link>
 
