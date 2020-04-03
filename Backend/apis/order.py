@@ -19,10 +19,14 @@ class Order(Resource):
         userInfo = authorize(request)
         if not userInfo:
             abort(403, 'Invalid Auth Token')
-
+        res = []
         order_info = session.query(db.Order).filter_by(user_id=userInfo.id).all()
-        print(order_info)
-        return getOrderInfo(order_info)
+        for order_obj in order_info:
+            pro_obj = session.query(db.Property).filter_by(property_id=order_obj.property_id).first()
+            img_obj = session.query(db.Image).filter_by(property_id=order_obj.property_id).first()
+            add_obj = session.query(db.Address).filter_by(property_id=order_obj.property_id).first()
+            res.append(getOrderInfo(order_obj, pro_obj, img_obj, add_obj))
+        return res
 
 
     @order.response(200, 'Success')
