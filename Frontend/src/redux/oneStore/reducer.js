@@ -8,7 +8,8 @@ const defaultState = fromJS({
 	token: null,
 	homePropInfo: null,
 	searchResults: null,
-	propDetail: null
+	propDetail: null,
+	allOrders: null
 });
 
 export default (state = defaultState, action) => {
@@ -33,6 +34,8 @@ export default (state = defaultState, action) => {
 			return state.set('searchResults', action.searchResults);
 		case constants.GET_PROP_DETAIL:
 			return state.set('propDetail', action.propDetail);
+		case constants.GET_ORDERS:
+			return state.set('allOrders', action.allOrders);
 
 		default:
 			return state;
