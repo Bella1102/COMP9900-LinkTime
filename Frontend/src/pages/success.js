@@ -12,8 +12,8 @@ class Success extends Component {
                 title="Successfully Purchased the Reservation!"
                 subTitle="Order configuration takes 1-5 minutes, please wait."
                 extra={[
-                    <Link to="/"><Button type="primary" key={1}>Go Home Page</Button></Link>,
-                    <Link to="/order"><Button type="primary" key={2}>Go Order Page</Button></Link>
+                    <Link to="/" key="Home"><Button type="primary">Go Home Page</Button></Link>,
+                    <Link to="/order" key="Order"><Button type="primary">Go Order Page</Button></Link>
                 ]}
             />
         );

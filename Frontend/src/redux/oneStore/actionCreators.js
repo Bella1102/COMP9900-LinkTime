@@ -58,13 +58,13 @@ export const login = (username, password) => {
 			localStorage.setItem('linkToken', res.data.token)
 			// get user info
 			const userURL = baseURL + '/user/';
-			const AxiosConfig = {
+			const axiosConfig = {
 				headers: {
 					"accept": "application/json",
 					"Authorization": res.data.token
 				}
 			};
-			axios.get(userURL, AxiosConfig).then((response) => {
+			axios.get(userURL, axiosConfig).then((response) => {
 				const userData = response.data;
 				dispatch(getUserData(userData, res.data.token));
 			}).catch(() => {
@@ -80,13 +80,13 @@ export const isLogin = (token) => {
 	return (dispatch) => {
 		// get user info
 		const userURL = baseURL + '/user/';
-		const AxiosConfig = {
+		const axiosConfig = {
 			headers: {
 				"accept": "application/json",
 				"Authorization": token
 			}
 		};
-		axios.get(userURL, AxiosConfig).then((response) => {
+		axios.get(userURL, axiosConfig).then((response) => {
 			const userData = response.data;
 			dispatch(getUserData(userData, token));
 		}).catch(() => {
@@ -175,6 +175,65 @@ export const comfirmOrder = (token, property_id, checkIn, checkOut, guests) => {
 		})
 	}
 };
+
+// get user orders
+const getOrders = (data) => ({
+	type: constants.GET_ORDERS,
+	allOrders: fromJS(data),
+});
+
+export const getMyOrders = (token) => {
+	const URL = baseURL + '/order/';
+	const axiosConfig = {
+		headers: {
+			"accept": "application/json",
+			"Authorization": token
+		}
+	};
+	return (dispatch) => {
+		axios.get(URL, axiosConfig).then((res) => {
+			dispatch(getOrders(res.data));
+			console.log(res.data)
+		}).catch(() => {
+			console.log('Get User Orders Failure');
+		})
+	}
+};
+
+const deleteSuccess = () => {
+	message.success('Delete Order Success');
+};
+
+const deleteFailure = (err) => {
+	message.error('Delete Order Failure: ' + err);
+};
+
+// delete order
+export const deleteOrder = (token, order_id) => {
+	const URL = baseURL + '/order/?order_id=' + order_id;
+	const axiosConfig = {
+		headers: {
+			"accept": "application/json",
+			"Authorization": token
+		}
+	};
+	return (dispatch) => {
+		axios.delete(URL, axiosConfig).then((res) => {
+			deleteSuccess();
+			// after delete, reget user orders
+			const getOrderURL = baseURL + '/order/';
+			axios.get(getOrderURL, axiosConfig).then((res) => {
+				dispatch(getOrders(res.data));
+				console.log(res.data)
+			}).catch(() => {
+				console.log('Get User Orders Failure');
+			})
+		}).catch((error) => {
+			deleteFailure(error.response.data.message);
+		})
+	}
+};
+
 
 
 
