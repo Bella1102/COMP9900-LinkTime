@@ -46,7 +46,6 @@ def search_params(api):
 def property_details(api):
     return api.model('property_details', {
     # need to be updated
-        'token': fields.String(example='Get a token through the login API'),
         'title': fields.String(example='Perfect Apartment'),
         'type': fields.String(example='House or Studio or Apartment'),
         'amenities': fields.String(example="{'TV', 'Wifi', 'Iron'...}"),
@@ -69,3 +68,10 @@ def order_details(api):
         'checkOut': fields.String(example='2020-04-15'),
         'guests': fields.String(example='2')
     })
+
+def review_details(api):
+    return api.model('review_details', {
+        'property_id': fields.String(example='11156'),
+        'review_content': fields.String(example='Perfet Apartment!')
+    })
+

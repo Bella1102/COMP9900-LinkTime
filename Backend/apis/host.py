@@ -17,7 +17,7 @@ class Property(Resource):
     @host.response(400, 'Missing Arguments')
     @host.response(403, 'Invalid Auth Token')
     @host.param('property_id', 'like "11156"')
-    @host.param('img_name', 'like "pic.jpg"')
+    # @host.param('img_name', 'like "pic.jpg"')
     @host.doc(description="Get property information. \n"
     "There has an exapmple output data in \"/Backend/db/one_property.json\"")
     # if the parameter is property_id. return the property information
@@ -43,7 +43,7 @@ class Property(Resource):
     @host.response(200, 'Success')
     @host.response(400, 'Missing Arguments')
     @host.response(403, 'Invalid Auth Token')
-    @host.expect(property_details(host))
+    @host.expect(auth_details(host), property_details(host))
     @host.doc(description='''Post new property.''')
     # one image is fine. many images is not working
     def post(self):
@@ -52,10 +52,10 @@ class Property(Resource):
         if not request.json:
             abort(400, 'Malformed Request')
 
-        post_pro_info = (token, title, property_type, amenities, price, state, suburb, location, postcode,bedrooms, bathrooms, start_time, end_time, description)= unpack(request.json,\
-                        'token', 'title', 'type', 'amenities', 'price', 'state', 'suburb', 'location', 'postcode','bedrooms', 'bathrooms', 'start_date', 'end_date', 'other_details')
+        post_pro_info = (title, property_type, amenities, price, state, suburb, location, postcode,bedrooms, bathrooms, start_time, end_time, description)= unpack(request.json,\
+                        'title', 'type', 'amenities', 'price', 'state', 'suburb', 'location', 'postcode','bedrooms', 'bathrooms', 'start_date', 'end_date', 'other_details')
 
-        userInfo = session.query(db.User).filter_by(token=token).first()
+        userInfo = authorize(request)
 
         if not userInfo:
             abort(403, 'Invalid Auth Token')
