@@ -1,17 +1,42 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Row, Col, Button } from 'antd';
+import { Row, Col, Button, Modal } from 'antd';
 import { actionCreators } from '../../redux/oneStore';
 import './order.less';
 
 
 
+const { confirm } = Modal;
+
+
+
 class Order extends Component {
 
-    
+    state = { 
+        visible: false 
+    }    
+
+    confirmCancelOrder = (token, order_id) => {
+        confirm({
+            title: 'Do you want to cancel this order?',
+            cancelText: 'No',
+            onOk() {
+                return new Promise((resolve, reject) => {
+                    setTimeout(Math.random() > 0.5 ? resolve : reject, 2000);
+                    console.log("delay")
+                    resolve()
+                }).then(() => { 
+                    this.props.deleteOrder(token, order_id)
+                }).catch((reject) => console.log(reject));
+            },
+            onCancel() { },
+        });
+    }     
+
+  
     render() {
-        const { token, allOrders } = this.props;
+        const { token, allOrders } = this.props;    
 
         return (
             <div className="content">
@@ -36,18 +61,38 @@ class Order extends Component {
                                         <div className="orderTime">Order time: {`${item.get('order_time')}`}</div>
                                         {
                                             item.get('order_status') === 'Active' ?
-                                            <Button type="primary" 
-                                                    onClick={() => {this.props.deleteOrder(token, item.get('order_id'))}}>
-                                                Cancel Order
-                                            </Button> :
-                                            <Button disabled>Cancel Order</Button>
+                                            <Fragment>
+                                                <Button type="primary" style={{width: 110}}
+                                                        onClick={() => this.confirmCancelOrder(token, item.get('order_id'))}
+                                                        // onClick={() => {this.props.deleteOrder(token, item.get('order_id'))}}
+                                                >
+                                                    Cancel Order
+                                                </Button>
+                                                <Button type="primary" 
+                                                        style={{marginLeft: 20, width: 110}}
+                                                        onClick={ () => this.setState({ visible: true }) }>
+                                                    Comment
+                                                </Button>
+                                            </Fragment> :
+                                            <Fragment>
+                                                <Button disabled>Cancel Order</Button>
+                                                <Button disabled style={{marginLeft: 20, width: 110}}>Comment</Button>
+                                            </Fragment>
                                         }
                                     </div>
                                 </Col>
                             )
                         }) : null
                     }
-                </Row>  
+                </Row>
+                <Modal
+                    title="Order Comment"
+                    visible={this.state.visible}
+                    onOk={ () => this.setState({ visible: false }) }
+                    onCancel={ () => this.setState({ visible: false }) }
+                    >
+                    <p>Some contents...</p>
+                </Modal>
             </div>
           );
     }
