@@ -3,7 +3,7 @@ from flask_restplus import Namespace, Resource
 
 import db.init_db as db
 from utils.helpers import *
-
+from utils.models import auth_details, update_userInfo
 home = Namespace('home', description='')
 
 @home.route('/')
@@ -46,7 +46,6 @@ class Property(Resource):
             })
 
         session.close()
-
         return res
 
 

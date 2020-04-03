@@ -4,6 +4,7 @@ import axios from 'axios';
 import {Form, Button, Select,Input, Upload, Icon, message} from 'antd';
 import * as helpers from '../../utils/helpers';
 
+import { Redirect } from 'react-router-dom';
 
 const { Option } = Select;
 const FormItem = Form.Item;
@@ -13,7 +14,8 @@ const baseURL = helpers.BACKEND_URL;
 class Register extends Component{
 
     state = {
-        confirmDirty: false
+        confirmDirty: false,
+        // flag:0
     };
 
     handleConfirmBlur = e => {
@@ -67,8 +69,9 @@ class Register extends Component{
         axios.post(regURL, regData, axiosConfig)
         .then((res) => {
             this.regSuccess()
-        }).then(() => {
-            window.location.href = '/'
+            // this.setState({
+            //     flag: 1
+            // })
         }).catch(() => {
             this.regFailure()
         }); 
@@ -76,7 +79,10 @@ class Register extends Component{
 
 
     render(){
-        
+        console.log(this.state.flag)
+        // if(this.state.flag){
+        //     return <Redirect to='/login'/>
+        // }
         const { getFieldDecorator } = this.props.form;
 
         const formItemLayout = {

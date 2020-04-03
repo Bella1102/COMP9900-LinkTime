@@ -4,6 +4,7 @@ import db.init_db as db
 import requests
 import random
 import time
+import datetime
 
 head_picture_url = 'https://www.logoshirt-shop.de/out/pictures/master/product/1/kuehlschrankmagnet-mickey_mouse_portrait_farbig.jpg'
 
@@ -118,7 +119,6 @@ def searchResult(pro_obj, img_obj, add_obj):
     }
     return temp
 def getPropertyInfo(pro_obj, img_obj, add_obj, rev_obj, host_obj):
-
     if pro_obj and img_obj and add_obj and rev_obj and host_obj:
         img_url_list = changeTextToList(img_obj.img_url)
         img_alt_list = changeTextToList(img_obj.img_alt)
@@ -138,6 +138,7 @@ def getPropertyInfo(pro_obj, img_obj, add_obj, rev_obj, host_obj):
             "notes": pro_obj.notes,
             "house_rules": pro_obj.house_rules,
             "start_time": pro_obj.start_time,
+            'available_dates': pro_obj.available_dates,
             # image information
             "img_alt": img_alt_list,
             "img_url": img_url_list,
@@ -195,3 +196,14 @@ def getOrderInfo(order_info):
               "order_status": order_obj.order_status}
         res.append(temp)
     return res
+
+
+def dateRange(beginDate, endDate):
+    dates = []
+    dt = datetime.datetime.strptime(beginDate, "%Y-%m-%d")
+    date = beginDate[:]
+    while date <= endDate:
+        dates.append(date)
+        dt = dt + datetime.timedelta(1)
+        date = dt.strftime("%Y-%m-%d")
+    return dates
