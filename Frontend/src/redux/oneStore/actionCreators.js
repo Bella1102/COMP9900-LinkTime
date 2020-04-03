@@ -201,11 +201,11 @@ export const getMyOrders = (token) => {
 };
 
 const deleteSuccess = () => {
-	message.success('Delete Order Success');
+	message.success('Cancel Order Success');
 };
 
 const deleteFailure = (err) => {
-	message.error('Delete Order Failure: ' + err);
+	message.error('Cancel Order Failure: ' + err);
 };
 
 // delete order
@@ -235,5 +235,95 @@ export const deleteOrder = (token, order_id) => {
 };
 
 
+// get user properties
+const getProps = (data) => ({
+	type: constants.GET_PROPS,
+	allProps: fromJS(data),
+});
+
+export const getMyProps = (token) => {
+	const URL = baseURL + '/order/';
+	const axiosConfig = {
+		headers: {
+			"accept": "application/json",
+			"Authorization": token
+		}
+	};
+	return (dispatch) => {
+		axios.get(URL, axiosConfig).then((res) => {
+			dispatch(getProps(res.data));
+			console.log(res.data)
+		}).catch(() => {
+			console.log('Get User Propertiess Failure');
+		})
+	}
+};
 
 
+const deletePropSuccess = () => {
+	message.success('Delete Property Success');
+};
+
+const deletePropFailure = (err) => {
+	message.error('Delete Property Failure: ' + err);
+};
+
+// delete property
+export const deleteProperty = (token, property_id) => {
+	const URL = baseURL + '/order/?order_id=' + property_id;
+	const axiosConfig = {
+		headers: {
+			"accept": "application/json",
+			"Authorization": token
+		}
+	};
+	return (dispatch) => {
+		axios.delete(URL, axiosConfig).then((res) => {
+			deletePropSuccess();
+			// after delete, reget user properties
+			const getOrderURL = baseURL + '/order/';
+			axios.get(getOrderURL, axiosConfig).then((res) => {
+				dispatch(getProps(res.data));
+			}).catch(() => {
+				console.log('Get User Properttiess Failure');
+			})
+		}).catch((error) => {
+			deletePropFailure(error.response.data.message);
+		})
+	}
+};
+
+
+const updatePropSuccess = () => {
+	message.success('Update Property Success');
+};
+
+const updatePropFailure = (err) => {
+	message.error('Update Property Failure: ' + err);
+};
+
+// update property
+export const updateProperty = (token, property_id) => {
+	const URL = baseURL + '/order/?order_id=' + property_id;
+	// const orderInfo = { "property_id": property_id }
+	const axiosConfig = {
+		headers: {
+			"accept": "application/json",
+			"Authorization": token
+		}
+	};
+	return (dispatch) => {
+		axios.delete(URL, axiosConfig).then((res) => {
+			updatePropSuccess();
+			// after update, reget user properties
+			const getOrderURL = baseURL + '/order/';
+			axios.get(getOrderURL, axiosConfig).then((res) => {
+				dispatch(getProps(res.data));
+			}).catch(() => {
+				console.log('Get User Properttiess Failure');
+			})
+		}).catch((error) => {
+			updatePropFailure(error.response.data.message);
+		})
+	}
+};

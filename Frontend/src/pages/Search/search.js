@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import GoogleMapReact from 'google-map-react';
-import { Form, DatePicker, Cascader, Button, Select, Row, Col, Pagination } from 'antd';
+import { Form, DatePicker, Cascader, Button, Select, Row, Col, Pagination, Icon } from 'antd';
 import { actionCreators } from '../../redux/oneStore';
 import * as helpers from '../../utils/helpers';
 import './search.less';
@@ -157,28 +157,28 @@ class Search extends Component {
                                         onMouseLeave={this.handleMouseLeave}
                                     >
                                         <Link to={`/prop/${ item.get('property_id')}`}>
-                                            <img src={item.get('image').get(1)} alt=""/>
+                                            <img src={item.get('image').get(1)} alt="" className="image"/>
                                         </Link>
                                         {/* detail */}
                                         <div className="detail">
-                                            <div style={{ marginTop: 5 }}>{item.get('suburb')}</div>
                                             <Link to={`/prop/${ item.get('property_id')}`}>
                                                 <div className="title">{item.get('title')}</div>
                                             </Link>
-                                            <p>
-                                                <span className="type">{`${item.get('property_type')}:`}</span>
+                                            <div className="location"> <Icon type="environment"/> {item.get('suburb')} · NSW</div>
+                                            <div style={{height: 35}}>
+                                                <span className="type">{`${item.get('property_type')}: `}</span>
                                                 <span>{`${item.get('bedrooms')} bedroom · `}</span>
                                                 <span>{`${item.get('bathrooms')} bath`}</span>
-                                            </p>
-                                            <p>
+                                            </div>
+                                            <div style={{height: 35}}>
                                                 <span style={{ marginRight: 5}}>{`${amenities[0]}`}</span>
                                                 <span style={{ marginRight: 5}}>{`${amenities[1]}`}</span>
                                                 <span style={{ marginRight: 5}}>{`${amenities[2]}`}</span>
-                                            </p>
-                                            <p>
+                                            </div>
+                                            <div className="priceLine">
                                                 <span className="price">{`${price} AUD `}</span>
                                                 <span>/night</span>
-                                            </p>
+                                            </div>
                                         </div>
                                     </div>
                                 )

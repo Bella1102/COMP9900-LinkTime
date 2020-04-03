@@ -13,5 +13,45 @@
 }
 
 .allOrders {
-    padding: 0 50px;
+    padding: 0 30px;
+    height: 230px;
+    margin-bottom: 10px;
+    .image {
+        float: left;
+        width: 48%;
+        height: 100%;
+    }
+    .detail {
+        float: left;
+        width: 52%;
+        height: 100%;
+        padding: 0 2%;
+        background-color: #f5f5f5;
+        .title {
+            color: @colorA;
+            font-size: 18px;
+            font-weight: bold;
+            height: 30px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+        .location {
+            height: 50px;
+            overflow: hidden;
+        }
+        .price {
+            color: black;
+            font-size: 16px;
+            font-weight: bold;
+            margin-right: 5px;
+            height: 30px;
+        }
+        .rentTime {
+            height: 30px;
+        }
+        .orderTime {
+            height: 30px;
+            margin-bottom: 5px;
+        }
+    }
 }

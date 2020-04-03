@@ -184,16 +184,17 @@ class Host extends Component{
                             getFieldDecorator('available_time', {
                                 initialValue: '',
                                 rules: [{ required: true, message: 'Please select available time!' }]
-                            })( <RangePicker format="YYYY-MM-DD" 
-                                            ranges={{ Today: [moment(), moment()], 
-                                            'This Month': [moment().startOf('month'), moment().endOf('month')]}} />)
+                            })( <RangePicker format="YYYY-MM-DD" style={{width: "100%"}}
+                                             ranges={{ Today: [moment(), moment()], 
+                                             'This Month': [moment().startOf('month'), moment().endOf('month')]}} />)
                         }
                     </Form.Item>
                     <Form.Item label="Other Detail" {...formItemLayout}>
                         {
                             getFieldDecorator('description',{
                                 initialValue: ''
-                            })( <Input.TextArea autoSize={{ minRows: 2, maxRows: 5 }} placeholder="Please input other detail"/> )
+                            })( <Input.TextArea placeholder="Please input other detail"
+                                                allowClear/> )
                         }
                     </Form.Item>
 

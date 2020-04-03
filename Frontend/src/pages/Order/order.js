@@ -9,10 +9,7 @@ import './order.less';
 
 class Order extends Component {
 
-    state = {
-        
-    };
-
+    
     render() {
         const { token, allOrders } = this.props;
 
@@ -25,19 +22,18 @@ class Order extends Component {
                     {   
                         allOrders !== null ?
                         allOrders.map((item, index) => {
+                            const price = item.get('price').split('.')[0]
                             return (
                                 <Col span={12} key={index} className="allOrders">
                                     <Link to={`/prop/${ item.get('property_id')}`}>
-                                        <img src={item.get('checkIn')} alt=""/>
+                                        <img src={item.get('img_url')} alt="" className="image"/>
                                     </Link>
                                     <div className="detail">
-                                        <div className="title">{item.get('checkIn')}</div>
-                                        <div style={{ marginTop: 5 }}>{item.get('checkIn')}</div>
-                                        <p>
-                                            <span>{`${item.get('checkIn')} `}</span>
-                                            <span>{`${item.get('checkOut')}`}</span>
-                                        </p>
-                                        <div>{`${item.get('order_time')}:`}</div>
+                                        <div className="title">{item.get('title')}</div>
+                                        <div className="location" style={{ marginTop: 5 }}>{item.get('location')}</div>
+                                        <div className="price">{price} AUD/night</div>
+                                        <div className="rentTime">Rent period: {`${item.get('checkIn')} `} to {`${item.get('checkOut')}`}</div>
+                                        <div className="orderTime">Order time: {`${item.get('order_time')}`}</div>
                                         {
                                             item.get('order_status') === 'Active' ?
                                             <Button type="primary" 

@@ -49,8 +49,7 @@ class OneProp extends Component {
     
 
     render() {
-        document.documentElement.scrollTop = 0;
-        const { token, userInfo, propDetail } = this.props;
+        const { token, propDetail } = this.props;
         const { getFieldDecorator } = this.props.form;
         const prop_id = this.props.match.params.id;
         const guestNum = ['1 Guest', '2 Guests', '3  Guests', '4  Guests'];
