@@ -57,7 +57,6 @@ class OneProp extends Component {
         let available_dates;
         if (propDetail){
             available_dates = propDetail.get('available_dates')
-            console.log(propDetail.get('available_dates') )
         }
         const disabledDate = (current) => {
             let cur = current.format('YYYY-MM-DD')

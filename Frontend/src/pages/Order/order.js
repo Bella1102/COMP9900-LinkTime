@@ -39,7 +39,7 @@ class Order extends Component {
                                         </p>
                                         <div>{`${item.get('order_time')}:`}</div>
                                         {
-                                            item.get('order_status') === 'Activate' ?
+                                            item.get('order_status') === 'Active' ?
                                             <Button type="primary" 
                                                     onClick={() => {this.props.deleteOrder(token, item.get('order_id'))}}>
                                                 Cancel Order

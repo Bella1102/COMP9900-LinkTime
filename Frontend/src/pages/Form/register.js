@@ -4,8 +4,6 @@ import { Redirect } from 'react-router-dom';
 import {Form, Button, Select,Input, Upload, Icon, message} from 'antd';
 import * as helpers from '../../utils/helpers';
 
-import { Redirect } from 'react-router-dom';
-
 const { Option } = Select;
 const FormItem = Form.Item;
 const baseURL = helpers.BACKEND_URL;
