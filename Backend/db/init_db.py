@@ -48,10 +48,11 @@ class Property(Base):
                         Column('notes', Text),
                         Column('house_rules', Text),
                         Column('start_time', Integer),
-                        Column('end_time', Integer))
+                        Column('end_time', Integer),
+                        Column('available_dates', Text))
     def __repr__(self):
         # return 'This is Property table'
-        return 'property_id: %s' % (self.property_id)
+        return 'Property: %s' % (self.property_id)
 
 # 3
 class Host(Base):
@@ -64,7 +65,7 @@ class Host(Base):
                         Column('host_img_url', Text),
                         Column('host_verifications', Text))
     def __repr__(self):
-        return 'property_id: %s' % (self.property_id)
+        return 'Host: %s' % (self.property_id)
 
 # 4
 class Address(Base):
@@ -81,7 +82,7 @@ class Address(Base):
                         Column('latitude', Float),
                         Column('longitude', Float))
     def __repr__(self):
-        return 'This is Property Address Table'
+        return 'Address: %s' % (self.property_id)
 
 # 5
 class Image(Base):
@@ -92,7 +93,7 @@ class Image(Base):
                         Column('img_url', Text),
                         Column('img_alt', Text))
     def __repr__(self):
-        return 'This is Property Image Table'
+        return 'Image: %s' % (self.property_id)
 
 # 6
 class Review(Base):
@@ -106,7 +107,7 @@ class Review(Base):
                         Column('review_content', Text),
                         Column('head_picture', Text))
     def __repr__(self):
-        return 'This is Review Table'
+        return 'review: %s' % (self.property_id)
 
 # 7
 class Order(Base):
@@ -121,7 +122,7 @@ class Order(Base):
                         Column('guests', Integer),
                         Column('order_status', VARCHAR(20)))
     def __repr__(self):
-        return 'user_id: %s' % (self.user_id)
+        return 'Order: %s' % (self.user_id)
 
 # 8
 class Request(Base):
@@ -184,6 +185,12 @@ def init_user(session):
 
 # the start date is seconds of 0:0 today
 def init_property(session):
+    now_time = datetime.datetime.now()
+    start_date = now_time.strftime('%Y-%m-%d')
+    end_date = now_time + datetime.timedelta(days=365)
+    end_date = end_date.strftime('%Y-%m-%d')
+    dates_list = dateRange(start_date, end_date);
+    available_dates = ','.join(dates_list)
     res = read_csv_return_dict('db/data/property.csv')
     for item in res:
         property = Property(property_id=int(item['property_id']),
@@ -199,7 +206,8 @@ def init_property(session):
                        notes=item['notes'],
                        house_rules=item['house_rules'],
                        start_time=round(time.mktime(datetime.date.today().timetuple())),
-                       end_time=str(-1))
+                       end_time=str(-1),
+                       available_dates=available_dates)
         session.add(property)
     session.commit()
 

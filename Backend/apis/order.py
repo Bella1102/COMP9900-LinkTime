@@ -57,12 +57,19 @@ class Order(Resource):
                              checkIn=checkIn,
                              checkOut=checkOut,
                              guests=guests,
-                             order_status="Activate")
+                             order_status="Active")
+
+        available_dates_list = proInfo.available_dates.split(',')
+        order_dates_list = dateRange(checkIn, checkOut)
+        available_dates = [item for item in available_dates_list if item not in order_dates_list]
+
         proInfo.start_time = getTimeStamp(checkOut)
+        proInfo.available_dates = ','.join(available_dates)
+
         session.add(new_order)
         session.commit()
         session.close()
-        print(checkOut)
+
         return {'message': 'success'}
 
     @order.response(200, 'Success')
@@ -83,8 +90,14 @@ class Order(Resource):
             abort(400, 'Invalid order_id')
 
         proInfo = session.query(db.Property).filter_by(property_id=orderInfo.property_id).first()
-        orderInfo.order_status='Cancel'
-        proInfo.start_time=round(time.mktime(datetime.date.today().timetuple()))
+
+        available_dates_list = proInfo.available_dates.split(',')
+        order_dates_list = dateRange(orderInfo.checkIn, orderInfo.checkOut)
+        available_dates = available_dates_list + order_dates_list
+
+        orderInfo.order_status = 'Canceled'
+        proInfo.start_time = round(time.mktime(datetime.date.today().timetuple()))
+        proInfo.available_dates = ','.join(available_dates)
 
         session.commit()
         session.close()

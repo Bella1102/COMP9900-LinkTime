@@ -74,7 +74,7 @@ class Search(Resource):
             if pro_info:
                 for pro_obj in pro_info:
                     img_obj = session.query(db.Image).filter_by(property_id=pro_obj.property_id).first()
-                    loc_obj = session.query(db.Address).filter_by(property_id=pro_obj.property_id).first()
+                    add_obj = session.query(db.Address).filter_by(property_id=pro_obj.property_id).first()
                     temp = searchResult(pro_obj, img_obj, add_obj)
                     result.append(temp)
 

@@ -49,21 +49,20 @@ class OneProp extends Component {
     
 
     render() {
-        // document.documentElement.scrollTop(0);
-        const { token, propDetail } = this.props;
+        document.documentElement.scrollTop = 0;
+        const { token, userInfo, propDetail } = this.props;
         const { getFieldDecorator } = this.props.form;
         const prop_id = this.props.match.params.id;
-        const guestNum = ['1 Guest', '2 Guests', '3  Guests', '4  Guests']
-        // get the gapday between start_time and today
-        let gapDay;
+        const guestNum = ['1 Guest', '2 Guests', '3  Guests', '4  Guests'];
+        let available_dates;
         if (propDetail){
-            // let seconds = Math.abs(propDetail.get('start_time') - Date.parse(new Date())/1000);
-            // gapDay = Math.round(seconds/(24*60*60));
-            gapDay = 0;
+            available_dates = propDetail.get('available_dates')
+            console.log(propDetail.get('available_dates') )
         }
         const disabledDate = (current) => {
-            //setup cannot choose the date before start_time and after end_time
-            return current && current < moment().add(gapDay, 'days');
+            let cur = current.format('YYYY-MM-DD')
+            let dates_set = new Set(available_dates.split(','))
+            return dates_set.has(cur) === false
         }
 
         const handleSubmit = () => {

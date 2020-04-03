@@ -65,7 +65,7 @@ def property_details(api):
 def order_details(api):
     return api.model('order_details', {
         'property_id': fields.String(example='11156'),
-        'checkIn':  fields.String(example='2020-05-10'),
-        'checkOut': fields.String(example='2020-05-15'),
+        'checkIn':  fields.String(example='2020-04-10'),
+        'checkOut': fields.String(example='2020-04-15'),
         'guests': fields.String(example='2')
     })
