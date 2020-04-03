@@ -1,48 +1,81 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-// import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { Redirect } from 'react-router-dom';
 import moment from 'moment';
-import { Form, Button, Row, Col, Collapse, DatePicker, Select } from 'antd';
+import { Form, Button, Row, Col, Collapse, DatePicker, Select, message } from 'antd';
 import { actionCreators } from '../../redux/oneStore';
-// import * as helpers from '../../utils/helpers';
+import * as helpers from '../../utils/helpers';
 import './oneProp.less';
 
 
 const { Option } = Select;
 const { Panel } = Collapse;
 const { RangePicker } = DatePicker;
-
+const baseURL = helpers.BACKEND_URL;
 
 class OneProp extends Component {
 
-    handleSubmit = (token, user_id, property_id, order_time) => {
-        // let orderInfo = this.props.form.getFieldsValue();
-        this.props.form.validateFields((err, values) => {
-            let checkIn = values.checkInOut[0].format('YYYY-MM-DD');
-            let checkOut = values.checkInOut[1].format('YYYY-MM-DD');
-            let guests = values.guests.split(' ')[0];
-            // this.props.comfirmOrder(token, user_id, property_id, order_time, checkIn, checkOut, guests);
-        })
+    state = {
+        orderFlag: 0
     }
 
+    orderSuccess = () => {
+        message.success('Order Success');
+    };
+    
+    orderFailure = (err) => {
+        message.error('Order Failure: ' + err);
+    };
+
+    comfirmOrder = (token, property_id, checkIn, checkOut, guests) => {
+        const URL = baseURL + '/order/';
+        const orderInfo = { "property_id": property_id, "checkIn": checkIn, "checkOut": checkOut, "guests": guests }
+        const axiosConfig = {
+            headers: {
+                "accept": "application/json",
+                "Authorization": token
+            }
+        };
+        axios.post(URL, orderInfo, axiosConfig).then((res) => {
+            this.orderSuccess();
+            this.setState({orderFlag: 1})
+        }).catch((error) => {
+            this.orderFailure(error.response.data.message);
+        })
+    };
+    
+
     render() {
-        console.log(this.state)
-        const { token, userInfo, propDetail } = this.props;
+        // document.documentElement.scrollTop(0);
+        const { token, propDetail } = this.props;
         const { getFieldDecorator } = this.props.form;
         const prop_id = this.props.match.params.id;
         const guestNum = ['1 Guest', '2 Guests', '3  Guests', '4  Guests']
-        // 获得start_time 和今天相差的天数
+        // get the gapday between start_time and today
         let gapDay;
         if (propDetail){
-            let seconds = Math.abs(propDetail.get('start_time') - Date.parse(new Date())/1000);
+            // let seconds = Math.abs(propDetail.get('start_time') - Date.parse(new Date())/1000);
             // gapDay = Math.round(seconds/(24*60*60));
-            gapDay = 5;
-            console.log(gapDay)
+            gapDay = 0;
         }
         const disabledDate = (current) => {
-            //必须设置start_time之前的和end_time之后的不能选择
-            // console.log(current)
+            //setup cannot choose the date before start_time and after end_time
             return current && current < moment().add(gapDay, 'days');
+        }
+
+        const handleSubmit = () => {
+            // let orderInfo = this.props.form.getFieldsValue();
+            this.props.form.validateFields((err, values) => {
+                let checkIn = values.checkInOut[0].format('YYYY-MM-DD');
+                let checkOut = values.checkInOut[1].format('YYYY-MM-DD');
+                let guests = values.guests.split(' ')[0];
+                this.comfirmOrder(token, prop_id, checkIn, checkOut, guests);
+            })
+        }
+
+        if (this.state.orderFlag){
+            return (<Redirect to="/success" />)
         }
 
         if (propDetail) {
@@ -68,25 +101,26 @@ class OneProp extends Component {
                         </Col>
                     </Row>
                     <Row className="showDetail">
-                        <Col span={15}>
-                            <div className="upperLeft">
-                                <div className="profile">
-                                    <img className="photo" src={propDetail.get('host_img_url')} alt=""/>
-                                    <div className="name">{propDetail.get('host_name')}</div>
-                                </div>
-                                <div className="description">
-                                    <div className="title">{ propDetail.get("title") }</div>
-                                    <p className="location">
-                                        <span style={{fontSize: 16}}>Address: </span>
-                                        <span >{ propDetail.get("location") }</span>
-                                    </p>
-                                    <p>
-                                        <span style={{marginRight: 10}}>{ `${ propDetail.get("accommodates") } guests` }</span>
-                                        <span style={{marginRight: 10}}>{ `${ propDetail.get("bedrooms") } bedroom` }</span>
-                                        <span>{ `${ propDetail.get("bathrooms") } bath` }</span>
-                                    </p>
-                                </div>
+                        <div className="upper">
+                            <div className="profile">
+                                <img className="photo" src={propDetail.get('host_img_url')} alt=""/>
+                                <div className="name">{propDetail.get('host_name')}</div>
                             </div>
+                            <div className="description">
+                                <div className="title">{ propDetail.get("title") }</div>
+                                <p className="location">
+                                    <span style={{fontSize: 16}}>Address: </span>
+                                    <span >{ propDetail.get("location") }</span>
+                                </p>
+                                <p>
+                                    <span style={{fontSize: 16}}>Accommodates: </span>
+                                    <span style={{marginRight: 10}}>{ `${ propDetail.get("accommodates") } guests` }</span>
+                                    <span style={{marginRight: 10}}>{ `${ propDetail.get("bedrooms") } bedroom` }</span>
+                                    <span>{ `${ propDetail.get("bathrooms") } bath` }</span>
+                                </p>
+                            </div>
+                        </div>
+                        <Col span={15}>
                             <div className="bigFonts">
                                 More about the property
                             </div>
@@ -163,8 +197,7 @@ class OneProp extends Component {
                                     </Form.Item>
                                     <Form.Item>
                                         <Button
-                                                // onClick={ this.handleSubmit(token, userInfo.id, propDetail.property_id, helpers.formatTime(new Date().getTime())) }
-                                                onClick={ this.handleSubmit }
+                                                onClick={handleSubmit}
                                                 style={{color: "black", width: "100%", height: 42, marginTop: 20, fontSize: 20, fontWeight: "bold", backgroundColor: "#ffc53d"}}>
                                             Reserve
                                         </Button>
@@ -181,8 +214,11 @@ class OneProp extends Component {
     }
 
     UNSAFE_componentWillMount(){
-        const prop_id = this.props.match.params.id;
-        this.props.getPropDetail(prop_id);   
+        const prop_id = this.props.match.params.id
+        this.props.getPropDetail(prop_id)
+        if (localStorage.linkToken){
+            this.props.isLogin(localStorage.linkToken)
+        }
     }
 }
 
@@ -196,11 +232,11 @@ const mapState = (state) => {
 }
 
 const mapDispatch = (dispatch) => ({
+    isLogin(token){
+        dispatch(actionCreators.isLogin(token))
+    },
     getPropDetail(property_id) {
         dispatch(actionCreators.getPropDetail(property_id))
-    },
-    comfirmOrder(token, user_id, property_id, order_time, checkIn, checkOut, guests) {
-        dispatch(actionCreators.comfirmOrder(token, user_id, property_id, order_time, checkIn, checkOut, guests))
     }
 });
 
