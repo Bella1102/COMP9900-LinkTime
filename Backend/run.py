@@ -13,6 +13,7 @@ from apis.order import order
 from apis.search import search
 from apis.request import request
 from apis.review import review
+from apis.upload import upload
 
 # mail_settings = {
 #     "MAIL_SERVER": 'smtp.gmail.com',
@@ -44,6 +45,7 @@ api.add_namespace(order)
 api.add_namespace(search)
 api.add_namespace(request)
 api.add_namespace(review)
+api.add_namespace(upload)
 
 # msg = Message(subject="Hello",
 #               recipients=["dxh1015@gmail.com"],
