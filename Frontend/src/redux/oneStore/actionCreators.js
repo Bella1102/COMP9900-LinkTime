@@ -327,3 +327,36 @@ export const updateProperty = (token, property_id) => {
 		})
 	}
 };
+
+
+const commentSuccess = () => {
+	message.success('Comment Success');
+};
+
+const commentFailure = (err) => {
+	message.error('Comment Failure: ' + err);
+};
+
+// post review
+export const submitComment = (token, property_id, order_id, title, content) => {
+	const URL = baseURL + '/review/';
+	const data = { "property_id": property_id, "order_id": order_id, "title": title, "content": content }
+	const axiosConfig = {
+		headers: {
+			"accept": "application/json",
+			'Content-Type':'application/json',
+			"Authorization": token
+		}
+	};
+	return (dispatch) => {
+		axios.post(URL,  data, axiosConfig).then((res) => {
+			commentSuccess();
+			console.log(res)
+		}).catch((error) => {
+			commentFailure(error.response.data.message);
+		})
+	}
+};
+
+
+

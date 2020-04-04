@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Row, Col, Button } from 'antd';
 import { actionCreators } from '../../redux/oneStore';
-
+import './index.less';
 
 
 class MyProp extends Component {
@@ -14,16 +14,16 @@ class MyProp extends Component {
 
         return (
             <div className="content">
-            <div className="orderTitle">
-                My Properties
-            </div>
-            <Row>
+                <div className="propTitle">
+                    My Properties
+                </div>
+                <Row>
                     {   
                         allProps !== null ?
                         allProps.map((item, index) => {
                             const price = item.get('price').split('.')[0]
                             return (
-                                <Col span={12} key={index} className="allOrders">
+                                <Col span={12} key={index} className="allProps">
                                     <Link to={`/props/${ item.get('property_id')}`}>
                                         <img src={item.get('img_url')} alt="" className="image"/>
                                     </Link>
@@ -44,9 +44,14 @@ class MyProp extends Component {
                             )
                         }) : null
                     }
+                    <Col span={12}>
+                        <Link to="/postProp">
+                            <Button icon="plus" className="addProp">Add a new property</Button>
+                        </Link>
+                    </Col>
                 </Row>  
-        </div>
-          );
+            </div>
+        );
     }
 
     UNSAFE_componentWillMount(){
