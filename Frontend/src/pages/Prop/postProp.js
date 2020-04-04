@@ -3,9 +3,12 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import moment from 'moment';
-import {Form, Button, Input, Radio, Select, DatePicker, message } from 'antd';
+import {Form, Button, Input, Radio, Select, DatePicker, 
+    Upload, Icon, Modal, message } from 'antd';
 import { actionCreators } from '../../redux/oneStore';
 import * as helpers from '../../utils/helpers';
+import './index.less';
+
 
 
 const { RangePicker } = DatePicker;
@@ -15,8 +18,35 @@ const baseURL = helpers.BACKEND_URL;
 class Host extends Component{
 
     state = {
-        postPropFlag: 0
+        postPropFlag: 0,
+        uploading: false,
+        previewVisible: false,
+        previewImage: '',
+        fileList: []
     }
+
+    getBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+        });
+    }
+
+    handleCancel = () => this.setState({ previewVisible: false });
+
+    handleChange = ({ fileList }) => this.setState({ fileList });
+
+    handlePreview = async file => {
+        if (!file.url && !file.preview) {
+            file.preview = await this.getBase64(file.originFileObj);
+        }
+        this.setState({
+            previewImage: file.url || file.preview,
+            previewVisible: true,
+        });
+    };
 
     propSuccess = () => {
         message.success('Post Property Success');
@@ -28,6 +58,7 @@ class Host extends Component{
 
     render(){
         const { token } = this.props;
+        const { previewVisible, previewImage, fileList } = this.state;
         const { getFieldDecorator } = this.props.form;
 
         const formItemLayout = {
@@ -205,6 +236,29 @@ class Host extends Component{
                                 initialValue: ''
                             })( <Input.TextArea placeholder="Please input other detail"
                                                 allowClear/> )
+                        }
+                    </Form.Item>
+                    <Form.Item label="photos" {...formItemLayout}>
+                        {
+                            getFieldDecorator('photos',{
+                                initialValue: [],
+                                rules: [{ required: true }]
+                            })( <div className="clearfix">
+                                    <Upload
+                                        multiple={true}
+                                        action="http://127.0.0.1:5000/upload/"
+                                        listType="picture"
+                                        fileList={fileList}
+                                        onPreview={this.handlePreview}
+                                        onChange={this.handleChange}
+                                    >
+                                    {this.state.fileList.length >= 9 ? null : <Button ><Icon type="plus" />Upload</Button>}
+                                    </Upload>
+                                    <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
+                                        <img style={{ width: '100%' }} src={previewImage} alt="photos"/>
+                                    </Modal>
+                                </div>
+                            )
                         }
                     </Form.Item>
 
