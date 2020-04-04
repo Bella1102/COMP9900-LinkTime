@@ -26,7 +26,7 @@ class MyProp extends Component {
                             return (
                                 <Col span={12} key={index} className="allProps">
                                     <Link to={`/props/${ item.get('property_id')}`}>
-                                        <img src={item.get('img_url')} alt="" className="image"/>
+                                        <img src={`file://${item.get('img_url')}`} alt="" className="image"/>
                                     </Link>
                                     <div className="detail">
                                         <div className="title">{item.get('title')}</div>
@@ -59,7 +59,7 @@ class MyProp extends Component {
         if (localStorage.linkToken){
             this.props.isLogin(localStorage.linkToken)
         }
-        this.props.getMyProps(this.props.token)
+        this.props.getUserInfo(this.props.token)
     }
 }
 
@@ -76,8 +76,8 @@ const mapDispatch = (dispatch) => ({
     isLogin(token){
         dispatch(actionCreators.isLogin(token))
     },
-    getMyProps(token) {
-        dispatch(actionCreators.getMyProps(token))
+    getUserInfo(token) {
+        dispatch(actionCreators.getUserInfo(token))
     },
     deleteProperty(token, property_id) {
         dispatch(actionCreators.deleteProperty(token, property_id))
