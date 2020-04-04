@@ -52,7 +52,6 @@ class OneProp extends Component {
         })
     };
     
-
     render() {
         const { token, propDetail } = this.props;
         const { getFieldDecorator } = this.props.form;

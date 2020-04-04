@@ -16,18 +16,19 @@ class Order extends Component {
     state = { 
         visible: false 
     }    
-
     confirmCancelOrder = (token, order_id) => {
+        let del = this
         confirm({
             title: 'Do you want to cancel this order?',
             cancelText: 'No',
             onOk() {
                 return new Promise((resolve, reject) => {
-                    setTimeout(Math.random() > 0.5 ? resolve : reject, 2000);
-                    console.log("delay")
-                    resolve()
+                    // setTimeout(Math.random() > 0.5 ? resolve : reject, 2000);
+                    setTimeout(function(){
+                        resolve();
+                    }, 1500)
                 }).then(() => { 
-                    this.props.deleteOrder(token, order_id)
+                    del.props.deleteOrder(token, order_id)
                 }).catch((reject) => console.log(reject));
             },
             onCancel() { },

@@ -171,6 +171,7 @@ def getPropertyInfo(pro_obj, img_obj, add_obj, rev_obj, host_obj):
             "notes": pro_obj.notes,
             "house_rules": pro_obj.house_rules,
             "start_time": pro_obj.start_time,
+            'available_dates': pro_obj.available_dates,
             # address information
             "latitude": round(add_obj.latitude, 6),
             "longitude": round(add_obj.longitude, 6),
