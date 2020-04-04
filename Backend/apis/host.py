@@ -99,9 +99,7 @@ class Property(Resource):
 
         imgs_num = len(filename)
         img_alt = ['' for i in range(imgs_num)]
-        base_path = os.getcwd() + '/uploads/'
-        img_url = [base_path + item for item in filename]
-        new_imgs =  db.Image(property_id=property_id, img_alt=str(img_alt), img_url=str(img_url))
+        new_imgs =  db.Image(property_id=property_id, img_alt=str(img_alt), img_url=str(filename))
 
         session.add(new_property)
         session.add(new_address)
