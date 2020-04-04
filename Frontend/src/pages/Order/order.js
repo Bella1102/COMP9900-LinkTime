@@ -3,12 +3,14 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Form, Row, Col, Button, Modal, Tabs, Input, } from 'antd';
 import { actionCreators } from '../../redux/oneStore';
+import * as helpers from '../../utils/helpers';
 import './order.less';
 
 
 
 const { confirm } = Modal;
 const { TabPane } = Tabs;
+const imgURL = helpers.BACKEND_URL + "/upload/?img_name=";
 
 
 
@@ -62,7 +64,9 @@ class Order extends Component {
                             return (
                                 <Col span={12} key={index} className="allOrders">
                                     <Link to={`/props/${ item.get('property_id')}`}>
-                                        <img src={item.get('img_url')} alt="" className="image"/>
+                                        <img src={item.get('img_url')} 
+                                            onError={(e) => e.target.src=`${imgURL}${item.get('img_url')}`}
+                                            alt="" className="image"/>
                                     </Link>
                                     <div className="detail">
                                         <div className="title">{item.get('title')}</div>
@@ -97,7 +101,9 @@ class Order extends Component {
                             return (
                                 <Col span={12} key={index} className="allOrders">
                                     <Link to={`/props/${ item.get('property_id')}`}>
-                                        <img src={item.get('img_url')} alt="" className="image"/>
+                                        <img src={item.get('img_url')} 
+                                            onError={(e) => e.target.src=`${imgURL}${item.get('img_url')}`}
+                                            alt="" className="image"/>
                                     </Link>
                                     <div className="detail">
                                         <div className="title">{item.get('title')}</div>
@@ -122,7 +128,9 @@ class Order extends Component {
                             return (
                                 <Col span={12} key={index} className="allOrders">
                                     <Link to={`/props/${ item.get('property_id')}`}>
-                                        <img src={item.get('img_url')} alt="" className="image"/>
+                                        <img src={item.get('img_url')} 
+                                            onError={(e) => e.target.src=`${imgURL}${item.get('img_url')}`}
+                                            alt="" className="image"/>
                                     </Link>
                                     <div className="detail">
                                         <div className="title">{item.get('title')}</div>

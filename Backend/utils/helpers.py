@@ -121,7 +121,7 @@ def searchResult(pro_obj, img_obj, add_obj):
     return temp
 def getPropertyInfo(pro_obj, img_obj, add_obj, rev_obj, host_obj):
     img_info_dict = {}
-    rev_info_dict = {}
+    rev_info_dict = {"reviews": []}
 
     base_pro_info = {
         # property information
@@ -189,15 +189,15 @@ def getAllProOfHost(ord_obj,pro_obj, img_obj, add_obj):
             "price": pro_obj.price,
             "img_url": img_url_list[0],
             "location": add_obj.location }
-    if ord_obj:
-        ord_info = {
-            "order_id": order_obj.id,
-            "property_id": order_obj.property_id,
-            "order_time": order_obj.order_time,
-            "checkIn": order_obj.checkIn,
-            "checkOut": order_obj.checkOut,
-            "guests": order_obj.guests,
-            "order_status": order_obj.order_status }
+    # if ord_obj:
+    #     ord_info = {
+    #         "order_id": order_obj.id,
+    #         "property_id": order_obj.property_id,
+    #         "order_time": order_obj.order_time,
+    #         "checkIn": order_obj.checkIn,
+    #         "checkOut": order_obj.checkOut,
+    #         "guests": order_obj.guests,
+    #         "order_status": order_obj.order_status }
 
     temp.update(ord_info)
     return temp

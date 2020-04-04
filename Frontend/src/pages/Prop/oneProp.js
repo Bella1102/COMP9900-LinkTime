@@ -14,7 +14,7 @@ const { Panel } = Collapse;
 const { confirm } = Modal;
 const { RangePicker } = DatePicker;
 const baseURL = helpers.BACKEND_URL;
-
+const imgURL = helpers.BACKEND_URL + "/upload/?img_name=";
 
 
 class OneProp extends Component {
@@ -103,7 +103,10 @@ class OneProp extends Component {
                     <Row className="oneProp">
                         <Col span={12}>
                             <div style={{overflow: "hidden"}}>
-                                <img className="pic" src={ propDetail.get('img_url').get(0) } alt=""/>
+                                <img className="pic" 
+                                    src={ propDetail.get('img_url').get(0) } 
+                                    onError={(e) => e.target.src=`${imgURL}${propDetail.get('img_url').get(0)}`}
+                                    alt=""/>
                             </div>
                         </Col>
                         <Col span={12}>
@@ -111,7 +114,10 @@ class OneProp extends Component {
                             [1,2,3,4].map((value, index) => {
                                 return(
                                         <div className='right' key={index}>
-                                            <img className="pic" src={ propDetail.get('img_url').get(value) } alt=""/>
+                                            <img className="pic" 
+                                                src={ propDetail.get('img_url').get(value) } 
+                                                onError={(e) => e.target.src=`${imgURL}${propDetail.get('img_url').get(value)}`}
+                                                alt=""/>
                                         </div>
                                 )   
                             })

@@ -211,16 +211,11 @@ export const deleteOrder = (token, order_id) => {
 	return (dispatch) => {
 		axios.delete(URL, axiosConfig(token)).then((res) => {
 			deleteSuccess();
+			console.log(res)
 			// after delete, reget user orders
-			const getOrderURL = baseURL + '/order/';
-			axios.get(getOrderURL, axiosConfig).then((res) => {
-				dispatch(getOrders(res.data));
-				console.log(res.data)
-			}).catch(() => {
-				console.log('Get User Orders Failure');
-			})
+			dispatch(getMyOrders(token))
 		}).catch((error) => {
-			deleteFailure(error.response.data.message);
+			deleteFailure(error.response);
 		})
 	}
 };

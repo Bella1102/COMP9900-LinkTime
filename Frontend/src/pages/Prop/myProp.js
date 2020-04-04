@@ -3,7 +3,11 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Row, Col, Button } from 'antd';
 import { actionCreators } from '../../redux/oneStore';
+import * as helpers from '../../utils/helpers';
 import './index.less';
+
+
+const baseURL = helpers.BACKEND_URL + "/upload/?img_name=";
 
 
 
@@ -26,7 +30,7 @@ class MyProp extends Component {
                             return (
                                 <Col span={12} key={index} className="allProps">
                                     <Link to={`/props/${ item.get('property_id')}`}>
-                                        <img src={`file://${item.get('img_url')}`} alt="" className="image"/>
+                                        <img src={`${baseURL}${item.get('img_url')}`} alt="" className="image"/>
                                     </Link>
                                     <div className="detail">
                                         <div className="title">{item.get('title')}</div>

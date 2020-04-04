@@ -37,6 +37,8 @@ class User(Resource):
             img_obj = session.query(db.Image).filter_by(property_id=property_id).first()
             add_obj = session.query(db.Address).filter_by(property_id=property_id).first()
             ord_obj = session.query(db.Order).filter_by(property_id=property_id).first()
+            if not ord_obj:
+                ord_obj = 0
 
             res.append(getAllProOfHost(ord_obj,pro_obj, img_obj, add_obj))
 
