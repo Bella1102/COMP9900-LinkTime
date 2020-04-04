@@ -19,7 +19,6 @@ class Host extends Component{
 
     state = {
         postPropFlag: 0,
-        uploading: false,
         previewVisible: false,
         previewImage: '',
         fileList: []
@@ -83,12 +82,15 @@ class Host extends Component{
                     "Authorization": token
                 }
             };
+            let filenames = []
+            fileList.forEach((item) => { filenames.push(item['name']) })
             const start_date = propInfo.available_time[0].format('YYYY-MM-DD');
             const end_date = propInfo.available_time[1].format('YYYY-MM-DD');
             const propData = {"title": propInfo.title, "type": propInfo.type, "amenities": '{' + propInfo.amenity.toString() + '}', 
                             "price": propInfo.price, "state": propInfo.state, "suburb": propInfo.suburb, 
                             "location": propInfo.location, "postcode": propInfo.postcode, "bedrooms": propInfo.bedrooms, 
-                            "bathrooms": propInfo.bathrooms, "start_date": start_date, "end_date": end_date, "other_details": propInfo.description}
+                            "bathrooms": propInfo.bathrooms, "start_date": start_date, "end_date": end_date, 
+                            "other_details": propInfo.description, "filename": filenames}
                             
             axios.post(propURL, propData, axiosConfig).then((res) => {
                 this.propSuccess()
