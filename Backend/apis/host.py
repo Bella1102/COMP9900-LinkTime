@@ -55,8 +55,8 @@ class Property(Resource):
             print('helloworld')
             abort(400, 'Malformed Request')
 
-        post_pro_info = (title, property_type, amenities, price, state, suburb, location, postcode,bedrooms, bathrooms, start_time, end_time, description, filename)= unpack(request.json,\
-                        'title', 'type', 'amenities', 'price', 'state', 'suburb', 'location', 'postcode','bedrooms', 'bathrooms', 'start_date', 'end_date', 'other_details', 'filename')
+        post_pro_info = (title, property_type, amenities, price, state, suburb, location, postcode,bedrooms, bathrooms, start_time, end_time, filename, description)= unpack(request.json,\
+                        'title', 'type', 'amenities', 'price', 'state', 'suburb', 'location', 'postcode','bedrooms', 'bathrooms', 'start_date', 'end_date', 'filename', 'other_details')
 
         userInfo = authorize(request)
 

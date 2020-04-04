@@ -5,12 +5,12 @@ import * as constants from './constants';
 const defaultState = fromJS({
 	loginStatus: false,
 	userInfo: null,
+	allProps: null,
 	token: null,
 	homePropInfo: null,
 	searchResults: null,
 	propDetail: null,
 	allOrders: null,
-	allProps: null,
 	allRequests: null
 });
 
@@ -20,6 +20,7 @@ export default (state = defaultState, action) => {
 			return state.merge({
 				loginStatus: action.loginStatus,
 				userInfo: action.userInfo,
+				allProps: action.allProps,
 				token: action.token
 			});
 		// immutable对象的set方法，会结合之前immutable对象的值和设置的值，返回一个全新的值
@@ -37,8 +38,6 @@ export default (state = defaultState, action) => {
 			return state.set('propDetail', action.propDetail);
 		case constants.GET_ORDERS:
 			return state.set('allOrders', action.allOrders);
-		case constants.GET_PROPS:
-			return state.set('allProps', action.allProps);
 		default:
 			return state;
 	}

@@ -130,7 +130,34 @@ class Host extends Component{
                                 </Radio.Group>)
                         }
                     </Form.Item>
-
+                    <Form.Item label="photos" {...formItemLayout}>
+                        {
+                            getFieldDecorator('photos',{
+                                initialValue: [],
+                                rules: [{ required: true }]
+                            })( <div className="clearfix">
+                                    <Upload
+                                        multiple={true}
+                                        action="http://127.0.0.1:5000/upload/"
+                                        listType="picture"
+                                        fileList={fileList}
+                                        onPreview={this.handlePreview}
+                                        onChange={this.handleChange}
+                                    >
+                                    {
+                                        this.state.fileList.length <= 9 ? 
+                                        <Button style={{backgroundColor: "#f0f0f0", width: "100%" }}><Icon type="plus" />
+                                            Upload Property Photos
+                                        </Button> : null
+                                    }
+                                    </Upload>
+                                    <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
+                                        <img style={{ width: '100%' }} src={previewImage} alt="photos"/>
+                                    </Modal>
+                                </div>
+                            )
+                        }
+                    </Form.Item>
                     <Form.Item label="Amenities" {...formItemLayout}>
                         {
                             getFieldDecorator('amenity', {
@@ -240,30 +267,6 @@ class Host extends Component{
                                                 allowClear/> )
                         }
                     </Form.Item>
-                    <Form.Item label="photos" {...formItemLayout}>
-                        {
-                            getFieldDecorator('photos',{
-                                initialValue: [],
-                                rules: [{ required: true }]
-                            })( <div className="clearfix">
-                                    <Upload
-                                        multiple={true}
-                                        action="http://127.0.0.1:5000/upload/"
-                                        listType="picture"
-                                        fileList={fileList}
-                                        onPreview={this.handlePreview}
-                                        onChange={this.handleChange}
-                                    >
-                                    {this.state.fileList.length >= 9 ? null : <Button ><Icon type="plus" />Upload</Button>}
-                                    </Upload>
-                                    <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
-                                        <img style={{ width: '100%' }} src={previewImage} alt="photos"/>
-                                    </Modal>
-                                </div>
-                            )
-                        }
-                    </Form.Item>
-
                     <Form.Item style={{textAlign: "center"}}>
                         <Button type="primary" 
                                 onClick={handleSubmit} 

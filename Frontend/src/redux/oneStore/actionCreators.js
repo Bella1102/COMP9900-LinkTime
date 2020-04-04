@@ -6,6 +6,7 @@ import * as helpers from '../../utils/helpers';
 
 
 const baseURL = helpers.BACKEND_URL;
+
 const getConfig = {
 	headers: { "accept": "application/json" }
 };
@@ -13,6 +14,23 @@ const postConfig = {
 	headers: {
 		"accept": "application/json",
 		'Content-Type':'application/json',
+	}
+};
+const axiosConfig = (token) => {
+	return {
+		headers: {
+			"accept": "application/json",
+			"Authorization": token
+		}
+	}
+};
+const axiosPostConfig = (token) => {
+	return {
+		headers: {
+			"accept": "application/json",
+			'Content-Type':'application/json',
+			"Authorization": token
+		}
 	}
 };
 
@@ -36,6 +54,7 @@ const getUserData = (data, token) => ({
 	type: constants.GET_USER_DATA,
 	loginStatus: true,
 	userInfo: fromJS(data),
+	allProps: fromJS(data.properties),
 	token: fromJS(token)
 });
 
@@ -45,6 +64,26 @@ const loginSuccess = () => {
 
 const loginFailure = (err) => {
 	message.error('Login Failure: ' + err);
+};
+
+export const getUserInfo = (token) => {
+	const userURL = baseURL + '/user/';
+	return (dispatch) => {
+		axios.get(userURL, axiosConfig(token)).then((response) => {
+			console.log(response)
+			const userData = response.data;
+			dispatch(getUserData(userData, token));
+		}).catch((error) => {
+			console.log(error.response.data.message);
+		});
+	}
+}
+
+export const isLogin = (token) => {
+	return (dispatch) => {
+		// get user info
+		dispatch(getUserInfo(token))
+	}
 };
 
 export const login = (username, password) => {
@@ -57,40 +96,9 @@ export const login = (username, password) => {
 			loginSuccess();
 			localStorage.setItem('linkToken', res.data.token)
 			// get user info
-			const userURL = baseURL + '/user/';
-			const axiosConfig = {
-				headers: {
-					"accept": "application/json",
-					"Authorization": res.data.token
-				}
-			};
-			axios.get(userURL, axiosConfig).then((response) => {
-				const userData = response.data;
-				dispatch(getUserData(userData, res.data.token));
-			}).catch(() => {
-				console.log("Get UserInfo Failure!");
-			});
+			dispatch(getUserInfo(res.data.token))
 		}).catch((error) => {
 			loginFailure(error.response.data.message);
-		});
-	}
-};
-
-export const isLogin = (token) => {
-	return (dispatch) => {
-		// get user info
-		const userURL = baseURL + '/user/';
-		const axiosConfig = {
-			headers: {
-				"accept": "application/json",
-				"Authorization": token
-			}
-		};
-		axios.get(userURL, axiosConfig).then((response) => {
-			const userData = response.data;
-			dispatch(getUserData(userData, token));
-		}).catch(() => {
-			console.log("Get UserInfo Failure!");
 		});
 	}
 };
@@ -160,14 +168,9 @@ const orderFailure = (err) => {
 export const comfirmOrder = (token, property_id, checkIn, checkOut, guests) => {
 	const URL = baseURL + '/order/';
 	const orderInfo = { "property_id": property_id, "checkIn": checkIn, "checkOut": checkOut, "guests": guests }
-	const axiosConfig = {
-		headers: {
-			"accept": "application/json",
-			"Authorization": token
-		}
-	};
+
 	return (dispatch) => {
-		axios.post(URL, orderInfo, axiosConfig).then((res) => {
+		axios.post(URL, orderInfo, axiosConfig(token)).then((res) => {
 			orderSuccess();
 			console.log(res)
 		}).catch((error) => {
@@ -184,14 +187,8 @@ const getOrders = (data) => ({
 
 export const getMyOrders = (token) => {
 	const URL = baseURL + '/order/';
-	const axiosConfig = {
-		headers: {
-			"accept": "application/json",
-			"Authorization": token
-		}
-	};
 	return (dispatch) => {
-		axios.get(URL, axiosConfig).then((res) => {
+		axios.get(URL, axiosConfig(token)).then((res) => {
 			dispatch(getOrders(res.data));
 			console.log(res.data)
 		}).catch(() => {
@@ -211,14 +208,8 @@ const deleteFailure = (err) => {
 // delete order
 export const deleteOrder = (token, order_id) => {
 	const URL = baseURL + '/order/?order_id=' + order_id;
-	const axiosConfig = {
-		headers: {
-			"accept": "application/json",
-			"Authorization": token
-		}
-	};
 	return (dispatch) => {
-		axios.delete(URL, axiosConfig).then((res) => {
+		axios.delete(URL, axiosConfig(token)).then((res) => {
 			deleteSuccess();
 			// after delete, reget user orders
 			const getOrderURL = baseURL + '/order/';
@@ -235,31 +226,6 @@ export const deleteOrder = (token, order_id) => {
 };
 
 
-// get user properties
-const getProps = (data) => ({
-	type: constants.GET_PROPS,
-	allProps: fromJS(data),
-});
-
-export const getMyProps = (token) => {
-	const URL = baseURL + '/order/';
-	const axiosConfig = {
-		headers: {
-			"accept": "application/json",
-			"Authorization": token
-		}
-	};
-	return (dispatch) => {
-		axios.get(URL, axiosConfig).then((res) => {
-			dispatch(getProps(res.data));
-			console.log(res.data)
-		}).catch(() => {
-			console.log('Get User Propertiess Failure');
-		})
-	}
-};
-
-
 const deletePropSuccess = () => {
 	message.success('Delete Property Success');
 };
@@ -271,22 +237,11 @@ const deletePropFailure = (err) => {
 // delete property
 export const deleteProperty = (token, property_id) => {
 	const URL = baseURL + '/order/?order_id=' + property_id;
-	const axiosConfig = {
-		headers: {
-			"accept": "application/json",
-			"Authorization": token
-		}
-	};
 	return (dispatch) => {
-		axios.delete(URL, axiosConfig).then((res) => {
+		axios.delete(URL, axiosConfig(token)).then((res) => {
 			deletePropSuccess();
 			// after delete, reget user properties
-			const getOrderURL = baseURL + '/order/';
-			axios.get(getOrderURL, axiosConfig).then((res) => {
-				dispatch(getProps(res.data));
-			}).catch(() => {
-				console.log('Get User Properttiess Failure');
-			})
+			
 		}).catch((error) => {
 			deletePropFailure(error.response.data.message);
 		})
@@ -306,22 +261,12 @@ const updatePropFailure = (err) => {
 export const updateProperty = (token, property_id) => {
 	const URL = baseURL + '/order/?order_id=' + property_id;
 	// const orderInfo = { "property_id": property_id }
-	const axiosConfig = {
-		headers: {
-			"accept": "application/json",
-			"Authorization": token
-		}
-	};
+
 	return (dispatch) => {
-		axios.delete(URL, axiosConfig).then((res) => {
+		axios.delete(URL, axiosConfig(token)).then((res) => {
 			updatePropSuccess();
 			// after update, reget user properties
-			const getOrderURL = baseURL + '/order/';
-			axios.get(getOrderURL, axiosConfig).then((res) => {
-				dispatch(getProps(res.data));
-			}).catch(() => {
-				console.log('Get User Properttiess Failure');
-			})
+			
 		}).catch((error) => {
 			updatePropFailure(error.response.data.message);
 		})
@@ -341,15 +286,9 @@ const commentFailure = (err) => {
 export const submitComment = (token, property_id, order_id, title, content) => {
 	const URL = baseURL + '/review/';
 	const data = { "property_id": property_id, "order_id": order_id, "title": title, "content": content }
-	const axiosConfig = {
-		headers: {
-			"accept": "application/json",
-			'Content-Type':'application/json',
-			"Authorization": token
-		}
-	};
+
 	return (dispatch) => {
-		axios.post(URL,  data, axiosConfig).then((res) => {
+		axios.post(URL,  data, axiosPostConfig(token)).then((res) => {
 			commentSuccess();
 			console.log(res)
 		}).catch((error) => {
