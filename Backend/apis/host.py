@@ -19,11 +19,9 @@ class Property(Resource):
     @host.response(403, 'Invalid Auth Token')
     @host.param('property_id', 'like "11156"')
     @host.param('property_id', 'like "11156"')
-    # @host.param('img_name', 'like "pic.jpg"')
     @host.doc(description="Get property information. \n"
     "There has an exapmple output data in \"/Backend/db/one_property.json\"")
-    # if the parameter is property_id. return the property information
-    # if the parameter is imagename, return the image
+
     def get(self):
         property_id = request.args.get('property_id')
         img_name = request.args.get('img_name')
@@ -46,7 +44,8 @@ class Property(Resource):
     @host.response(400, 'Missing Arguments')
     @host.response(403, 'Invalid Auth Token')
     @host.expect(auth_details(host), property_details(host))
-    @host.doc(description='''Post new property.''')
+    @host.doc(description="Post new property. Notice: through the upload API upload images,\n"
+                            "and then put the img name into the filename list")
     # one image is fine. many images is not working
     def post(self):
         session = db.get_session()
@@ -110,7 +109,9 @@ class Property(Resource):
         session.add(new_imgs)
         session.commit()
         session.close()
-        return {'Property id': property_id}
+        # return {'Property id': property_id}
+        return {'message': 'success'}
+
 
 
 

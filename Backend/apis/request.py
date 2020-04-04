@@ -3,6 +3,7 @@ from flask_restplus import Namespace, Resource
 
 import db.init_db as db
 from utils.helpers import *
+from utils.models import *
 
 
 request = Namespace('request', description='Visitor request')
@@ -20,7 +21,10 @@ class Search(Resource):
     @request.response(200, 'Success')
     @request.response(400, 'Missing Arguments')
     @request.response(403, 'Invalid Auth Token')
+    @request.expect(auth_details(request), (request))
     @request.doc(description='''Personal orders!''')
     def post(self):
+        session = db.get_session()
+
         pass
 
