@@ -13,16 +13,21 @@ from werkzeug.datastructures import FileStorage
 upload = Namespace('upload', description='upload images')
 
 upload_parser = upload.parser()
-upload_parser.add_argument('img', location='files', type=FileStorage, required=True)
+upload_parser.add_argument('file', location='files', type=FileStorage, required=True)
 
 @upload.route('/')
 
+@upload.response(200, 'Success')
+@upload.response(400, 'Missing Arguments')
+@upload.response(403, 'Invalid Auth Token')
 class Upload(Resource):
-    @upload.expect(upload_parser)
-    @upload.response(200, 'Success')
-    @upload.response(400, 'Missing Arguments')
-    @upload.response(403, 'Invalid Auth Token')
 
+    @upload.param('img_name', 'like "pic.jpg"')
+    def get(self):
+        img_name = request.args.get('img_name')
+        return send_from_directory(os.getcwd() + '/uploads', img_name)
+
+    @upload.expect(upload_parser)
     def post(self):
         if not request.files:
             abort(403, 'Missing image')
