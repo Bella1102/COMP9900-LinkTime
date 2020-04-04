@@ -18,6 +18,7 @@ class Property(Resource):
     @host.response(400, 'Missing Arguments')
     @host.response(403, 'Invalid Auth Token')
     @host.param('property_id', 'like "11156"')
+    @host.param('property_id', 'like "11156"')
     # @host.param('img_name', 'like "pic.jpg"')
     @host.doc(description="Get property information. \n"
     "There has an exapmple output data in \"/Backend/db/one_property.json\"")
@@ -54,8 +55,8 @@ class Property(Resource):
             print('helloworld')
             abort(400, 'Malformed Request')
 
-        post_pro_info = (title, property_type, amenities, price, state, suburb, location, postcode,bedrooms, bathrooms, start_time, end_time, description)= unpack(request.json,\
-                        'title', 'type', 'amenities', 'price', 'state', 'suburb', 'location', 'postcode','bedrooms', 'bathrooms', 'start_date', 'end_date', 'other_details')
+        post_pro_info = (title, property_type, amenities, price, state, suburb, location, postcode,bedrooms, bathrooms, start_time, end_time, description, filename)= unpack(request.json,\
+                        'title', 'type', 'amenities', 'price', 'state', 'suburb', 'location', 'postcode','bedrooms', 'bathrooms', 'start_date', 'end_date', 'other_details', 'filename')
 
         userInfo = authorize(request)
 
@@ -97,9 +98,16 @@ class Property(Resource):
                            host_img_url=head_picture_url,
                            host_verifications="['email', 'phone', 'reviews']")
 
+        imgs_num = len(filename)
+        img_alt = ['' for i in range(imgs_num)]
+        base_path = os.getcwd() + '/uploads/'
+        img_url = [base_path + item for item in filename]
+        new_imgs =  db.Image(property_id=property_id, img_alt=str(img_alt), img_url=str(img_url))
+
         session.add(new_property)
         session.add(new_address)
         session.add(new_host)
+        session.add(new_imgs)
         session.commit()
         session.close()
         return {'Property id': property_id}

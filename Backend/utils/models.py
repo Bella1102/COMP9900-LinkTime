@@ -59,6 +59,7 @@ def property_details(api):
         'start_date': fields.String(example='2020-05-10'),
         'end_date': fields.String(example='2020-05-15'),
         'other_details': fields.String(example='Room available in a family home in a lovely safe leafy suburb'),
+        'filename': fields.List(fields.String, description='img_name', example=['img1.png', 'img2.png']),
     })
 
 def order_details(api):

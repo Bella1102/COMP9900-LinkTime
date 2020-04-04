@@ -20,17 +20,33 @@ class User(Resource):
     @user.param('user_id', 'the id of the user')
     @user.doc(description='''Get login user info by token or get other user info by token and user_id.''')
     def get(self):
+        session = db.get_session()
+
         user = authorize(request)
         user_id = request.args.get('user_id', None)
         if (user_id is not None):
-            session = db.get_session()
             user = session.query(db.User).filter_by(id=user_id).first()
-            session.close()
+
+
+        pro_host = session.query(db.Host).filter_by(host_id=user.id).all()
+        print(pro_host)
+        res = []
+        for host_obj in pro_host:
+            property_id = host_obj.property_id
+            pro_obj = session.query(db.Property).filter_by(property_id=property_id).first()
+            img_obj = session.query(db.Image).filter_by(property_id=property_id).first()
+            add_obj = session.query(db.Address).filter_by(property_id=property_id).first()
+            ord_obj = session.query(db.Order).filter_by(property_id=property_id).first()
+
+            res.append(getAllProOfHost(ord_obj,pro_obj, img_obj, add_obj))
+
+        session.close()
         return {
             "id": user.id,
             'username': user.username,
             'email': user.email,
-            'phone': user.phone
+            'phone': user.phone,
+            'properties': res
         }
 
     @user.response(200, 'Success')
