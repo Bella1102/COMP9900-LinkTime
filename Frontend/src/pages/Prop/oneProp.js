@@ -3,14 +3,15 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
 import moment from 'moment';
-import { Form, Button, Row, Col, Collapse, DatePicker, Select, message } from 'antd';
+import { Form, Button, Row, Col, Collapse, DatePicker, Select, Modal, message } from 'antd';
 import { actionCreators } from '../../redux/oneStore';
 import * as helpers from '../../utils/helpers';
-import './oneProp.less';
+import './index.less';
 
 
 const { Option } = Select;
 const { Panel } = Collapse;
+const { confirm } = Modal;
 const { RangePicker } = DatePicker;
 const baseURL = helpers.BACKEND_URL;
 
@@ -48,7 +49,8 @@ class OneProp extends Component {
             this.setState({orderFlag: 1})
         }).catch((error) => {
             // this.orderFailure(error.response.data.message);
-            this.goToLogin()
+            if ( error.response.data.message === "Invalid Authorization Token")
+                this.goToLogin()
         })
     };
     
@@ -73,7 +75,20 @@ class OneProp extends Component {
                 let checkIn = values.checkInOut[0].format('YYYY-MM-DD');
                 let checkOut = values.checkInOut[1].format('YYYY-MM-DD');
                 let guests = values.guests.split(' ')[0];
-                this.comfirmOrder(token, prop_id, checkIn, checkOut, guests);
+                let confirmThis = this
+                confirm({
+                    title: 'Do you want to confirm this order?',
+                    onOk() {
+                        return new Promise((resolve, reject) => {
+                            setTimeout(function(){
+                                resolve();
+                            }, 2000)
+                        }).then(() => { 
+                            confirmThis.comfirmOrder(token, prop_id, checkIn, checkOut, guests);
+                        }).catch((reject) => console.log(reject));
+                    },
+                    onCancel() { },
+                });
             })
         }
 
