@@ -7,6 +7,7 @@ from utils.helpers import *
 from utils.models import *
 
 
+
 host = Namespace('host', description='Property Information')
 
 
@@ -105,11 +106,5 @@ class Property(Resource):
 
 
 
-        # file = request.files['img']
-        # filename= file.filename
-        # if file and allowed_file(filename):
-        #     # print(os.path.join(os.getcwd() + '/uploads', filename))
-        #     file.save(os.path.join(os.getcwd() + '/uploads', filename))
-        #     return 200
 
 

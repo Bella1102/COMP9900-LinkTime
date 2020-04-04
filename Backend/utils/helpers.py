@@ -62,6 +62,7 @@ def getLatLng(state, suburb, location,):
     base_url = 'https://maps.googleapis.com/maps/api/geocode/json?'
     parameters = 'address=%s+%s+%s' % (location, suburb,state)
     geo_info = requests.get(base_url + parameters + '&key=' + key).json()
+    print()
     res = geo_info["results"][0]['geometry']['location']
     return [round(res['lat'], 6), round(res['lng'], 6)]
 
@@ -119,71 +120,50 @@ def searchResult(pro_obj, img_obj, add_obj):
     }
     return temp
 def getPropertyInfo(pro_obj, img_obj, add_obj, rev_obj, host_obj):
-    pro_info = {}
-    if pro_obj and img_obj and add_obj and rev_obj and host_obj:
+    img_info_dict = {}
+    rev_info_dict = {}
+
+    base_pro_info = {
+        # property information
+        "property_id": pro_obj.property_id,
+        "title": pro_obj.title,
+        "property_type": pro_obj.property_type,
+        "amenities": pro_obj.amenities.replace('"', ''),
+        "price": pro_obj.price,
+        "bedrooms": pro_obj.bedrooms,
+        "bathrooms": pro_obj.bathrooms,
+        "accommodates": pro_obj.accommodates,
+        "minimum_nights": pro_obj.minimum_nights,
+        "description": pro_obj.description,
+        "notes": pro_obj.notes,
+        "house_rules": pro_obj.house_rules,
+        "start_time": pro_obj.start_time,
+        'available_dates': pro_obj.available_dates,
+        # address information
+        "latitude": round(add_obj.latitude, 6),
+        "longitude": round(add_obj.longitude, 6),
+        "location": add_obj.location,
+        # host
+        "host_id": host_obj.host_id,
+        "host_name": host_obj.host_name,
+        "host_img_url": host_obj.host_img_url,
+        "host_verifications": host_obj.host_verifications,
+    }
+    if img_obj:
         img_url_list = changeTextToList(img_obj.img_url)
         img_alt_list = changeTextToList(img_obj.img_alt)
-        all_review   = getReviewOneProperty(rev_obj)
-        pro_info = {
-            # property information
-            "property_id": pro_obj.property_id,
-            "title": pro_obj.title,
-            "property_type": pro_obj.property_type,
-            "amenities": pro_obj.amenities.replace('"', ''),
-            "price": pro_obj.price,
-            "bedrooms": pro_obj.bedrooms,
-            "bathrooms": pro_obj.bathrooms,
-            "accommodates": pro_obj.accommodates,
-            "minimum_nights": pro_obj.minimum_nights,
-            "description": pro_obj.description,
-            "notes": pro_obj.notes,
-            "house_rules": pro_obj.house_rules,
-            "start_time": pro_obj.start_time,
-            'available_dates': pro_obj.available_dates,
+        img_info_dict = {
             # image information
             "img_alt": img_alt_list,
             "img_url": img_url_list,
-            # address information
-            "latitude": round(add_obj.latitude, 6),
-            "longitude": round(add_obj.longitude, 6),
-            "location": add_obj.location,
-            #review
-            "reviews": all_review,
-            #host
-            "host_id": host_obj.host_id,
-            "host_name": host_obj.host_name,
-            "host_img_url": host_obj.host_img_url,
-            "host_verifications": host_obj.host_verifications,
         }
-    if pro_obj and not img_obj and add_obj and not rev_obj and host_obj:
-        pro_info = {
-            # property information
-            "property_id": pro_obj.property_id,
-            "title": pro_obj.title,
-            "property_type": pro_obj.property_type,
-            "amenities": pro_obj.amenities.replace('"', ''),
-            "price": pro_obj.price,
-            "bedrooms": pro_obj.bedrooms,
-            "bathrooms": pro_obj.bathrooms,
-            "accommodates": pro_obj.accommodates,
-            "minimum_nights": pro_obj.minimum_nights,
-            "description": pro_obj.description,
-            "notes": pro_obj.notes,
-            "house_rules": pro_obj.house_rules,
-            "start_time": pro_obj.start_time,
-            'available_dates': pro_obj.available_dates,
-            # address information
-            "latitude": round(add_obj.latitude, 6),
-            "longitude": round(add_obj.longitude, 6),
-            "location": add_obj.location,
-            # host
-            "host_id": host_obj.host_id,
-            "host_name": host_obj.host_name,
-            "host_img_url": host_obj.host_img_url,
-            "host_verifications": host_obj.host_verifications,
-        }
+    if rev_obj:
+        all_review = getReviewOneProperty(rev_obj)
+        rev_info_dict = {"reviews": all_review}
 
-    return pro_info
+    base_pro_info.update(img_info_dict)
+    base_pro_info.update(rev_info_dict)
+    return base_pro_info
 
 def getOrderInfo(order_obj, pro_obj, img_obj, add_obj):
     img_url_list = changeTextToList(img_obj.img_url)
