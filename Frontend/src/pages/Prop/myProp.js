@@ -6,6 +6,7 @@ import { actionCreators } from '../../redux/oneStore';
 import './index.less';
 
 
+
 class MyProp extends Component {
 
 

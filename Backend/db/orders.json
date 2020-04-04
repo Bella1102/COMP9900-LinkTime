@@ -1,0 +1,69 @@
+{"orders":
+    [
+        {
+        "order_id": 1,
+        "property_id": 69121,
+        "order_time": "2020-04-04 14:05:39",
+        "checkIn": "2020-04-25",
+        "checkOut": "2020-04-30",
+        "guests": 1,
+        "order_status": "Active",
+        "title": "northern beaches, narrabeen, sydney",
+        "price": "$110.00",
+        "img_url": "https://a0.muscache.com/im/pictures/455711/6160bd55_original.jpg",
+        "location": "10 Lagoon St, Narrabeen NSW 2101"
+        },
+        {
+        "order_id": 2,
+        "property_id": 69956,
+        "order_time": "2020-04-04 14:05:49",
+        "checkIn": "2020-04-08",
+        "checkOut": "2020-04-11",
+        "guests": 2,
+        "order_status": "Active",
+        "title": "Cosy, Private, Self-Contained & Close to the City",
+        "price": "$89.00",
+        "img_url": "https://a0.muscache.com/im/pictures/470074/f173d675_original.jpg",
+        "location": "41 Wazir St, Bardwell Valley NSW 2207"
+        },
+        {
+        "order_id": 3,
+        "property_id": 66009,
+        "order_time": "2020-04-04 15:11:55",
+        "checkIn": "2020-05-10",
+        "checkOut": "2020-05-16",
+        "guests": 1,
+        "order_status": "Active",
+        "title": "Comfort & space in the heart of Paddington",
+        "price": "$100.00",
+        "img_url": "https://a0.muscache.com/im/pictures/d52a42cb-750f-4ee7-8a50-c276f8d08e4b.jpg",
+        "location": "29 Heeley St, Paddington NSW 2021"
+        }
+        {
+        "order_id": 4,
+        "property_id": 66158,
+        "order_time": "2020-04-04 15:39:22",
+        "checkIn": "2020-04-09",
+        "checkOut": "2020-04-11",
+        "guests": 2,
+        "order_status": "Active",
+        "title": "LONGER TERM TENANT wanted for furnished studio",
+        "price": "$80.00",
+        "img_url": "https://a0.muscache.com/im/pictures/3d68a19d-95f8-40e8-9355-ee0fc7ad504c.jpg",
+        "location": "11 Roslyn Gardens, Elizabeth Bay NSW 2011"
+        },
+        {
+        "order_id": 5,
+        "property_id": 58506,
+        "order_time": "2020-04-04 16:33:58",
+        "checkIn": "2020-04-09",
+        "checkOut": "2020-04-11",
+        "guests": 1,
+        "order_status": "Active",
+        "title": "Studio Yindi @ Mosman, Sydney",
+        "price": "$140.00",
+        "img_url": "https://a0.muscache.com/im/pictures/23497720/d30fd26d_original.jpg",
+        "location": "57 Countess St, Mosman NSW 2088"
+        }
+    ]
+}

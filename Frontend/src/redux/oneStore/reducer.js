@@ -10,7 +10,8 @@ const defaultState = fromJS({
 	searchResults: null,
 	propDetail: null,
 	allOrders: null,
-	allProps: null
+	allProps: null,
+	allRequests: null
 });
 
 export default (state = defaultState, action) => {

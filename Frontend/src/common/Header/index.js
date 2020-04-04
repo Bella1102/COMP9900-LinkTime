@@ -22,7 +22,7 @@ class Header extends Component {
                 </Menu.Item>
                 <Menu.Item style={{width: 180, height: 35, fontWeight: 600 }}>
                     <Link to='/requests' style={{color: '#f9c700'}}>
-                        <Icon type="message" theme="filled" style={{marginRight: 10}}/>Post Request
+                        <Icon type="message" theme="filled" style={{marginRight: 10}}/>Visitor Requests
                     </Link>
                 </Menu.Item>
             </Menu>
@@ -45,7 +45,7 @@ class Header extends Component {
                     <Link to='/myProps'>My properties</Link>
                 </Menu.Item>
                 <Menu.Item style={{width: 180, height: 35, fontWeight: 600 }}>
-                    <Link to='/requests'>Post Request</Link>
+                    <Link to='/requests'>Visitor Requests</Link>
                 </Menu.Item>
                 <Menu.Item style={{width: 180, height: 35, fontWeight: 600}}>
                     <Link to='/' style={{color: '#f9c700'}} onClick={this.props.logout} >
