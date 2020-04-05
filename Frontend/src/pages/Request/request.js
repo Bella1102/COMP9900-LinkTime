@@ -53,7 +53,7 @@ class Request extends Component {
                         } */}
                         <Col span={12} style={{marginBottom: 15}} >
                             <Card title="Card title" 
-                                  extra={<a href="#">More</a>}>
+                                  extra={<div>More</div>}>
                             Card content
                             </Card>
                         </Col>

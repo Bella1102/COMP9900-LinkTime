@@ -1,16 +1,14 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Form, Row, Col, Button, Modal, Tabs, Input, } from 'antd';
+import { Form, Row, Col, Button, Modal, Tabs, Input, message } from 'antd';
 import { actionCreators } from '../../redux/oneStore';
-import * as helpers from '../../utils/helpers';
 import './order.less';
 
 
 
 const { confirm } = Modal;
 const { TabPane } = Tabs;
-const imgURL = helpers.BACKEND_URL + "/upload/?img_name=";
 
 
 
@@ -18,8 +16,7 @@ class Order extends Component {
 
     state = { 
         visible: false,
-        prop_id: null,
-        order_id: null
+        prop_id: null
     }    
 
     confirmCancelOrder = (token, order_id) => {
@@ -40,15 +37,21 @@ class Order extends Component {
         });
     }
 
-    submitReview(token, property_id, order_id) {
+    commentNull = () => {
+        message.error('Invalid Comment: comment cannot be null');
+    };
+
+    submitReview(token, property_id) {
         let commentThis = this
         let comment = this.props.form.getFieldsValue()
         return new Promise((resolve, reject) => {
-            setTimeout(function(){
-                resolve();
-            }, 1000)
+            resolve();
         }).then(() => { 
-            commentThis.props.submitComment(token, property_id, order_id, comment.content)
+            if (comment.content) {
+                commentThis.props.submitComment(token, property_id, comment.content)
+            } else {
+                this.commentNull()
+            }
         }).catch((reject) => console.log(reject));
     }
 
@@ -65,7 +68,7 @@ class Order extends Component {
                                 <Col span={12} key={index} className="allOrders">
                                     <Link to={`/props/${ item.get('property_id')}`}>
                                         <img src={item.get('img_url')} 
-                                            onError={(e) => e.target.src=`${imgURL}${item.get('img_url')}`}
+                                            onError={(e) => e.target.src=`${item.get('img_url')}`}
                                             alt="" className="image"/>
                                     </Link>
                                     <div className="detail">
@@ -83,7 +86,7 @@ class Order extends Component {
                                                 >
                                                     Cancel Order
                                                 </Button>
-                                                <Button type="primary" 
+                                                <Button type="primary"
                                                         style={{marginLeft: 20, width: 110}}
                                                         onClick={ () => this.setState({ visible: true, prop_id: item.get('property_id'), order_id: item.get('order_id') }) }>
                                                     Comment
@@ -102,7 +105,7 @@ class Order extends Component {
                                 <Col span={12} key={index} className="allOrders">
                                     <Link to={`/props/${ item.get('property_id')}`}>
                                         <img src={item.get('img_url')} 
-                                            onError={(e) => e.target.src=`${imgURL}${item.get('img_url')}`}
+                                            onError={(e) => e.target.src=`${item.get('img_url')}`}
                                             alt="" className="image"/>
                                     </Link>
                                     <div className="detail">
@@ -116,9 +119,10 @@ class Order extends Component {
                                         >
                                             Cancel Order
                                         </Button>
-                                        <Button type="primary" 
+
+                                        <Button type="primary"
                                                 style={{marginLeft: 20, width: 110}}
-                                                onClick={ () => this.setState({ visible: true, prop_id: item.get('property_id'), order_id: item.get('order_id') }) }>
+                                                onClick={ () => this.setState({ visible: true, prop_id: item.get('property_id') }) }>
                                             Comment
                                         </Button>
                                     </div>
@@ -129,7 +133,7 @@ class Order extends Component {
                                 <Col span={12} key={index} className="allOrders">
                                     <Link to={`/props/${ item.get('property_id')}`}>
                                         <img src={item.get('img_url')} 
-                                            onError={(e) => e.target.src=`${imgURL}${item.get('img_url')}`}
+                                            onError={(e) => e.target.src=`${item.get('img_url')}`}
                                             alt="" className="image"/>
                                     </Link>
                                     <div className="detail">
@@ -144,6 +148,7 @@ class Order extends Component {
                                 </Col>
                             )
                         }
+                        return null
                     }) : null
                 }
             </Row>
@@ -175,16 +180,21 @@ class Order extends Component {
                     title="Order Comment"
                     okText="Submit"
                     visible={this.state.visible}
-                    onOk={ () => { this.setState({ visible: false }); this.submitReview(token, this.state.prop_id, this.state.order_id) }}
+                    onOk={ () => { this.setState({ visible: false }); this.submitReview(token, this.state.prop_id ) }}
                     onCancel={ () => this.setState({ visible: false }) }
                     >
-                    <Form style={{ }}>
-                        <Form.Item label="Description" >
+                    <Form>
+                        <Form.Item >
                             {
                                 getFieldDecorator('content', {
                                     initialValue: '',
-                                    rules: [{ required: true }]
-                                })( <Input.TextArea placeholder="Please input your review for this order" allowClear/> )
+                                    rules: [{ required: true, message: 'content is required' }]
+                                })( 
+                                    <div>
+                                        <div>Notes: only one comment per order</div>
+                                        <Input.TextArea rows={6} placeholder="Please input your review for this property" allowClear/>
+                                    </div>
+                                )
                             }
                         </Form.Item>
                     </Form>
@@ -219,8 +229,8 @@ const mapDispatch = (dispatch) => ({
     cancelOrder(token, order_id) {
         dispatch(actionCreators.cancelOrder(token, order_id))
     },
-    submitComment(token, property_id, order_id, content) {
-        dispatch(actionCreators.submitComment(token, property_id, order_id, content))
+    submitComment(token, property_id, content) {
+        dispatch(actionCreators.submitComment(token, property_id, content))
     } 
 });
 

@@ -213,13 +213,13 @@ const commentFailure = (err) => {
 	message.error('Comment Failure: ' + err);
 };
 // post review
-export const submitComment = (token, property_id, order_id, content) => {
+export const submitComment = (token, property_id, content) => {
 	const URL = baseURL + '/review/';
-	const data = { "property_id": property_id, "order_id": order_id, "content": content }
-
+	const data = { "property_id": property_id, "review_content": content }
 	return (dispatch) => {
-		axios.post(URL,  data, axiosPostConfig(token)).then((res) => {
+		axios.post(URL, data, axiosPostConfig(token)).then((res) => {
 			commentSuccess();
+			console.log(res)
 		}).catch((error) => {
 			commentFailure(error.response.data.message);
 		})

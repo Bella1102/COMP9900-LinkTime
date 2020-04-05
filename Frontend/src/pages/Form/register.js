@@ -59,9 +59,9 @@ class Register extends Component{
                 'Content-Type':'application/json'
             }
         };
-        let profileName = this.state.fileList[0]['name']
+        let avatar = this.state.fileList[0]['name']
         const regData = {"username": regInfo.username, "password": regInfo.password, 
-                        "email": regInfo.email, "phone": regInfo.phone}
+                        "email": regInfo.email, "phone": regInfo.phone, "avatar": avatar}
         axios.post(regURL, regData, axiosConfig)
         .then((res) => {
             this.regSuccess()
