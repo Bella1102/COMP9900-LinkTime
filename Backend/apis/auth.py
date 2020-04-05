@@ -70,7 +70,7 @@ class Register(Resource):
                            email=email,
                            phone=phone,
                            avatar=base_img_url+avatar,
-                           token='', 
+                           token='',
                            key=key)
         session.add(new_user)
         session.commit()
