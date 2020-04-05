@@ -78,10 +78,8 @@ class Requests(Resource):
             abort(403, 'Invalid Auth Token')
 
         req_id = request.args.get('req_id')
-        print('helloworld')
         req_obj = session.query(db.Request).filter_by(id=req_id, user_id=userInfo.id).first()
 
-        print(req_obj)
         if not req_obj:
             abort(405, 'Invalid Request Id')
         else:
