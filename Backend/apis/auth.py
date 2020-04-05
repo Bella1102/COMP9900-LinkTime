@@ -65,7 +65,13 @@ class Register(Resource):
         key = os.urandom(24)
         password_bytes = password.encode()
         hash_password = hashlib.sha256(key + password_bytes).hexdigest()
-        new_user = db.User(username=username, password=hash_password, email=email, phone=phone, avatar=avatar,token='', key=key)
+        new_user = db.User(username=username,
+                           password=hash_password,
+                           email=email,
+                           phone=phone,
+                           avatar=base_img_url+avatar,
+                           token='', 
+                           key=key)
         session.add(new_user)
         session.commit()
         session.close()

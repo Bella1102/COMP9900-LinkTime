@@ -17,7 +17,8 @@ def signup_details(api):
     'username': fields.String(required=True, example='Linda'),
     'password': fields.String(required=True, example='123123'),
     'email': fields.String(required=True, example='555666@gmail.com'),
-    'phone': fields.String(required=True, example='0452666888')
+    'phone': fields.String(required=True, example='0452666888'),
+    'avatar': fields.String(required=False, example='head.png')
     })
 
 def user_details(api):
