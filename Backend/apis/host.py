@@ -51,7 +51,6 @@ class Property(Resource):
         session = db.get_session()
 
         if not request.json:
-            print('helloworld')
             abort(400, 'Malformed Request')
 
         post_pro_info = (title, property_type, amenities, price, state, suburb, location, postcode,bedrooms, bathrooms, start_time, end_time, filename, description)= unpack(request.json,\
@@ -94,7 +93,7 @@ class Property(Resource):
         new_host = db.Host(property_id=property_id,
                            host_id=userInfo.id,
                            host_name=userInfo.username,
-                           host_img_url=head_picture_url,
+                           host_img_url=userInfo.avatar,
                            host_verifications="['email', 'phone', 'reviews']")
 
         imgs_num = len(filename)

@@ -25,7 +25,11 @@ class Upload(Resource):
     @upload.param('img_name', 'like "pic.jpg"')
     def get(self):
         img_name = request.args.get('img_name')
-        return send_from_directory(os.getcwd() + '/uploads', img_name)
+        path = os.path.join(os.getcwd() + '/uploads', img_name)
+        if os.path.exists(path):
+            return send_from_directory(os.getcwd() + '/uploads', img_name)
+        else:
+            abort(403, 'Image not exist')
 
     @upload.expect(upload_parser)
     def post(self):

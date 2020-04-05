@@ -53,7 +53,7 @@ class Register(Resource):
         session = db.get_session()
         if not request.json:
             abort(400, 'Malformed Request')
-        (username, password, email, phone) = unpack(request.json, 'username', 'password', 'email', 'phone')
+        (username, password, email, phone, avatar) = unpack(request.json, 'username', 'password', 'email', 'phone', 'avatar')
         if username == '' or password == '' or email == '' or phone == '':
             abort(400, 'Malformed Request')
         check_username = session.query(db.User).filter_by(username=username).first()
@@ -65,7 +65,7 @@ class Register(Resource):
         key = os.urandom(24)
         password_bytes = password.encode()
         hash_password = hashlib.sha256(key + password_bytes).hexdigest()
-        new_user = db.User(username=username, password=hash_password, email=email, phone=phone, token='', key=key)
+        new_user = db.User(username=username, password=hash_password, email=email, phone=phone, avatar=avatar,token='', key=key)
         session.add(new_user)
         session.commit()
         session.close()
