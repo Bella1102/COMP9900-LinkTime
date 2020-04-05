@@ -268,7 +268,60 @@ export const updateProperty = (token, property_id) => {
 	}
 };
 
+// get requests
+const getAllRequests = (data) => ({
+	type: constants.GET_REQUESTS,
+	allRequests: fromJS(data),
+});
+export const getRequests = () => {
+	const URL = baseURL + '/requests/';
+	return (dispatch) => {
+		axios.get(URL, getConfig).then((res) => {
+			dispatch(getAllRequests(res.data));
+		}).catch((error) => {
+			console.log(error.response.data.message);
+		})
+	}
+};
 
+const postRequestSuccess = () => {
+	message.success('Post Request Success');
+};
+const postRequestFailure = (err) => {
+	message.error('Post Request Failure: ' + err);
+};
+// post request
+export const postRequest = (token, title, content) => {
+	const URL = baseURL + '/requests/';
+	const data = { "request_title": title, "request_content": content }
+	return (dispatch) => {
+		axios.post(URL, data, axiosPostConfig(token)).then((res) => {
+			postRequestSuccess();
+			dispatch(getRequests())
+			console.log(res)
+		}).catch((error) => {
+			postRequestFailure(error.response.data.message);
+		})
+	}
+};
 
+const deleteRequestSuccess = () => {
+	message.success('Delete Request Success');
+};
+const deleteRequestFailure = (err) => {
+	message.error('Delete Request Failure: ' + err);
+};
+// delete request
+export const deleteRequest = (token, req_id) => {
+	const URL = baseURL + '/requests/?req_id=' + req_id;
+	return (dispatch) => {
+		axios.delete(URL, axiosConfig(token)).then((res) => {
+			deleteRequestSuccess();
+			dispatch(getRequests())
+		}).catch((error) => {
+			deleteRequestFailure(error.response.data.message);
+		})
+	}
+};
 
 

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Row, Col, Icon } from 'antd';
 import { actionCreators } from '../../redux/oneStore';
-
+import './profile.less';
 
 
 class Profile extends Component {

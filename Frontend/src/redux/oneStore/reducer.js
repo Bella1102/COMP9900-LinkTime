@@ -38,6 +38,8 @@ export default (state = defaultState, action) => {
 			return state.set('propDetail', action.propDetail);
 		case constants.GET_ORDERS:
 			return state.set('allOrders', action.allOrders);
+		case constants.GET_REQUESTS:
+			return state.set('allRequests', action.allRequests);
 		default:
 			return state;
 	}
