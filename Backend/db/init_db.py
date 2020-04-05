@@ -179,7 +179,7 @@ def init_user(session):
             key = os.urandom(24)
             password_bytes = line[1].encode()
             hash_password = hashlib.sha256(key + password_bytes).hexdigest()
-            user = User(username=line[0], password=hash_password, email=line[2], phone=line[3], avatar=line[4],token='', key=key)
+            user = User(username=line[0], password=hash_password, email=line[2], phone=line[3], avatar=base_img_url+line[4],token='', key=key)
             session.add(user)
     session.commit()
 

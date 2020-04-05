@@ -98,7 +98,8 @@ class Property(Resource):
 
         imgs_num = len(filename)
         img_alt = ['' for i in range(imgs_num)]
-        new_imgs =  db.Image(property_id=property_id, img_alt=str(img_alt), img_url=str(filename))
+        img_url = [base_img_url + item for item in filename]
+        new_imgs =  db.Image(property_id=property_id, img_alt=str(img_alt), img_url=str(img_url))
 
         session.add(new_property)
         session.add(new_address)
@@ -106,8 +107,7 @@ class Property(Resource):
         session.add(new_imgs)
         session.commit()
         session.close()
-        # return {'Property id': property_id}
-        return {'message': 'success'}
+        return {'Property id': property_id}
 
 
 

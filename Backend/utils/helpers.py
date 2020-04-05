@@ -6,7 +6,14 @@ import random
 import time
 import datetime
 
+BASE_HOST = 'http://127.0.0.1'
+BASE_PORT = 5000
+
 head_picture_url = 'https://www.logoshirt-shop.de/out/pictures/master/product/1/kuehlschrankmagnet-mickey_mouse_portrait_farbig.jpg'
+
+
+base_img_url = BASE_HOST + ':' + str(BASE_PORT) + '/upload/?img_name='
+
 
 def gen_token():
     token = secrets.token_hex(32)
