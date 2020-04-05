@@ -11,6 +11,8 @@ import './search.less';
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
+const baseURL = helpers.BACKEND_URL;
+const imgURL = baseURL + "/upload/?img_name=";
 
 
 class Search extends Component {
@@ -157,7 +159,9 @@ class Search extends Component {
                                         onMouseLeave={this.handleMouseLeave}
                                     >
                                         <Link to={`/props/${ item.get('property_id')}`}>
-                                            <img src={item.get('image').get(1)} alt="" className="image"/>
+                                            <img src={item.get('image').get(1)} 
+                                                onError={(e) => e.target.src=`${imgURL}${item.get('image').get(1)}`}
+                                                alt="" className="image"/>
                                         </Link>
                                         {/* detail */}
                                         <div className="detail">

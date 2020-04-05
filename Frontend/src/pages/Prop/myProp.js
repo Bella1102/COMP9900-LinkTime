@@ -7,7 +7,8 @@ import * as helpers from '../../utils/helpers';
 import './index.less';
 
 
-const baseURL = helpers.BACKEND_URL + "/upload/?img_name=";
+const baseURL = helpers.BACKEND_URL;
+const imgURL = baseURL + "/upload/?img_name=";
 
 
 
@@ -30,7 +31,7 @@ class MyProp extends Component {
                             return (
                                 <Col span={12} key={index} className="allProps">
                                     <Link to={`/props/${ item.get('property_id')}`}>
-                                        <img src={`${baseURL}${item.get('img_url')}`} alt="" className="image"/>
+                                        <img src={`${imgURL}${item.get('img_url')}`} alt="" className="image"/>
                                     </Link>
                                     <div className="detail">
                                         <div className="title">{item.get('title')}</div>

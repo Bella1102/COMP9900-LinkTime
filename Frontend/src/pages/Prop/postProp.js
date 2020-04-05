@@ -13,6 +13,7 @@ import './index.less';
 
 const { RangePicker } = DatePicker;
 const baseURL = helpers.BACKEND_URL;
+const actionURL = baseURL + "/upload/"
 
 
 class Host extends Component{
@@ -138,15 +139,16 @@ class Host extends Component{
                             })( <div className="clearfix">
                                     <Upload
                                         multiple={true}
-                                        action="http://127.0.0.1:5000/upload/"
+                                        action={actionURL}
                                         listType="picture"
                                         fileList={fileList}
                                         onPreview={this.handlePreview}
                                         onChange={this.handleChange}
                                     >
                                     {
-                                        this.state.fileList.length <= 9 ? 
-                                        <Button style={{backgroundColor: "#f0f0f0", width: "100%" }}><Icon type="plus" />
+                                        fileList.length <= 9 ? 
+                                        <Button style={{backgroundColor: "#f0f0f0"}}>
+                                            <Icon type="upload" />
                                             Upload Property Photos
                                         </Button> : null
                                     }

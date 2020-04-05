@@ -1,19 +1,23 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
-import {Form, Button, Select,Input, Upload, Icon, message} from 'antd';
+import {Form, Button, Select,Input, Upload, Icon, Modal, message} from 'antd';
 import * as helpers from '../../utils/helpers';
 
 const { Option } = Select;
 const FormItem = Form.Item;
 const baseURL = helpers.BACKEND_URL;
+const actionURL = baseURL + "/upload/"
 
 
 class Register extends Component{
 
     state = {
         confirmDirty: false,
-        regFlag: 0
+        regFlag: 0,
+        previewVisible: false,
+        previewImage: '',
+        fileList: []
     };
 
     handleConfirmBlur = e => {
@@ -37,13 +41,6 @@ class Register extends Component{
         }
             callback();
     };
-    
-    normFile = e => {
-        if (Array.isArray(e)) {
-            return e;
-        }
-        return e && e.fileList;
-    };
 
     regSuccess = () => {
         message.success('Register Success, Please Login!');
@@ -62,6 +59,7 @@ class Register extends Component{
                 'Content-Type':'application/json'
             }
         };
+        let profileName = this.state.fileList[0]['name']
         const regData = {"username": regInfo.username, "password": regInfo.password, 
                         "email": regInfo.email, "phone": regInfo.phone}
         axios.post(regURL, regData, axiosConfig)
@@ -73,9 +71,33 @@ class Register extends Component{
         }); 
     }
 
+    getBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+        });
+    }
+
+    handleCancel = () => this.setState({ previewVisible: false });
+
+    handleChange = ({ fileList }) => this.setState({ fileList });
+
+    handlePreview = async file => {
+        if (!file.url && !file.preview) {
+            file.preview = await this.getBase64(file.originFileObj);
+        }
+        this.setState({
+            previewImage: file.url || file.preview,
+            previewVisible: true,
+        });
+    };
+
 
     render(){
         const { getFieldDecorator } = this.props.form;
+        const { previewVisible, previewImage, fileList } = this.state;
 
         const formItemLayout = {
             labelCol: { xs: 24, sm: 9, xl: 9 },
@@ -97,15 +119,30 @@ class Register extends Component{
         return (
             <div>
                 <Form layout="horizontal" style={{marginTop: 120, minHeight: 600}}>
-
-                    <FormItem label="Upload" {...formItemLayout}>
+                    <FormItem label="Profile" {...formItemLayout}>
                         {getFieldDecorator('upload', {
-                            valuePropName: 'fileList',
-                            getValueFromEvent: this.normFile,
-                        })(
-                            <Upload name="logo" action="/upload.do" listType="picture">
-                                <Button style={{width: 180}}><Icon type="upload" /> Click to upload</Button>
-                            </Upload>,
+                            initialValue: [],
+                            rules: [{ required: true }]
+                        })(<div className="clearfix">
+                                <Upload
+                                        action={actionURL}
+                                        listType="picture"
+                                        fileList={fileList}
+                                        onPreview={this.handlePreview}
+                                        onChange={this.handleChange}
+                                    >
+                                    {
+                                        fileList.length === 0 ? 
+                                        <Button style={{backgroundColor: "#f0f0f0", width: 180}}>
+                                            <Icon type="upload" />
+                                            Upload Profile
+                                        </Button> : null
+                                    }
+                                </Upload>
+                                <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
+                                    <img style={{ width: '100%' }} src={previewImage} alt="photos"/>
+                                </Modal>
+                            </div>
                         )}
                     </FormItem>
 
