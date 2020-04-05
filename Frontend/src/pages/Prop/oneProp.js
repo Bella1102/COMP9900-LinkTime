@@ -14,7 +14,6 @@ const { Panel } = Collapse;
 const { confirm } = Modal;
 const { RangePicker } = DatePicker;
 const baseURL = helpers.BACKEND_URL;
-const imgURL = baseURL + "/upload/?img_name=";
 
 
 class OneProp extends Component {
@@ -105,7 +104,7 @@ class OneProp extends Component {
                             <div style={{overflow: "hidden"}}>
                                 <img className="pic" 
                                     src={ propDetail.get('img_url').get(0) } 
-                                    onError={(e) => e.target.src=`${imgURL}${propDetail.get('img_url').get(0)}`}
+                                    onError={(e) => e.target.src=`${propDetail.get('img_url').get(0)}`}
                                     alt=""/>
                             </div>
                         </Col>
@@ -116,7 +115,7 @@ class OneProp extends Component {
                                         <div className='right' key={index}>
                                             <img className="pic" 
                                                 src={ propDetail.get('img_url').get(value) } 
-                                                onError={(e) => e.target.src=`${imgURL}${propDetail.get('img_url').get(value)}`}
+                                                onError={(e) => e.target.src=`${propDetail.get('img_url').get(value)}`}
                                                 alt=""/>
                                         </div>
                                 )   
@@ -127,7 +126,10 @@ class OneProp extends Component {
                     <Row className="showDetail">
                         <div className="upper">
                             <div className="profile">
-                                <img className="photo" src={propDetail.get('host_img_url')} alt=""/>
+                                <img className="photo" 
+                                     src={propDetail.get('host_img_url')} 
+                                     onError={(e) => e.target.src=`${propDetail.get('host_img_url')}`}
+                                     alt=""/>
                                 <div className="name">{propDetail.get('host_name')}</div>
                             </div>
                             <div className="description">

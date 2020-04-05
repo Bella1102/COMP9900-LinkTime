@@ -7,7 +7,6 @@ import './index.less';
 
 
 
-
 class Header extends Component {
 
 
@@ -39,10 +38,10 @@ class Header extends Component {
                     <Link to='/orders'>My orders</Link>
                 </Menu.Item>
                 <Menu.Item style={{width: 180, height: 35, fontWeight: 600 }}>
-                    <Link to='/postProp'>Become a host</Link>
+                    <Link to='/myProps'>My properties</Link>
                 </Menu.Item>
                 <Menu.Item style={{width: 180, height: 35, fontWeight: 600 }}>
-                    <Link to='/myProps'>My properties</Link>
+                    <Link to='/postProp'>Become a host</Link>
                 </Menu.Item>
                 <Menu.Item style={{width: 180, height: 35, fontWeight: 600 }}>
                     <Link to='/requests'>Visitor Requests</Link>
@@ -91,6 +90,7 @@ class Header extends Component {
                             <Avatar size={48} 
                                     icon="user"
                                     className="logreg"
+                                    src={`${this.props.userInfo.get('avatar')}`}
                                     style={{ backgroundColor: '#f9c700' }}>
                             </Avatar>
                         </Dropdown>

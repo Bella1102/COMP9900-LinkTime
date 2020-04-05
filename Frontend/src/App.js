@@ -3,6 +3,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 import Admin from './admin';
 import Home from './pages/Home/home';
+import Profile from './pages/Home/profile';
 import Login from './pages/Form/login';
 import Register from './pages/Form/register';
 
@@ -33,6 +34,7 @@ class App extends Component {
 							<Route path='/login' exact component={ Login }></Route>
 							<Route path='/signup' exact component={ Register }></Route>
 
+							<Route path='/profile' exact component={ Profile }></Route>
 							<Route path='/search' exact component={ Search }></Route>
 							<Route path='/orders' exact component={ Order }></Route>
 							<Route path='/requests' exact component={ Request }></Route>
