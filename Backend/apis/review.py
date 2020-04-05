@@ -4,7 +4,7 @@ from flask_restplus import Namespace, Resource
 import db.init_db as db
 from utils.helpers import *
 from utils.models import *
-import time
+
 
 review = Namespace('review', description='Property review')
 
@@ -27,7 +27,7 @@ class Review(Resource):
             abort(403, 'Invalid Auth Token')
 
         (property_id, review_content) = unpack(request.json, 'property_id', 'review_content')
-        review_date = time.strftime("%Y-%m-%d", time.localtime())
+        review_date = getLocalTime()
 
         new_review = db.Review(property_id=property_id,
                                reviewer_id=userInfo.id,

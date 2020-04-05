@@ -131,11 +131,13 @@ class Request(Base):
                         Base.metadata,
                         Column('id', Integer, primary_key=True),
                         Column('user_id', Integer),
+                        Column('user_name', VARCHAR(30)),
+                        Column('avatar', Text),
                         Column('request_title', VARCHAR(30)),
                         Column('request_content', Text),
                         Column('request_time', Text))
     def __repr__(self):
-        return 'This is Request Table'
+        return 'Request: %s' % (self.id)
 
 
 
@@ -256,7 +258,7 @@ def init_review(session):
         review = Review(property_id=int(item['property_id']),
                         reviewer_id=int(item['reviewer_id']),
                         reviewer_name=item['reviewer_name'],
-                        review_date=time.strftime("%d %b %Y", time.strptime(item['review_date'], '%Y-%m-%d')),
+                        review_date= item['review_date'],
                         review_content=item['review_content'],
                         head_picture=item['head_picture'])
         session.add(review)

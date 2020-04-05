@@ -24,20 +24,17 @@ class Property(Resource):
 
     def get(self):
         property_id = request.args.get('property_id')
-        img_name = request.args.get('img_name')
-        # print(property_id, img_name)
-        if property_id:
-            session = db.get_session()
+        session = db.get_session()
 
-            pro_obj = session.query(db.Property).filter_by(property_id=property_id).first()
-            img_obj = session.query(db.Image).filter_by(property_id=property_id).first()
-            add_obj = session.query(db.Address).filter_by(property_id=property_id).first()
-            rev_obj = session.query(db.Review).filter_by(property_id=property_id).all()
-            host_obj = session.query(db.Host).filter_by(property_id=property_id).first()
+        pro_obj = session.query(db.Property).filter_by(property_id=property_id).first()
+        img_obj = session.query(db.Image).filter_by(property_id=property_id).first()
+        add_obj = session.query(db.Address).filter_by(property_id=property_id).first()
+        rev_obj = session.query(db.Review).filter_by(property_id=property_id).all()
+        host_obj = session.query(db.Host).filter_by(property_id=property_id).first()
 
-            return getPropertyInfo(pro_obj, img_obj, add_obj, rev_obj, host_obj)
-        else:
-            return send_from_directory(os.getcwd() + '/uploads',img_name)
+        session.close()
+        return getPropertyInfo(pro_obj, img_obj, add_obj, rev_obj, host_obj)
+
 
 
     @host.response(200, 'Success')

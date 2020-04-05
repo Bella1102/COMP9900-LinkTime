@@ -11,7 +11,7 @@ from apis.home import home
 from apis.host import host
 from apis.order import order
 from apis.search import search
-from apis.request import request
+from apis.requests import requests
 from apis.review import review
 from apis.upload import upload
 
@@ -43,7 +43,7 @@ api.add_namespace(home)
 api.add_namespace(host)
 api.add_namespace(order)
 api.add_namespace(search)
-api.add_namespace(request)
+api.add_namespace(requests)
 api.add_namespace(review)
 api.add_namespace(upload)
 

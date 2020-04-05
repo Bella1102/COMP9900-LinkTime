@@ -101,7 +101,7 @@ def getReviewOneProperty(rev_obj):
         temp = {
             "reviewer_id": i.reviewer_id,
             "reviewer_name": i.reviewer_name,
-            "review_date": i.review_date,
+            "review_date": time.strftime("%d %b %Y", time.strptime(i.review_date, '%Y-%m-%d')),
             "review_content": i.review_content,
             "head_picture": i.head_picture
         }
@@ -218,3 +218,6 @@ def dateRange(beginDate, endDate):
         dt = dt + datetime.timedelta(1)
         date = dt.strftime("%Y-%m-%d")
     return dates
+
+def getLocalTime():
+    return time.strftime("%Y-%m-%d", time.localtime())

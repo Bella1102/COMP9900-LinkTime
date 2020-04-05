@@ -76,8 +76,13 @@ def review_details(api):
         'review_content': fields.String(example='Perfet Apartment!')
     })
 
-def request_details(api):
+def requests_details(api):
     return api.model('request_details', {
         'request_title': fields.String(example='I need a House'),
         'request_content': fields.String(example='I want to rent a house seven days!')
+    })
+
+def del_requests(api):
+    return api.model('del_requests', {
+        'req_id': fields.String(example='1'),
     })
