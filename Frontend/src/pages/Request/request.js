@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import { Row, Col, Button, Card, Drawer} from 'antd';
-import { actionCreators } from '../../redux/oneStore';
+// import { actionCreators } from '../../redux/oneStore';
 import './request.less';
 
 
@@ -26,7 +26,7 @@ class Request extends Component {
     };
 
     render() {
-        const { token, allRequests } = this.props;
+        // const { token, allRequests } = this.props;
 
         return (
             <div className="content">

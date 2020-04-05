@@ -33,7 +33,7 @@ class Order extends Component {
                         resolve();
                     }, 1500)
                 }).then(() => { 
-                    cancelThis.props.deleteOrder(token, order_id)
+                    cancelThis.props.cancelOrder(token, order_id)
                 }).catch((reject) => console.log(reject));
             },
             onCancel() { },
@@ -48,7 +48,7 @@ class Order extends Component {
                 resolve();
             }, 1000)
         }).then(() => { 
-            commentThis.props.submitComment(token, property_id, order_id, comment.title, comment.content)
+            commentThis.props.submitComment(token, property_id, order_id, comment.content)
         }).catch((reject) => console.log(reject));
     }
 
@@ -179,20 +179,12 @@ class Order extends Component {
                     onCancel={ () => this.setState({ visible: false }) }
                     >
                     <Form style={{ }}>
-                        <Form.Item label="Title">
-                            {
-                                getFieldDecorator('title',{ 
-                                    initialValue:'', 
-                                    rules:[{ required: true }]
-                                })( <Input placeholder="Title"/> )
-                            }
-                        </Form.Item>
                         <Form.Item label="Description" >
                             {
                                 getFieldDecorator('content', {
                                     initialValue: '',
                                     rules: [{ required: true }]
-                                })( <Input.TextArea placeholder="Please input request detail" allowClear/> )
+                                })( <Input.TextArea placeholder="Please input your review for this order" allowClear/> )
                             }
                         </Form.Item>
                     </Form>
@@ -224,11 +216,11 @@ const mapDispatch = (dispatch) => ({
     getMyOrders(token) {
         dispatch(actionCreators.getMyOrders(token))
     },
-    deleteOrder(token, order_id) {
-        dispatch(actionCreators.deleteOrder(token, order_id))
+    cancelOrder(token, order_id) {
+        dispatch(actionCreators.cancelOrder(token, order_id))
     },
-    submitComment(token, property_id, order_id, title, content) {
-        dispatch(actionCreators.submitComment(token, property_id, order_id, title, content))
+    submitComment(token, property_id, order_id, content) {
+        dispatch(actionCreators.submitComment(token, property_id, order_id, content))
     } 
 });
 

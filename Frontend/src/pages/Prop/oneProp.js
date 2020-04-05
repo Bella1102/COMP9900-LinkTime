@@ -14,7 +14,7 @@ const { Panel } = Collapse;
 const { confirm } = Modal;
 const { RangePicker } = DatePicker;
 const baseURL = helpers.BACKEND_URL;
-const imgURL = helpers.BACKEND_URL + "/upload/?img_name=";
+const imgURL = baseURL + "/upload/?img_name=";
 
 
 class OneProp extends Component {
