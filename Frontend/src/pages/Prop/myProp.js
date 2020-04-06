@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
@@ -7,7 +6,6 @@ import { Row, Col, Button, Icon, Card, Modal,
     Drawer, Form, Input, DatePicker, Upload, Select, message} from 'antd';
 import * as helpers from '../../utils/helpers';
 import { actionCreators } from '../../redux/oneStore';
-import { axiosPostConfig } from '../../redux/oneStore/actionCreators';
 import './myProp.less';
 
 
@@ -24,7 +22,8 @@ class MyProp extends Component {
         drawerVisible: false,
         previewVisible: false,
         previewImage: '',
-        fileList: []
+        fileList: [],
+        currenPropId: null
     };
 
     getBase64(file) {
@@ -68,30 +67,17 @@ class MyProp extends Component {
         });
     }
 
-    updatePropSuccess = () => {
-        message.success('Update Property Success');
-    };
-
-    updatePropFailure = (err) => {
-        message.error('Update Property Failure: ' + err);
-    };
-
     handleUpdateSubmit = (token) => {
         let propInfo = this.props.form.getFieldsValue()
-        const propURL = baseURL + '/host/';
         let filenames = []
         this.state.fileList.forEach((item) => { filenames.push(item['name']) })
         const start_date = propInfo.available_time[0].format('YYYY-MM-DD');
         const end_date = propInfo.available_time[1].format('YYYY-MM-DD');
         const propData = {"title": propInfo.title, "amenities": '{' + propInfo.amenity.toString() + '}', 
-                "price": propInfo.price, "start_date": start_date, "end_date": end_date, "house_rules": propInfo.houseRules,
-                "other_details": propInfo.description, "filename": filenames}
-
-        axios.put(propURL, propData, axiosPostConfig(token)).then((res) => {
-            this.updatePropSuccess()
-        }).catch((error) => {
-            this.updatePropFailure(error.response.data.message)
-        });
+                "price": propInfo.price, "start_date": start_date, "end_date": end_date, 
+                "house_rules": propInfo.houseRules, "other_details": propInfo.description, "filename": filenames}
+        
+        this.props.updateProperty(token, this.state.currenPropId, propData)
     }
 
 
@@ -133,7 +119,7 @@ class MyProp extends Component {
                                                 <Icon type="edit" 
                                                     key="edit"
                                                     style={{fontSize: "20px", color: "#f9c700"}}
-                                                    onClick={ () => {this.setState({ drawerVisible: true })} }
+                                                    onClick={ () => { this.setState({ drawerVisible: true, currenPropId: item.get('property_id') }) }}
                                                     />, 
                                                 <Icon type="delete" 
                                                     key="delete"
@@ -287,8 +273,8 @@ const mapDispatch = (dispatch) => ({
     deleteProperty(token, property_id) {
         dispatch(actionCreators.deleteProperty(token, property_id))
     },
-    updateProperty(token, property_id) {
-        dispatch(actionCreators.updateProperty(token, property_id))
+    updateProperty(token, property_id, propData) {
+        dispatch(actionCreators.updateProperty(token, property_id, propData))
     }  
     
 });

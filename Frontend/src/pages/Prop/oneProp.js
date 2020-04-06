@@ -5,8 +5,9 @@ import { Redirect } from 'react-router-dom';
 import moment from 'moment';
 import { Form, Button, Row, Col, Collapse, DatePicker, Select, Modal, message } from 'antd';
 import { actionCreators } from '../../redux/oneStore';
+import  { axiosPostConfig } from '../../redux/oneStore/actionCreators';
 import * as helpers from '../../utils/helpers';
-import './index.less';
+import './oneProp.less';
 import Newmodal from './modal';
 
 const { Option } = Select;
@@ -20,7 +21,7 @@ class OneProp extends Component {
     
     state = {
         orderFlag: 0,
-        visable: true
+        visable: false
     }
 
     showModal = () => {
@@ -47,13 +48,7 @@ class OneProp extends Component {
     comfirmOrder = (token, property_id, checkIn, checkOut, guests) => {
         const URL = baseURL + '/order/';
         const orderInfo = { "property_id": property_id, "checkIn": checkIn, "checkOut": checkOut, "guests": guests }
-        const axiosConfig = {
-            headers: {
-                "accept": "application/json",
-                "Authorization": token
-            }
-        };
-        axios.post(URL, orderInfo, axiosConfig).then((res) => {
+        axios.post(URL, orderInfo, axiosPostConfig(token)).then((res) => {
             this.orderSuccess();
             this.setState({orderFlag: 1})
         }).catch((error) => {
