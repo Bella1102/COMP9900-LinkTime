@@ -10,7 +10,7 @@ const baseURL = helpers.BACKEND_URL;
 const getConfig = {
 	headers: { "accept": "application/json" }
 };
-const postConfig = {
+export const postConfig = {
 	headers: {
 		"accept": "application/json",
 		'Content-Type':'application/json',
@@ -24,7 +24,7 @@ const axiosConfig = (token) => {
 		}
 	}
 };
-const axiosPostConfig = (token) => {
+export const axiosPostConfig = (token) => {
 	return {
 		headers: {
 			"accept": "application/json",
@@ -234,7 +234,7 @@ const deletePropFailure = (err) => {
 };
 // delete property
 export const deleteProperty = (token, property_id) => {
-	const URL = baseURL + '/order/?order_id=' + property_id;
+	const URL = baseURL + '/host/?property_id=' + property_id;
 	return (dispatch) => {
 		axios.delete(URL, axiosConfig(token)).then((res) => {
 			deletePropSuccess();
@@ -254,7 +254,7 @@ const updatePropFailure = (err) => {
 };
 // update property
 export const updateProperty = (token, property_id) => {
-	const URL = baseURL + '/order/?property_id=' + property_id;
+	const URL = baseURL + '/host/?property_id=' + property_id;
 	const data = { "property_id": property_id }
 
 	return (dispatch) => {

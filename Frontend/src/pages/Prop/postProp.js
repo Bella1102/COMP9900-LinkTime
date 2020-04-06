@@ -6,6 +6,7 @@ import moment from 'moment';
 import {Form, Button, Input, Radio, Select, DatePicker, 
     Upload, Icon, Modal, message } from 'antd';
 import { actionCreators } from '../../redux/oneStore';
+import  { axiosPostConfig } from '../../redux/oneStore/actionCreators';
 import * as helpers from '../../utils/helpers';
 import './index.less';
 
@@ -48,13 +49,35 @@ class Host extends Component{
         });
     };
 
-    propSuccess = () => {
+    postPropSuccess = () => {
         message.success('Post Property Success');
     };
 
-    propFailure = (err) => {
+    postPropFailure = (err) => {
         message.error('Post Property Failure: ' + err);
     };
+
+    handleSubmit = (token) => {
+        
+        let propInfo = this.props.form.getFieldsValue();
+        const propURL = baseURL + '/host/';
+        let filenames = []
+        this.state.fileList.forEach((item) => { filenames.push(item['name']) })
+        const start_date = propInfo.available_time[0].format('YYYY-MM-DD');
+        const end_date = propInfo.available_time[1].format('YYYY-MM-DD');
+        const propData = {"title": propInfo.title, "type": propInfo.type, "amenities": '{' + propInfo.amenity.toString() + '}', 
+                "price": propInfo.price, "state": propInfo.state, "suburb": propInfo.suburb, "location": propInfo.location, 
+                "postcode": propInfo.postcode, "bedrooms": propInfo.bedrooms, "bathrooms": propInfo.bathrooms, "accommodates": propInfo.accommodates,
+                "start_date": start_date, "end_date": end_date, "house_rules": propInfo.houseRules,
+                "other_details": propInfo.description, "filename": filenames}
+                        
+        axios.post(propURL, propData, axiosPostConfig(token)).then((res) => {
+            this.postPropSuccess()
+            this.setState({postPropFlag: 1})
+        }).catch((error) => {
+            this.postPropFailure(error.response.data.message)
+        }); 
+    }
 
     render(){
         const { token } = this.props;
@@ -71,35 +94,7 @@ class Host extends Component{
         const stateOptions = ['New South Wales', 'Victoria','Queensland', 'South Australia']
         const bedroomNum = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
         const bathroomNum = ['0', '1', '2', '3', '4', '5', '6']
-
-        const handleSubmit = () => {
-        
-            let propInfo = this.props.form.getFieldsValue();
-            const propURL = baseURL + '/host/';
-            const axiosConfig = {
-                headers: {
-                    "accept": "application/json",
-                    'Content-Type':'application/json',
-                    "Authorization": token
-                }
-            };
-            let filenames = []
-            fileList.forEach((item) => { filenames.push(item['name']) })
-            const start_date = propInfo.available_time[0].format('YYYY-MM-DD');
-            const end_date = propInfo.available_time[1].format('YYYY-MM-DD');
-            const propData = {"title": propInfo.title, "type": propInfo.type, "amenities": '{' + propInfo.amenity.toString() + '}', 
-                            "price": propInfo.price, "state": propInfo.state, "suburb": propInfo.suburb, 
-                            "location": propInfo.location, "postcode": propInfo.postcode, "bedrooms": propInfo.bedrooms, 
-                            "bathrooms": propInfo.bathrooms, "start_date": start_date, "end_date": end_date, 
-                            "other_details": propInfo.description, "filename": filenames}
-                            
-            axios.post(propURL, propData, axiosConfig).then((res) => {
-                this.propSuccess()
-                this.setState({postPropFlag: 1})
-            }).catch((error) => {
-                this.propFailure(error.response.data.message)
-            }); 
-        }
+        const guestNum = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
 
         if (this.state.postPropFlag){
             return (<Redirect to="/myProps" />)
@@ -131,7 +126,7 @@ class Host extends Component{
                                 </Radio.Group>)
                         }
                     </Form.Item>
-                    <Form.Item label="photos" {...formItemLayout}>
+                    <Form.Item label="Photos" {...formItemLayout}>
                         {
                             getFieldDecorator('photos',{
                                 initialValue: [],
@@ -251,6 +246,20 @@ class Host extends Component{
                                 </Select>)
                         }
                     </Form.Item>
+                    <Form.Item label="Accommodates" {...formItemLayout}>
+                        {
+                            getFieldDecorator('accommodates', {
+                                initialValue: '1',
+                                rules: [{ required: true, message: 'Please select accommodate number!' }]
+                            })(<Select allowClear>
+                                {
+                                    guestNum.map(item => (
+                                        <Select.Option key={item} value={item}>{item}</Select.Option>
+                                    ))
+                                }
+                                </Select>)
+                        }
+                    </Form.Item>
                     <Form.Item label="Available Time" {...formItemLayout}>
                         {
                             getFieldDecorator('available_time', {
@@ -261,17 +270,23 @@ class Host extends Component{
                                              'This Month': [moment().startOf('month'), moment().endOf('month')]}} />)
                         }
                     </Form.Item>
+                    <Form.Item label="House Rules" {...formItemLayout}>
+                        {
+                            getFieldDecorator('houseRules',{
+                                initialValue: ''
+                            })( <Input.TextArea placeholder="Please input house rules" allowClear/> )
+                        }
+                    </Form.Item>
                     <Form.Item label="Other Detail" {...formItemLayout}>
                         {
                             getFieldDecorator('description',{
                                 initialValue: ''
-                            })( <Input.TextArea placeholder="Please input other detail"
-                                                allowClear/> )
+                            })( <Input.TextArea placeholder="Please input other detail" allowClear/> )
                         }
                     </Form.Item>
                     <Form.Item style={{textAlign: "center"}}>
                         <Button type="primary" 
-                                onClick={handleSubmit} 
+                                onClick={() => this.handleSubmit(token)} 
                                 style={{fontWeight: 600}}>Confirm Post
                         </Button>
                     </Form.Item>

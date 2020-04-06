@@ -6,7 +6,6 @@ import './request.less';
 
 
 const { confirm } = Modal;
-const { Meta } = Card;
 
 class Request extends Component {
 
