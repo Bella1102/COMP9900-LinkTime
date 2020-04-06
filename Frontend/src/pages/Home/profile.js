@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Row, Col, Icon } from 'antd';
+import { Row, Col, Icon, Avatar } from 'antd';
 import { actionCreators } from '../../redux/oneStore';
 import './profile.less';
 
@@ -18,7 +18,7 @@ class Profile extends Component {
                         <Row>
                             <Col span={10} className="profileLeft">
                                 <div className="imageWrap">
-                                    <img src={userInfo.get("avatar")} alt="" className="image"/>
+                                    <Avatar size={150} src={userInfo.get("avatar")} alt="" className="image"></Avatar>
                                     <div className="editProfile">Edit Profile</div>
                                 </div>
                                 <div className="profileDetail">

@@ -30,9 +30,9 @@ class Login extends Component{
                                 getFieldDecorator('username',{ 
                                     initialValue:'', 
                                     rules:[
-                                            { required: true, message: 'Please input your username!' },
+                                            { required: true, message: 'Please input your username' },
                                             { max: 18, message: "Username cannot be longer than 18 characters" },
-                                            { pattern: new RegExp('^\\w+$', 'g'), message: 'Username can only contain digitals or letters!' }
+                                            { pattern: new RegExp('^\\w+$', 'g'), message: 'Username can only contain digitals or letters' }
                                         ]
                                 })( <Input prefix={<Icon type="user"/>} placeholder="Username" allowClear/> )
                             }
@@ -42,8 +42,8 @@ class Login extends Component{
                                 getFieldDecorator('password', {
                                     initialValue: '',
                                     rules: [
-                                        { required: true, message: 'Please input your Password!' },
-                                        { min: 6, max: 18, message: "Password must be between 6 and 18 characters!" }
+                                        { required: true, message: 'Please input your Password' },
+                                        { min: 6, max: 18, message: "Password must be between 6 and 18 characters" }
                                     ]
                                 })( <Input.Password prefix={<Icon type="lock"/>} placeholder="Password"/> )
                             }

@@ -67,17 +67,34 @@ class MyProp extends Component {
         });
     }
 
+    updateNoArguement = () => {
+        message.error('no update information provided');
+    };
+
     handleUpdateSubmit = (token) => {
-        let propInfo = this.props.form.getFieldsValue()
-        let filenames = []
-        this.state.fileList.forEach((item) => { filenames.push(item['name']) })
-        const start_date = propInfo.available_time[0].format('YYYY-MM-DD');
-        const end_date = propInfo.available_time[1].format('YYYY-MM-DD');
-        const propData = {"title": propInfo.title, "amenities": '{' + propInfo.amenity.toString() + '}', 
-                "price": propInfo.price, "start_date": start_date, "end_date": end_date, 
-                "house_rules": propInfo.houseRules, "other_details": propInfo.description, "filename": filenames}
-        
-        this.props.updateProperty(token, this.state.currenPropId, propData)
+
+        this.props.form.validateFields((err, propInfo) => {
+            if(!err){
+                let filenames = []
+                this.state.fileList.forEach((item) => { filenames.push(item['name']) })
+                let start_date = ""
+                let end_date = ""
+                if (propInfo.available_time) {
+                    start_date = propInfo.available_time[0].format('YYYY-MM-DD');
+                    end_date = propInfo.available_time[1].format('YYYY-MM-DD');
+                }
+                const propData = {"title": propInfo.title, "amenities": '{' + propInfo.amenity.toString() + '}', 
+                        "price": propInfo.price, "start_date": start_date, "end_date": end_date, 
+                        "house_rules": propInfo.houseRules, "other_details": propInfo.description, "filename": filenames}
+                
+                if (propInfo.title || propInfo.amenity.length || propInfo.price || propInfo.available_time || propInfo.houseRules || propInfo.description || filenames.length) {
+                    this.props.updateProperty(token, this.state.currenPropId, propData)
+                    this.setState({ drawerVisible: false })
+                } else {
+                    this.updateNoArguement()
+                }
+            }
+        })
     }
 
 
@@ -239,7 +256,7 @@ class MyProp extends Component {
                     </div>
                     <div className="drawerTextArea">
                         <Button style={{ marginRight: 8 }} onClick={() => { this.setState({ drawerVisible: false })} }>Cancel</Button>
-                        <Button onClick={() => { this.setState({ drawerVisible: false }); this.handleUpdateSubmit(token)} } type="primary">Submit</Button>
+                        <Button onClick={() => { this.handleUpdateSubmit(token)} } type="primary">Submit</Button>
                     </div>
                 </Drawer>
             </div>

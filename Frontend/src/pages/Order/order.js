@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Form, Row, Col, Button, Modal, Tabs, Input, message } from 'antd';
+import { Form, Row, Col, Button, Modal, Tabs, Input } from 'antd';
 import { actionCreators } from '../../redux/oneStore';
 import './order.less';
 
@@ -37,22 +37,18 @@ class Order extends Component {
         });
     }
 
-    commentNull = () => {
-        message.error('Invalid Comment: comment cannot be null');
-    };
-
     submitReview(token, property_id) {
         let commentThis = this
-        let comment = this.props.form.getFieldsValue()
-        return new Promise((resolve, reject) => {
-            resolve();
-        }).then(() => { 
-            if (comment.content) {
-                commentThis.props.submitComment(token, property_id, comment.content)
-            } else {
-                this.commentNull()
+        this.props.form.validateFields((err, values) => {
+            if(!err){
+                return new Promise((resolve, reject) => {
+                    resolve();
+                }).then(() => { 
+                    commentThis.props.submitComment(token, property_id, values.content)
+                    this.setState({ visible: false })
+                }).catch((reject) => console.log(reject));
             }
-        }).catch((reject) => console.log(reject));
+        })
     }
 
     
@@ -180,21 +176,17 @@ class Order extends Component {
                     title="Order Comment"
                     okText="Submit"
                     visible={this.state.visible}
-                    onOk={ () => { this.setState({ visible: false }); this.submitReview(token, this.state.prop_id ) }}
+                    onOk={ () => { this.submitReview(token, this.state.prop_id ) }}
                     onCancel={ () => this.setState({ visible: false }) }
                     >
+                    {/* <div style={{textAlign: "center", marginBottom: 10}}>Notes: only one comment per order</div> */}
                     <Form>
-                        <Form.Item >
+                        <Form.Item label="Comment content">
                             {
                                 getFieldDecorator('content', {
                                     initialValue: '',
                                     rules: [{ required: true, message: 'content is required' }]
-                                })( 
-                                    <div>
-                                        <div>Notes: only one comment per order</div>
-                                        <Input.TextArea rows={6} placeholder="Please input your review for this property" allowClear/>
-                                    </div>
-                                )
+                                })( <Input.TextArea rows={6} placeholder="Please input your review for this property" allowClear/> )
                             }
                         </Form.Item>
                     </Form>
