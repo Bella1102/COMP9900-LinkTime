@@ -99,18 +99,6 @@ class Requests(Resource):
 @requests.response(403, 'Invalid Auth Token')
 class Comment(Resource):
 
-    @requests.param('req_id', '1')
-    def get(self):
-        session = db.get_session()
-
-        if not request.args:
-            abort(400, 'Missing Arguments')
-
-        request_id = request.args.get('req_id')
-        com_info = session.query(db.Comment).filter_by(request_id=request_id).all()
-        res = getCommentsOneRequest(com_info)
-        return res
-
     @requests.response(405, 'Invalid Request Id')
     @requests.expect(auth_details(requests), comment_request_details(requests))
     @requests.param('req_id', '1')
@@ -143,32 +131,6 @@ class Comment(Resource):
         session.close()
         return {'message': 'success'}
 
-    @requests.response(405, 'Invalid Comment Id')
-    @requests.expect(auth_details(requests), comment_request_details(requests))
-    @requests.param('comment_id', '1')
-    def put(self):
-        session = db.get_session()
-        if not request.args:
-            abort(400, 'Missing Arguments')
-
-        userInfo = authorize(request)
-
-        if not userInfo:
-            abort(403, 'Invalid Auth Token')
-
-        comment_id = request.args.get('comment_id')
-        [comment_content] = unpack(request.json, 'comment_content')
-
-        new_comment = session.query(db.Comment).filter_by(id=comment_id, commenter_id=userInfo.id).first()
-
-
-        if not new_comment:
-            abort(405, 'Invalid Comment Id')
-        else:
-            new_comment.comment_content = comment_content
-            session.commit()
-        session.close()
-        return {'message': 'success'}
 
     @requests.expect(auth_details(requests))
     @requests.param('comment_id', '1')
