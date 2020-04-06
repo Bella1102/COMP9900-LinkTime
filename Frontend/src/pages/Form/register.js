@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
 import {Form, Button, Select,Input, Upload, Icon, Modal, message} from 'antd';
+import { postConfig } from '../../redux/oneStore/actionCreators';
 import * as helpers from '../../utils/helpers';
 
 const { Option } = Select;
@@ -53,16 +54,10 @@ class Register extends Component{
     handleSubmit = () => {
         let regInfo = this.props.form.getFieldsValue();
         const regURL = baseURL + '/auth/signup';
-        const axiosConfig = {
-            headers: {
-                "accept": "application/json",
-                'Content-Type':'application/json'
-            }
-        };
         let avatar = this.state.fileList[0]['name']
         const regData = {"username": regInfo.username, "password": regInfo.password, 
                         "email": regInfo.email, "phone": regInfo.phone, "avatar": avatar}
-        axios.post(regURL, regData, axiosConfig)
+        axios.post(regURL, regData, postConfig)
         .then((res) => {
             this.regSuccess()
             this.setState({regFlag: 1})
