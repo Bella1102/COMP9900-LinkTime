@@ -8,7 +8,6 @@ import {Form, Button, Input, Radio, Select, DatePicker,
 import { actionCreators } from '../../redux/oneStore';
 import  { axiosPostConfig } from '../../redux/oneStore/actionCreators';
 import * as helpers from '../../utils/helpers';
-import './index.less';
 
 
 

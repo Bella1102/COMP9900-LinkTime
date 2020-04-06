@@ -253,12 +253,10 @@ const updatePropFailure = (err) => {
 	message.error('Update Property Failure: ' + err);
 };
 // update property
-export const updateProperty = (token, property_id) => {
+export const updateProperty = (token, property_id, propData) => {
 	const URL = baseURL + '/host/?property_id=' + property_id;
-	const data = { "property_id": property_id }
-
 	return (dispatch) => {
-		axios.put(URL, data, axiosConfig(token)).then((res) => {
+		axios.put(URL, propData, axiosPostConfig(token)).then((res) => {
 			updatePropSuccess();
 			// after update, reget userInfo to get newest user properties
 			dispatch(getUserInfo(token))
