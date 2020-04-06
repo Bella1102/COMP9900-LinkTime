@@ -220,4 +220,19 @@ def dateRange(beginDate, endDate):
     return dates
 
 def getLocalTime():
-    return time.strftime("%Y-%m-%d", time.localtime())
+    return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+
+
+def getCommentsOneRequest(com_info):
+    out = []
+    for i in com_info:
+        temp = {
+            "id": i.id,
+            "commenter_id": i.commenter_id,
+            "commenter_name": i.commenter_name,
+            "comment_time": i.comment_time,
+            "comment_content": i.comment_content,
+            "commenter_avatar": i.commenter_avatar
+        }
+        out.append(temp)
+    return out

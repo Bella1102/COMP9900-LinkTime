@@ -94,7 +94,6 @@ def update_property_details(api):
     return api.model('update_property_details', {
     # need to be updated
         'title': fields.String(example='Perfect Apartment'),
-        'type': fields.String(example='House or Studio or Apartment'),
         'amenities': fields.String(example="{'TV', 'Wifi', 'Iron'...}"),
         'price': fields.String(example='$160'),
         'start_date': fields.String(example='2020-05-10'),
@@ -102,4 +101,9 @@ def update_property_details(api):
         'other_details': fields.String(example='Room available in a family home in a lovely safe leafy suburb'),
         'house_rules': fields.String(example='No Smoking'),
         'filename': fields.List(fields.String, description='img_name', example=['img1.png', 'img2.png']),
+    })
+
+def comment_request_details(api):
+    return api.model('comment_request_details', {
+        'comment_content': fields.String(example='I have a house that might suit you.'),
     })

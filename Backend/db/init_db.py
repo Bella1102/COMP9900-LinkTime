@@ -138,7 +138,19 @@ class Request(Base):
                         Column('request_time', Text))
     def __repr__(self):
         return 'Request: %s' % (self.id)
-
+# 9
+class Comment(Base):
+    __table__ = Table('Comment',
+                        Base.metadata,
+                        Column('id', Integer, primary_key=True),
+                        Column('request_id', Integer),
+                        Column('commenter_id', Integer),
+                        Column('commenter_name', VARCHAR(30)),
+                        Column('commenter_avatar', Text),
+                        Column('comment_content', Text),
+                        Column('comment_time', Text))
+    def __repr__(self):
+        return 'Comment: %s' % (self.id)
 
 
 def init_db():

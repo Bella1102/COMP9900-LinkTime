@@ -202,7 +202,7 @@ class Property(Resource):
             img_obj = session.query(db.Image).filter_by(property_id=property_id).first()
 
             if title: pro_obj.title = title
-            if amenities: pro_obj.amenities = amenities
+            if amenities != '{}': pro_obj.amenities = amenities
             if price: pro_obj.price = price
             if start_time: pro_obj.start_time = getTimeStamp(start_time)
             if end_time: pro_obj.end_time=getTimeStamp(end_time)
