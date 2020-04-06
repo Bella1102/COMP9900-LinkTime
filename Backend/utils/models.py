@@ -57,9 +57,11 @@ def property_details(api):
         'postcode': fields.String(example='2035'),
         'bedrooms': fields.String(example='1'),
         'bathrooms': fields.String(example='1'),
+        'accommodates': fields.String(example='2'),
         'start_date': fields.String(example='2020-05-10'),
         'end_date': fields.String(example='2020-05-15'),
         'other_details': fields.String(example='Room available in a family home in a lovely safe leafy suburb'),
+        'house_rules': fields.String(example='No Smoking'),
         'filename': fields.List(fields.String, description='img_name', example=['img1.png', 'img2.png']),
     })
 
@@ -86,4 +88,18 @@ def requests_details(api):
 def del_requests(api):
     return api.model('del_requests', {
         'req_id': fields.String(example='1'),
+    })
+
+def update_property_details(api):
+    return api.model('update_property_details', {
+    # need to be updated
+        'title': fields.String(example='Perfect Apartment'),
+        'type': fields.String(example='House or Studio or Apartment'),
+        'amenities': fields.String(example="{'TV', 'Wifi', 'Iron'...}"),
+        'price': fields.String(example='$160'),
+        'start_date': fields.String(example='2020-05-10'),
+        'end_date': fields.String(example='2020-05-15'),
+        'other_details': fields.String(example='Room available in a family home in a lovely safe leafy suburb'),
+        'house_rules': fields.String(example='No Smoking'),
+        'filename': fields.List(fields.String, description='img_name', example=['img1.png', 'img2.png']),
     })

@@ -43,15 +43,44 @@ class Property(Resource):
     @host.expect(auth_details(host), property_details(host))
     @host.doc(description="Post new property. Notice: through the upload API upload images,\n"
                             "and then put the img name into the filename list")
-    # one image is fine. many images is not working
     def post(self):
         session = db.get_session()
 
         if not request.json:
             abort(400, 'Malformed Request')
 
-        post_pro_info = (title, property_type, amenities, price, state, suburb, location, postcode,bedrooms, bathrooms, start_time, end_time, filename, description)= unpack(request.json,\
-                        'title', 'type', 'amenities', 'price', 'state', 'suburb', 'location', 'postcode','bedrooms', 'bathrooms', 'start_date', 'end_date', 'filename', 'other_details')
+        post_pro_info = (title,
+                         property_type,
+                         amenities,
+                         price,
+                         state,
+                         suburb,
+                         location,
+                         postcode,
+                         bedrooms,
+                         accommodates,
+                         bathrooms,
+                         start_time,
+                         end_time,
+                         filename,
+                         description,
+                         house_rules)= unpack(request.json,\
+                                              'title',
+                                              'type',
+                                              'amenities',
+                                              'price',
+                                              'state',
+                                              'suburb',
+                                              'location',
+                                              'postcode',
+                                              'bedrooms',
+                                              'bathrooms',
+                                              'accommodates',
+                                              'start_date',
+                                              'end_date',
+                                              'filename',
+                                              'other_details',
+                                              'house_rules')
 
         userInfo = authorize(request)
 
@@ -59,7 +88,7 @@ class Property(Resource):
             abort(403, 'Invalid Auth Token')
 
         # because description is not required
-        if '' in post_pro_info[:-1]:
+        if '' in post_pro_info[:-2]:
             abort(400, 'Missing Arguments')
 
         property_id = generatePropertyId()
@@ -71,11 +100,11 @@ class Property(Resource):
                                    price=price,
                                    bedrooms=bedrooms,
                                    bathrooms=bathrooms,
-                                   accommodates='',
+                                   accommodates=accommodates,
                                    minimum_nights=1,
                                    description=description,
                                    notes='',
-                                   house_rules='',
+                                   house_rules=house_rules,
                                    start_time=getTimeStamp(start_time),
                                    end_time=getTimeStamp(end_time),
                                    available_dates=','.join(dateRange(start_time, end_time)))
@@ -148,7 +177,7 @@ class Property(Resource):
     @host.response(403, 'Invalid Auth Token')
     @host.response(405, 'Invalid property_id')
     @host.param('property_id', 'like "11156"', required=True)
-    @host.expect(auth_details(host), property_details(host))
+    @host.expect(auth_details(host), update_property_details(host))
     def put(self):
         session = db.get_session()
 
@@ -166,37 +195,28 @@ class Property(Resource):
         if not host_obj:
             abort(405, 'Invalid property_id')
         else:
-            (title, property_type, amenities, price, state, suburb, location, postcode, bedrooms, bathrooms, start_time,
-            end_time, filename, description) = unpack(request.json, \
-                                                      'title', 'type', 'amenities', 'price', 'state', 'suburb',
-                                                      'location', 'postcode', 'bedrooms', 'bathrooms', 'start_date',
-                                                      'end_date', 'filename', 'other_details')
+            (title, amenities, price, start_time, end_time, filename, description, house_rules) = unpack(request.json, \
+            'title', 'amenities', 'price', 'start_date','end_date', 'filename', 'other_details', 'house_rules')
 
             pro_obj = session.query(db.Property).filter_by(property_id=property_id).first()
             img_obj = session.query(db.Image).filter_by(property_id=property_id).first()
-            add_obj = session.query(db.Address).filter_by(property_id=property_id).first()
 
-            pro_obj.title = title
-            pro_obj.property_type = property_type
-            pro_obj.amenities = amenities
-            pro_obj.price = price
-            pro_obj.bedrooms = bedrooms
-            pro_obj.bathrooms = bathrooms
-            pro_obj.start_time = getTimeStamp(start_time)
-            pro_obj.end_time=getTimeStamp(end_time)
-            pro_obj.available_dates = ','.join(dateRange(start_time, end_time))
-            pro_obj.description = description
-
-            imgs_num = len(filename)
-            img_alt = ['' for i in range(imgs_num)]
-            img_url = [base_img_url + item for item in filename]
-            img_obj.img_alt = str(img_alt)
-            img_obj.img_url= str(img_url)
-
-            add_obj.state = state
-            add_obj.suburb = suburb
-            add_obj.location= '%s, %s, %s' % (location, suburb, state)
-            add_obj.postcode = postcode
+            if title: pro_obj.title = title
+            if amenities: pro_obj.amenities = amenities
+            if price: pro_obj.price = price
+            if start_time: pro_obj.start_time = getTimeStamp(start_time)
+            if end_time: pro_obj.end_time=getTimeStamp(end_time)
+            if description: pro_obj.description = description
+            if house_rules: pro_obj.house_rules = house_rules
+            if start_time and not end_time: pro_obj.available_dates = ','.join(dateRange(start_time, end_time))
+            if filename:
+                img_url_list = changeTextToList(img_obj.img_url)
+                img_alt_list = changeTextToList(img_obj.img_alt)
+                imgs_num = len(filename)
+                img_alt_list.extend(['' for i in range(imgs_num)])
+                img_url_list.extend([base_img_url + item for item in filename])
+                img_obj.img_alt = str(img_alt_list)
+                img_obj.img_url = str(img_url_list)
 
             session.commit()
 
