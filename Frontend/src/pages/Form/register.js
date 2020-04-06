@@ -52,18 +52,23 @@ class Register extends Component{
     };
 
     handleSubmit = () => {
-        let regInfo = this.props.form.getFieldsValue();
         const regURL = baseURL + '/auth/signup';
-        let avatar = this.state.fileList[0]['name']
-        const regData = {"username": regInfo.username, "password": regInfo.password, 
-                        "email": regInfo.email, "phone": regInfo.phone, "avatar": avatar}
-        axios.post(regURL, regData, postConfig)
-        .then((res) => {
-            this.regSuccess()
-            this.setState({regFlag: 1})
-        }).catch((error) => {
-            this.regFailure(error.response.data.message)
-        }); 
+
+        this.props.form.validateFields((err, values) => {
+            if (!err) {
+                let avatar = this.state.fileList[0]['name']
+                const regData = {"username": values.username, "password": values.password, 
+                    "email": values.email, "phone": values.phone, "avatar": avatar}
+
+                axios.post(regURL, regData, postConfig)
+                .then((res) => {
+                    this.regSuccess()
+                    this.setState({regFlag: 1})
+                }).catch((error) => {
+                    this.regFailure(error.response.data.message)
+                }); 
+            }  
+        })
     }
 
     getBase64(file) {
@@ -146,9 +151,9 @@ class Register extends Component{
                             getFieldDecorator('username', {
                                 initialValue: '',
                                 rules: [
-                                    { required: true, message: 'Please input your Username!' },
+                                    { required: true, message: 'Please input your Username' },
                                     { max: 18, message:  "Username cannot be longer than 18 characters" },
-                                    { pattern: new RegExp('^\\w+$', 'g'), message: 'Username can only contain digitals or letters!' }
+                                    { pattern: new RegExp('^\\w+$', 'g'), message: 'Username can only contain digitals or letters' }
                                 ]
                             })( <Input allowClear/> )
                         }
@@ -158,8 +163,8 @@ class Register extends Component{
                             getFieldDecorator('password', {
                                 initialValue: '',
                                 rules: [
-                                    { required: true, message: 'Please input your Password!' },
-                                    { min: 6, max: 18, message: "Password must be between 6 and 18 characters!" },
+                                    { required: true, message: 'Please input your Password' },
+                                    { min: 6, max: 18, message: "Password must be between 6 and 18 characters" },
                                     { validator: this.validateToNextPassword },
                                 ]
                             })( <Input.Password /> )
@@ -169,7 +174,7 @@ class Register extends Component{
                         {
                         getFieldDecorator('confirm', {
                             rules: [
-                                { required: true, message: 'Please confirm your password!'},
+                                { required: true, message: 'Please confirm your password'},
                                 { validator: this.compareToFirstPassword },
                             ],
                         })(<Input.Password onBlur={this.handleConfirmBlur} />)}
@@ -179,8 +184,8 @@ class Register extends Component{
                             getFieldDecorator('email', {
                                 initialValue: '',
                                 rules: [
-                                    { required: true, message: 'Please input your Email!' },
-                                    { type: 'email', message: 'The input is not a valid email!'},
+                                    { required: true, message: 'Please input your Email' },
+                                    { type: 'email', message: 'The input is not a valid email'},
                                 ]
                             })( <Input allowClear/> )
                         }
@@ -189,7 +194,7 @@ class Register extends Component{
                         {
                             getFieldDecorator('phone', {
                                 initialValue: '',
-                                rules: [{ required: true, message: 'Please input your phone number!' }],
+                                rules: [{ required: true }],
                             })(<Input addonBefore={prefixSelector}  allowClear/>)
                         }
                     </FormItem>
