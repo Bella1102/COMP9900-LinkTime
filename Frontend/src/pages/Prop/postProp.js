@@ -161,7 +161,7 @@ class Host extends Component{
                     <Form.Item label="Amenities" {...formItemLayout}>
                         {
                             getFieldDecorator('amenity', {
-                                initialValue: [],
+                                initialValue: ['TV'],
                                 rules: [{ required: true, message: 'Please select your amenities', type: 'array' }],
                             })( <Select mode="multiple" placeholder='Please select amenities' allowClear>
                                 {

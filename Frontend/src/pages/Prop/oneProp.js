@@ -175,15 +175,20 @@ class OneProp extends Component {
                             </div>
                             <Collapse defaultActiveKey={['1', '2', '3']}
                                       style={{marginBottom: 20}}>
-                                <Panel header="Description" key="1">
-                                    <p>{propDetail.get("description")}</p>
-                                </Panel>
-                                <Panel header="House rules( IMPORTANT! )" key="2">
-                                    <p>{propDetail.get("house_rules")}</p>
-                                </Panel>
+                                {
+                                    propDetail.get("description") ?
+                                    <Panel header="Description" key="1">
+                                        <p>{propDetail.get("description")}</p>
+                                    </Panel> : null
+                                }
+                                {
+                                    propDetail.get("house_rules") ?
+                                    <Panel header="House rules( IMPORTANT! )" key="2">
+                                        <p>{propDetail.get("house_rules")}</p>
+                                    </Panel> : null
+                                }
                                 <Panel header="Amenities" key="3">
                                     <span>{amenities[0]} </span>
-                                    <span>{amenities[1]} </span>
                                 </Panel>
                             </Collapse>
                             

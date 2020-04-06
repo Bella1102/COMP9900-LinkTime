@@ -157,7 +157,7 @@ class Order extends Component {
         const { getFieldDecorator } = this.props.form;
 
         return (
-            <div className="content">
+            <div className="orderContent">
                 <div className="orderTitle">
                     My Orders
                 </div>

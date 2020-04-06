@@ -113,7 +113,7 @@ class MyProp extends Component {
                 </div>
                 <div style={{ background: '#ECECEC', padding: '20px' }}>
                     <div className="addPropertyWrap" >
-                        <Button className="currentProperty">Current Property</Button>
+                        <Button className="currentProperty">Current Properties</Button>
                         <Link to="/postProp">
                             <Button icon="plus"
                                     type="primary"
