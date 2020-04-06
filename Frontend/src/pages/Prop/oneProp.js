@@ -7,7 +7,7 @@ import { Form, Button, Row, Col, Collapse, DatePicker, Select, Modal, message } 
 import { actionCreators } from '../../redux/oneStore';
 import * as helpers from '../../utils/helpers';
 import './index.less';
-
+import Newmodal from './modal';
 
 const { Option } = Select;
 const { Panel } = Collapse;
@@ -17,10 +17,20 @@ const baseURL = helpers.BACKEND_URL;
 
 
 class OneProp extends Component {
-
+    
     state = {
-        orderFlag: 0
+        orderFlag: 0,
+        visable: true
     }
+
+    showModal = () => {
+        alert('fff')
+        this.setState({visible: true});
+    };
+    hideModal = () => {
+        alert('father')
+        this.setState({visible: false});
+    };
 
     orderSuccess = () => {
         message.success('Order Success');
@@ -54,6 +64,7 @@ class OneProp extends Component {
     };
     
     render() {
+        console.log(this.state)
         const { token, propDetail } = this.props;
         const { getFieldDecorator } = this.props.form;
         const prop_id = this.props.match.params.id;
@@ -111,18 +122,34 @@ class OneProp extends Component {
                         <Col span={12}>
                             {
                             [1,2,3,4].map((value, index) => {
-                                return(
+                                if (index !== 4){
+                                    return(
+                                            <div className='right' key={index}>
+                                                <img className="pic" 
+                                                    src={ propDetail.get('img_url').get(value) } 
+                                                    onError={(e) => e.target.src=`${propDetail.get('img_url').get(value)}`}
+                                                    alt=""/>
+                                                <Button className='showBtn' type='primary' onClick={this.showModal}>Show Photos</Button>
+                                            </div>
+                                    )
+                                }else{
+                                    return(
                                         <div className='right' key={index}>
                                             <img className="pic" 
                                                 src={ propDetail.get('img_url').get(value) } 
                                                 onError={(e) => e.target.src=`${propDetail.get('img_url').get(value)}`}
                                                 alt=""/>
                                         </div>
-                                )   
+                                    )
+                                }
+                                
                             })
                             }
                         </Col>
                     </Row>
+                    
+                    <Newmodal hideModal={this.hideModal} img_url={propDetail.get('img_url')} img_alt={propDetail.get('img_alt')} visable={this.state.visable}/>
+                    
                     <Row className="showDetail">
                         <div className="upper">
                             <div className="profile">
@@ -163,6 +190,7 @@ class OneProp extends Component {
                                     <span>{amenities[1]} </span>
                                 </Panel>
                             </Collapse>
+                            
                             <div className="reviews">
                                 <div className="bigFonts">Reviews</div>
                                 <div className="review_num">{`${propDetail.get("reviews").size} reviews in total`}</div>
