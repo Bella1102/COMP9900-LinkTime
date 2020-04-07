@@ -126,6 +126,7 @@ def searchResult(pro_obj, img_obj, add_obj):
         "bedrooms": pro_obj.bedrooms,
         "bathrooms": pro_obj.bathrooms,
         "title": pro_obj.title,
+        'accommodates': pro_obj.accommodates
     }
     return temp
 def getPropertyInfo(pro_obj, img_obj, add_obj, rev_obj, host_obj):

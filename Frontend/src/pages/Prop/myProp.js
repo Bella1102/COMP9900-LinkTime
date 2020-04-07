@@ -131,7 +131,7 @@ class MyProp extends Component {
                                     <Col span={12} key={index} style={{marginBottom: "10px"}}>
                                         <Card
                                             style={{ width: "90%" }}
-                                            cover={ <img alt="" src={item.get('img_url')}/> }
+                                            cover={ <img alt="" src={item.get('img_url')} style={{height: 290}}/> }
                                             actions={[
                                                 <Icon type="edit" 
                                                     key="edit"
@@ -145,7 +145,8 @@ class MyProp extends Component {
                                             ]}>
                                             <Link to={`/props/${ item.get('property_id')}`}>
                                                 <Meta
-                                                    title={<div>{item.get('title')}
+                                                    title={<div>
+                                                                <p style={{display: 'inline-block', width: 180, overflow: 'hidden', position: 'relative'}}>{item.get('title')}</p>
                                                                 <span style={{float: "right", fontWeight: "normal"}}> AUD/night</span>
                                                                 <span style={{float: "right", marginRight: "1%", color: "#ad6800", fontWeight: "bold"}}>{price}</span>
                                                             </div>}

@@ -168,6 +168,7 @@ def init_db():
     init_review(session)
     init_request(session)
     init_comment(session)
+    init_order(session)
     # finish init
     session.close()
 
@@ -302,4 +303,16 @@ def init_comment(session):
         session.add(comment)
     session.commit()
 
+def init_order(session):
+    res = read_csv_return_dict('db/data/order.csv')
+    for item in res:
+        order = Order(user_id=int(item['user_id']),
+                      property_id=int(item['property_id']),
+                      order_time=item['order_time'],
+                      checkIn=item['checkIn'],
+                      checkOut=item['checkOut'],
+                      guests=int(item['guests']),
+                      order_status=item['order_status'])
+        session.add(order)
+    session.commit()
 
