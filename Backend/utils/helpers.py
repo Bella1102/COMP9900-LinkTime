@@ -5,6 +5,7 @@ import requests
 import random
 import time
 import datetime
+from flask_mail import Message, Mail
 
 BASE_HOST = 'http://127.0.0.1'
 BASE_PORT = 5000
@@ -236,3 +237,63 @@ def getCommentsOneRequest(com_info):
         }
         out.append(temp)
     return out
+
+def mail_config(app):
+    app.config.update(
+        MAIL_SERVER='smtp.sendgrid.com',
+        MAIL_PORT=465,
+        MAIL_USE_SSL=True,
+        MAIL_DEFAULT_SENDER=('admin', "procj0926@gmail.com"),
+        MAIL_MAX_EMAILS=10,
+        MAIL_USERNAME="apikey",
+        MAIL_PASSWORD='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'
+    )
+    return Mail(app)
+def send_async_register_email(app, user_name, user_email):
+    mail = mail_config(app)
+    subject = 'Hello %s' % user_name
+    message = '<h1>Welcome to LinkTime</h1>'
+
+    msg = Message(subject=subject,
+                  sender='procj0926@gmail.com',
+                  recipients=[user_email],
+                  html=message)
+
+    with app.open_resource("uploads/h1.png") as fp:
+        msg.attach("h1.png", "image/png", fp.read())
+
+    with app.app_context():
+        mail.send(msg)
+
+    return 'send success'
+
+def send_register_email(app, user_name, user_email):
+    import threading
+    thr = threading.Thread(target=send_async_register_email, args=[app, user_name, user_email])
+    thr.start()
+    return thr
+
+def send_async_order_email(app, user_name, img_url, property_id, checkIn, checkOut, order_time):
+    mail = mail_config(app)
+    pro_url = 'http://localhost:3000/props/%s' % (property_id)
+    subject = 'Hello %s, Please confirm your order.' % user_name
+    message = "<p>Start time: %s </p>" \
+              "<p>End time: %s </p>" \
+              "<p>Order time: %s </p>" \
+              "<p>Click the picture, check the property</p>" \
+              "<a href=%s><img src=%s/></a>" % (checkIn, checkOut, order_time, pro_url, img_url)
+
+    msg = Message(subject=subject,
+                  sender='procj0926@gmail.com',
+                  recipients=['prodxh1015@gmail.com'],
+                  html=message)
+    with app.app_context():
+        mail.send(msg)
+
+    return ''
+def send_order_email(app, user_name, img_url, property_id,  checkIn, checkOut, order_time):
+    import threading
+    thr = threading.Thread(target=send_async_order_email, args=[app, user_name, img_url, property_id,  checkIn, checkOut, order_time])
+    thr.start()
+    return thr
+

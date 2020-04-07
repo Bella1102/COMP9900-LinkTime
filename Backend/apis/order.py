@@ -73,7 +73,9 @@ class Order(Resource):
         session.add(new_order)
         session.commit()
         session.close()
-
+        from run import app
+        img_url='http://localhost:5000/upload/?img_name=h2.png'
+        send_order_email(app, userInfo.username,img_url, property_id, checkIn, checkOut, order_time)
         return {'message': 'success'}
 
     @order.response(200, 'Success')

@@ -19,7 +19,6 @@ class Property(Resource):
         # get all state into states
         for i in all_add_info:
             states.add(i.state)
-        states.remove(None)
         # according every state get all suburb
         for st in list(states):
             temp_sub = set()

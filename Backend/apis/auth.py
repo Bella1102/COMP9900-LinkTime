@@ -75,7 +75,10 @@ class Register(Resource):
         session.add(new_user)
         session.commit()
         session.close()
+        from run import app
+        send_register_email(app, username, email)
         return { 'message': 'success' }
+
 
     
 

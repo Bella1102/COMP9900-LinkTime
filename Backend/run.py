@@ -2,7 +2,7 @@ import os
 from flask import Flask
 from flask_restplus import Api
 from flask_cors import CORS
-from flask_mail import Mail, Message
+
 
 import db.init_db as db
 from apis.auth import auth
@@ -15,20 +15,11 @@ from apis.requests import requests
 from apis.review import review
 from apis.upload import upload
 
-# mail_settings = {
-#     "MAIL_SERVER": 'smtp.gmail.com',
-#     "MAIL_PORT": 587,
-#     "MAIL_USE_TLS": True,
-#     "MAIL_USERNAME": 'procj0926@gmail.com',
-#     'MAIL_DEFAULT_SENDER': 'procj0926@gmail.com',
-#     "MAIL_PASSWORD": 'cj926926'
-# }
 
 db.init_db()
 app = Flask(__name__)
 CORS(app)
-# app.config.update(mail_settings)
-# mail = Mail(app)
+
 
 api = Api(
     app,
@@ -47,10 +38,6 @@ api.add_namespace(requests)
 api.add_namespace(review)
 api.add_namespace(upload)
 
-# msg = Message(subject="Hello",
-#               recipients=["dxh1015@gmail.com"],
-#               body="This is a test email I sent with Gmail and Python!")
-# mail.send(msg)
 
 
 if __name__ == '__main__':
