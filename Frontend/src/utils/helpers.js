@@ -1,27 +1,6 @@
-// import React from 'react';
-
 
 export const BACKEND_URL = 'http://127.0.0.1:5000';
 
-
-function addZero(n) {
-    return n < 10 ? '0' + n : n;
-}
-
-export function formatTime(timestamp) {
-    
-    var time = new Date(parseInt(timestamp));
-    var Y = time.getFullYear();
-    var Mo = time.getMonth() + 1; 
-    var D = time.getDate(); 
-    var H = time.getHours(); 
-    var Mi = time.getMinutes(); 
-    var S = time.getSeconds(); 
-    var formatYMD = Y + '-' + addZero(Mo) + '-' + addZero(D);
-    var formatHMS = addZero(H) + ':' + addZero(Mi) + ':' + addZero(S);
-    var formatTime =  formatYMD + ' ' + formatHMS;
-    return formatTime;
-}
 
 export function searchSubmit(values) {
 
@@ -30,14 +9,14 @@ export function searchSubmit(values) {
     } else {
         house_type = values.type;
     }
-    if (values.time === '' || values.time[0] === undefined) {
+    if (values.time === '' || values.time === undefined  || values.time.length === 0) {
         var start_date = '';
         var end_date = '';
     } else {
         start_date = values.time[0].format('YYYY-MM-DD');
         end_date = values.time[1].format('YYYY-MM-DD');
     }
-    if (values.location === '' || values.location === undefined ) {
+    if (values.location === '' || values.location === undefined || values.location.length === 0) {
         var location = '';
     } else {
         location = values.location[1];

@@ -9,6 +9,7 @@ const defaultState = fromJS({
 	token: null,
 	homePropInfo: null,
 	searchResults: null,
+	filterResults: null,
 	propDetail: null,
 	allOrders: null,
 	allRequests: null
@@ -33,6 +34,8 @@ export default (state = defaultState, action) => {
 		case constants.HOME_PROP_INFO:
 			return state.set('homePropInfo', action.homePropInfo);
 		case constants.SEARCH_RES:
+			return state.set('searchResults', action.searchResults);
+		case constants.FILTER:
 			return state.set('searchResults', action.searchResults);
 		case constants.GET_PROP_DETAIL:
 			return state.set('propDetail', action.propDetail);

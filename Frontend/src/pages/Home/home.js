@@ -21,13 +21,14 @@ class Home extends Component {
                 let location, house_type, start_date, end_date;
                 [location, house_type, start_date, end_date] = helpers.searchSubmit(values)
                 this.props.search(location, house_type, start_date, end_date)
+
             }
         })
     }
     
     render() {
         const { homePropInfo } = this.props;
-        const { getFieldDecorator } = this.props.form;
+        const { getFieldDecorator, getFieldsValue } = this.props.form;
         const typeOptions = ['House', 'Apartment', 'Studio', 'Unit']
         const typeImages = ["/space-type/house.png", "/space-type/apartment.png", 
                             "/space-type/studio.png", "/space-type/unit.png"]
@@ -36,6 +37,11 @@ class Home extends Component {
             locationOptions =  helpers.getLocationOptions(homePropInfo)
         }
 
+        let location, house_type, start_date, end_date;
+        [location, house_type, start_date, end_date] = helpers.searchSubmit(getFieldsValue())
+
+        const searchURL = "?location=" + location + "&type=" + house_type + 
+                          "&start_date=" + start_date + "&end_date=" + end_date
 
         return (
             <div className="homeContent" >
@@ -77,7 +83,7 @@ class Home extends Component {
                             }
                         </Form.Item>
                         <Form.Item>
-                            <Link to='/search'>
+                            <Link to={{pathname: "/search", search: searchURL}}>
                                 <Button type="primary" style={{width: 100}} onClick={this.handleSubmit}> Search</Button>
                             </Link>
                         </Form.Item>
@@ -99,7 +105,8 @@ class Home extends Component {
                             typeImages.map((item, index) => {
                                 return (
                                     <Col span={6} key={index}>
-                                        <Link to="/search">
+                                        <Link to={{pathname: "/search", 
+                                                    search: "?location=&type=" + typeOptions[index] + "&start_date=&end_date="}}>
                                             <div style={{textAlign: "center"}} onClick={() => {this.props.search('', typeOptions[index], '', '')}}>
                                                     <img className="typeImage" src={item} alt=""/>
                                             </div>

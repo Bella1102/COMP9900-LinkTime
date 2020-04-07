@@ -4,7 +4,7 @@ import axios from 'axios';
 import { Redirect } from 'react-router-dom';
 import moment from 'moment';
 import { Form, Button, Row, Col, Collapse, DatePicker, 
-    Select, Modal, Avatar, Tag, message } from 'antd';
+    Select, Modal, Avatar, Tag, Tooltip, message } from 'antd';
 import { actionCreators } from '../../redux/oneStore';
 import  { axiosPostConfig } from '../../redux/oneStore/actionCreators';
 import * as helpers from '../../utils/helpers';
@@ -222,7 +222,11 @@ class OneProp extends Component {
                                                 <Avatar size={48} className="review_photo" src={item.get('head_picture')} alt=""></Avatar>
                                                 <div className="review_info">
                                                     <div style={{paddingTop: 2, color: "#ad6800", fontSize: 16, fontWeight: 600}}>{item.get("reviewer_name")}</div>
-                                                    <div style={{paddingTop: 2, color: "#bfbfbf", fontSize: 12}}>{item.get("review_date")}</div>
+                                                    <div style={{paddingTop: 2, color: "#bfbfbf", fontSize: 12}}>
+                                                        <Tooltip title={item.get("review_date")}>
+                                                            {moment(item.get("review_date")).fromNow()}
+                                                        </Tooltip>
+                                                    </div>
                                                 </div>
                                                 
                                             </div>

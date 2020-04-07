@@ -83,8 +83,9 @@ class MyProp extends Component {
                     start_date = propInfo.available_time[0].format('YYYY-MM-DD');
                     end_date = propInfo.available_time[1].format('YYYY-MM-DD');
                 }
+                const price = "$" + propInfo.price.toString()
                 const propData = {"title": propInfo.title, "amenities": '{' + propInfo.amenity.toString() + '}', 
-                        "price": propInfo.price, "start_date": start_date, "end_date": end_date, 
+                        "price": price, "start_date": start_date, "end_date": end_date, 
                         "house_rules": propInfo.houseRules, "other_details": propInfo.description, "filename": filenames}
                 
                 if (propInfo.title || propInfo.amenity.length || propInfo.price || propInfo.available_time || propInfo.houseRules || propInfo.description || filenames.length) {
@@ -222,8 +223,8 @@ class MyProp extends Component {
                             {
                                 getFieldDecorator('price', {
                                     initialValue: '',
-                                    rules: [{ pattern: new RegExp("^\\$[1-9][0-9]*$", 'g'), message: 'The input price format is not Valid!' }]
-                                })(<Input placeholder="$100"/>)
+                                    rules: [{ pattern: new RegExp("^[1-9][0-9]*$", 'g'), message: 'The input price must be an integer' }]
+                                })(<Input placeholder="Please input the price" prefix="$" suffix="AUD"/>)
                             }
                         </Form.Item>
                         <Form.Item label="Available Time">

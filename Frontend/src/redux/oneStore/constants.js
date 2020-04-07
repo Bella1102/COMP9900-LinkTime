@@ -6,3 +6,4 @@ export const GET_PROP_DETAIL = 'combo/GET_PROP_DETAIL';
 export const GET_ORDERS = 'combo/GET_ORDERS';
 export const GET_PROPS = 'combo/GET_PROPS';
 export const GET_REQUESTS = 'combo/GET_REQUESTS';
+export const FILTER = 'combo/FILTER';
