@@ -1,17 +1,26 @@
-import { Modal } from 'antd';
+import { Modal, Button } from 'antd';
 import React from 'react';
 import './modal.less';
+import './oneProp.less';
 
 class Newmodal extends React.Component {
     
     state = { 
-        visible: this.props.visable,
+        visible: this.props.visible,
         which_img: 0,
         img_url: this.props.img_url,
         img_alt: this.props.img_alt,
     };
+    showModal = () => {
+        this.setState({
+        visible: true,
+        });
+    };
+
     hideModal = () => {
-        this.props.hideModal()
+        this.setState({
+        visible: false,
+        });
     };
     handleClickRight=()=>{
         console.log(this.state.img_url.size)
@@ -39,9 +48,12 @@ class Newmodal extends React.Component {
 
     return (
       <div>
+        <Button type="primary" onClick={this.showModal} className='showBtn'>
+            Show Photos
+        </Button>
         <Modal
           visible={this.state.visible}
-          onCancel={this.hideModal}
+          onCancel={this.hideModal.bind(this)}
           footer={null}
           style={{ marginTop: '-100px'}}
           width='100%'

@@ -237,6 +237,7 @@ def getCommentsOneRequest(com_info):
             "commenter_avatar": i.commenter_avatar
         }
         out.append(temp)
+    out.sort(key=lambda x: x['comment_time'], reverse=True)
     return out
 
 def mail_config(app):

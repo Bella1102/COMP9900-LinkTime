@@ -11,8 +11,6 @@ import * as helpers from '../../utils/helpers';
 import './oneProp.less';
 import Newmodal from './modal';
 
-
-
 const { Option } = Select;
 const { Panel } = Collapse;
 const { confirm } = Modal;
@@ -24,16 +22,11 @@ class OneProp extends Component {
     
     state = {
         orderFlag: 0,
-        visable: false
+        visible: false
     }
 
-    showModal = () => {
-        alert('fff')
+    showModal(){
         this.setState({visible: true});
-    };
-    hideModal = () => {
-        alert('father')
-        this.setState({visible: false});
     };
 
     orderSuccess = () => {
@@ -131,7 +124,8 @@ class OneProp extends Component {
                                                     src={ propDetail.get('img_url').get(value) } 
                                                     onError={(e) => e.target.src=`${propDetail.get('img_url').get(value)}`}
                                                     alt=""/>
-                                                <Button className='showBtn' type='primary' onClick={this.showModal}>Show Photos</Button>
+                                                <Newmodal img_url={propDetail.get('img_url')} img_alt={propDetail.get('img_alt')} visible={this.state.visible}/>
+                                                {/* <Button className='showBtn' type='primary' onClick={this.showModal.bind(this)}>Show Photos</Button> */}
                                             </div>
                                     )
                                 }else{
@@ -148,10 +142,7 @@ class OneProp extends Component {
                             })
                             }
                         </Col>
-                    </Row>
-                    
-                    <Newmodal hideModal={this.hideModal} img_url={propDetail.get('img_url')} img_alt={propDetail.get('img_alt')} visable={this.state.visable}/>
-                    
+                    </Row>                    
                     <Row className="showDetail">
                         <div className="upper">
                             <div className="profile">
