@@ -39,7 +39,6 @@ export const axiosPostConfig = (token) => {
 const userLogout = () => ({
 	type: constants.LOGOUT,
 	loginStatus: false,
-	userInfo: null,
 	token: null
 });
 
@@ -277,7 +276,7 @@ export const getRequests = () => {
 		axios.get(URL, getConfig).then((res) => {
 			dispatch(getAllRequests(res.data));
 		}).catch((error) => {
-			console.log(error.response.data.message);
+			console.log("get request failure");
 		})
 	}
 };
@@ -322,4 +321,27 @@ export const deleteRequest = (token, req_id) => {
 	}
 };
 
+// post request comment
+export const postRequestComment = (token, req_id, content) => {
+	const URL = baseURL + '/requests/comment?req_id=' + req_id;
+	const data = { "comment_content": content }
+	return (dispatch) => {
+		axios.post(URL, data, axiosPostConfig(token)).then((res) => {
+			dispatch(getRequests())
+		}).catch((error) => {
+			console.log(error.response.data.message);
+		})
+	}
+};
 
+// delete request comment
+export const deleteRequestComment = (token, comment_id) => {
+	const URL = baseURL + '/requests/comment?comment_id=' + comment_id;
+	return (dispatch) => {
+		axios.delete(URL, axiosConfig(token)).then((res) => {
+			dispatch(getRequests())
+		}).catch((error) => {
+			console.log(error.response.data.message);
+		})
+	}
+};
