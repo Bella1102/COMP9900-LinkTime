@@ -27,11 +27,14 @@ class Property(Resource):
                     temp_sub.add(item.suburb)
             state_suburb[st] = list(temp_sub)
 
-        pro_info = session.query(db.Property).limit(12).all()
+        pro_info = session.query(db.Property).all()
         res=[]
         # res['state']=state_suburb
         res.append({"state":state_suburb})
-        for i in pro_info:
+
+        ran_num = [random.randint(1, 230) for i in range(12)]
+        for num in ran_num:
+            i = pro_info[num]
             add_info = session.query(db.Address).filter_by(property_id=i.property_id).first()
             img_info = session.query(db.Image).filter_by(property_id=i.property_id).first()
             img_list=img_info.img_url[1:-1].split(', ')
