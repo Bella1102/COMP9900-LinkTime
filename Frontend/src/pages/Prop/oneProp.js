@@ -4,7 +4,7 @@ import axios from 'axios';
 import { Redirect } from 'react-router-dom';
 import moment from 'moment';
 import { Form, Button, Row, Col, Collapse, DatePicker, 
-    Select, Modal, Avatar, message } from 'antd';
+    Select, Modal, Avatar, Tag, message } from 'antd';
 import { actionCreators } from '../../redux/oneStore';
 import  { axiosPostConfig } from '../../redux/oneStore/actionCreators';
 import * as helpers from '../../utils/helpers';
@@ -48,46 +48,16 @@ class OneProp extends Component {
         message.success('Go To Login Please');
     };
 
-    comfirmOrder = (token, property_id, checkIn, checkOut, guests) => {
-        const URL = baseURL + '/order/';
-        const orderInfo = { "property_id": property_id, "checkIn": checkIn, "checkOut": checkOut, "guests": guests }
-        axios.post(URL, orderInfo, axiosPostConfig(token)).then((res) => {
-            this.orderSuccess();
-            this.setState({orderFlag: 1})
-        }).catch((error) => {
-            // this.orderFailure(error.response.data.message);
-            if ( error.response.data.message === "Invalid Authorization Token")
-                this.goToLogin()
-        })
-    };
-    
-    render() {
-        console.log(this.state)
-        const { token, propDetail } = this.props;
-        const { getFieldDecorator } = this.props.form;
-        const prop_id = this.props.match.params.id;
-        const guestNum = ['1  Guest', '2  Guests', '3  Guests', '4  Guests', '5  Guests', '6  Guests'];
-        let available_dates;
-        if (propDetail){
-            available_dates = propDetail.get('available_dates')
-        }
-        const disabledDate = (current) => {
-            let cur = current.format('YYYY-MM-DD')
-            let dates_set = new Set(available_dates.split(','))
-            return dates_set.has(cur) === false
-        }
-
-        const handleSubmit = () => {
-            // let orderInfo = this.props.form.getFieldsValue();
+    handleSubmit = (token, prop_id) => {
+        if (!token) {
+            this.goToLogin()
+        } else {
             this.props.form.validateFields((err, values) => {
                 let confirmThis = this
-                let guests = values.guests.split(' ')[0];
-                let checkIn = ''
-                let checkOut = ''
-                if (values.checkInOut) {
-                    checkIn = values.checkInOut[0].format('YYYY-MM-DD');
-                    checkOut = values.checkInOut[1].format('YYYY-MM-DD');
-
+                if (!err) {
+                    let guests = values.guests.split(' ')[0];
+                    let checkIn = values.checkInOut[0].format('YYYY-MM-DD');
+                    let checkOut = values.checkInOut[1].format('YYYY-MM-DD');
                     confirm({
                         title: 'Do you want to confirm this order?',
                         onOk() {
@@ -100,9 +70,38 @@ class OneProp extends Component {
                             }).catch((reject) => console.log(reject));
                         },
                         onCancel() { },
-                    });
-                }   
+                    });  
+                }
             })
+        }
+    }
+
+    comfirmOrder = (token, property_id, checkIn, checkOut, guests) => {
+        const URL = baseURL + '/order/';
+        const orderInfo = { "property_id": property_id, "checkIn": checkIn, "checkOut": checkOut, "guests": guests }
+        axios.post(URL, orderInfo, axiosPostConfig(token)).then((res) => {
+            this.orderSuccess();
+            this.setState({orderFlag: 1})
+        }).catch((error) => {
+            this.orderFailure(error.response.data.message);
+        })
+    };
+    
+    render() {
+        console.log(this.state)
+        const { token, propDetail } = this.props;
+        const { getFieldDecorator } = this.props.form;
+        const prop_id = this.props.match.params.id;
+        const guestNum = ['1  Guest', '2  Guests', '3  Guests', '4  Guests', '5  Guests', '6  Guests'];
+        const tagColors = ["red", "gold", "blue", "lime", "cyan", "purple", "orange", "volcano", "magenta", "geekblue"]
+        let available_dates; 
+        if (propDetail){
+            available_dates = propDetail.get('available_dates')
+        }
+        const disabledDate = (current) => {
+            let cur = current.format('YYYY-MM-DD')
+            let dates_set = new Set(available_dates.split(','))
+            return dates_set.has(cur) === false
         }
 
         if (this.state.orderFlag){
@@ -111,6 +110,8 @@ class OneProp extends Component {
 
         if (propDetail) {
             let amenities = propDetail.get('amenities').slice(1, -1).split(',')
+            console.log("amenties: ")
+            console.log(amenities)
             return (
                 <div className="content">
                     <Row className="oneProp">
@@ -188,7 +189,11 @@ class OneProp extends Component {
                                     </Panel> : null
                                 }
                                 <Panel header="Amenities" key="3">
-                                    <span>{amenities[0]} </span>
+                                    {
+                                        amenities.map((element, index) => {
+                                            return(<Tag key={index} color={tagColors[parseInt(Math.random()*10)]} style={{ marginBottom: 10 }}>{element}</Tag>)
+                                        })
+                                    }
                                 </Panel>
                             </Collapse>
                             
@@ -248,7 +253,9 @@ class OneProp extends Component {
                                             })( <Select size="large" >
                                                     {
                                                         guestNum.map(item => (
-                                                            <Option key={item} value={item}>{item}</Option>
+                                                            <Option key={item} value={item} disabled={parseInt(propDetail.get("accommodates")) < parseInt(item.split(' ')[0])}>
+                                                                {item}
+                                                            </Option>
                                                         ))
                                                     }
                                                 </Select>)
@@ -256,7 +263,7 @@ class OneProp extends Component {
                                     </Form.Item>
                                     <Form.Item>
                                         <Button
-                                                onClick={handleSubmit}
+                                                onClick={() => this.handleSubmit(token, prop_id)}
                                                 style={{color: "black", width: "100%", height: 42, marginTop: 20, fontSize: 20, fontWeight: "bold", backgroundColor: "#ffc53d"}}>
                                             Reserve
                                         </Button>
