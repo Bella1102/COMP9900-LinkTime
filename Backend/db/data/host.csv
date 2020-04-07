@@ -1,8 +1,8 @@
 property_id,host_id,host_name,host_img_url,host_verifications
-11156,40855,Colleen,https://a0.muscache.com/im/users/40855/profile_pic/1259121939/original.jpg?aki_policy=profile_x_medium,"['email', 'phone', 'reviews']"
-12351,17061,Stuart,https://a0.muscache.com/im/users/17061/profile_pic/1425534501/original.jpg?aki_policy=profile_x_medium,"['email', 'phone', 'manual_online', 'reviews', 'manual_offline', 'offline_government_id', 'government_id', 'work_email']"
-15253,59850,Morag,https://a0.muscache.com/im/pictures/user/730ee903-bc77-40ad-b55e-966966de19bb.jpg?aki_policy=profile_x_medium,"['email', 'phone', 'facebook', 'reviews', 'jumio', 'offline_government_id', 'government_id']"
-44545,112237,Atari,https://a0.muscache.com/im/pictures/user/34708a1b-f7d0-4807-aa0d-602e97a7b639.jpg?aki_policy=profile_x_medium,"['email', 'phone', 'facebook', 'reviews', 'jumio', 'government_id']"
+11156,1,Link,http://127.0.0.1:5000/uploads/?img_name=h1.png,"['email', 'phone', 'reviews']"
+12351,1,Link,http://127.0.0.1:5000/uploads/?img_name=h1.png,"['email', 'phone', 'manual_online', 'reviews', 'manual_offline', 'offline_government_id', 'government_id', 'work_email']"
+15253,1,Link,http://127.0.0.1:5000/uploads/?img_name=h1.png,"['email', 'phone', 'facebook', 'reviews', 'jumio', 'offline_government_id', 'government_id']"
+44545,1,Link,http://127.0.0.1:5000/uploads/?img_name=h1.png,"['email', 'phone', 'facebook', 'reviews', 'jumio', 'government_id']"
 57183,1623151,Susan,https://a0.muscache.com/im/users/1623151/profile_pic/1401480385/original.jpg?aki_policy=profile_x_medium,"['email', 'phone', 'facebook', 'reviews', 'jumio', 'government_id']"
 58506,279955,John,https://a0.muscache.com/im/pictures/user/dd4ec6fe-7878-4d43-a9ff-d58f719597a8.jpg?aki_policy=profile_x_medium,"['email', 'phone', 'facebook', 'reviews', 'jumio', 'offline_government_id', 'government_id']"
 61721,299170,Eilish,https://a0.muscache.com/im/users/299170/profile_pic/1296558246/original.jpg?aki_policy=profile_x_medium,"['email', 'phone', 'facebook', 'reviews']"

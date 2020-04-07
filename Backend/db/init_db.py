@@ -166,6 +166,9 @@ def init_db():
     init_address(session)
     init_image(session)
     init_review(session)
+    init_request(session)
+    init_comment(session)
+    init_order(session)
     # finish init
     session.close()
 
@@ -274,5 +277,42 @@ def init_review(session):
                         review_content=item['review_content'],
                         head_picture=item['head_picture'])
         session.add(review)
+    session.commit()
+
+def init_request(session):
+    res = read_csv_return_dict('db/data/request.csv')
+    for item in res:
+        request = Request(user_id=int(item['user_id']),
+                          user_name=item['user_name'],
+                          avatar=base_img_url+item['Avatar'],
+                          request_title=item['request_title'],
+                          request_content=item['request_content'],
+                          request_time=item['request_time'])
+        session.add(request)
+    session.commit()
+
+def init_comment(session):
+    res = read_csv_return_dict('db/data/comment.csv')
+    for item in res:
+        comment = Comment(request_id=int(item['request_id']),
+                          commenter_id=int(item['commenter_id']),
+                          commenter_name=item['commenter_name'],
+                          commenter_avatar=base_img_url+item['commenter_avatar'],
+                          comment_content=item['comment_content'],
+                          comment_time=item['comment_time'])
+        session.add(comment)
+    session.commit()
+
+def init_order(session):
+    res = read_csv_return_dict('db/data/order.csv')
+    for item in res:
+        order = Order(user_id=int(item['user_id']),
+                      property_id=int(item['property_id']),
+                      order_time=item['order_time'],
+                      checkIn=item['checkIn'],
+                      checkOut=item['checkOut'],
+                      guests=int(item['guests']),
+                      order_status=item['order_status'])
+        session.add(order)
     session.commit()
 
