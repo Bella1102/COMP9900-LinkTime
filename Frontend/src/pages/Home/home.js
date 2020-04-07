@@ -28,8 +28,9 @@ class Home extends Component {
     render() {
         const { homePropInfo } = this.props;
         const { getFieldDecorator } = this.props.form;
-
-        const typeOptions = ['Apartment', 'Studio', 'House', 'Unit']
+        const typeOptions = ['House', 'Apartment', 'Studio', 'Unit']
+        const typeImages = ["/space-type/house.png", "/space-type/apartment.png", 
+                            "/space-type/studio.png", "/space-type/unit.png"]
         let locationOptions = []
         if (homePropInfo !== null){
             locationOptions =  helpers.getLocationOptions(homePropInfo)
@@ -37,20 +38,20 @@ class Home extends Component {
 
 
         return (
-            <div className="content" >
+            <div className="homeContent" >
                 <div className="contentUp">
                     {
                         this.props.loginStatus ?
                         <h1 className="book">Hi {this.props.userInfo.get("username")}, Welcome to book your trip!</h1> :
                         <h1 className="book">Welcome to book your trip!</h1>
                     }
-                     <Form layout="inline" className="searchModule" style={{marginBottom: 20}}>
+                     <Form layout="inline" style={{marginBottom: "1%"}}>
                         <Form.Item>
                             {
                                 getFieldDecorator('location', {
                                     initialValue: '',
                                     rules: []
-                                })(<Cascader className="searchInner" options={locationOptions} placeholder="Select location" />)
+                                })(<Cascader style={{marginRight: "2%"}} options={locationOptions} placeholder="Select location" />)
                             }
                         </Form.Item>
                         <Form.Item>
@@ -84,48 +85,30 @@ class Home extends Component {
                 </div>
                 {/* carousel */}
                 <Carousel autoplay>
-                    <div><img src="/carousel-img/1.jpg" alt=""/></div>
-                    <div><img src="/carousel-img/2.jpg" alt="" /></div>
-                    <div><img src="/carousel-img/3.jpeg" alt="" /></div>
+                    <img src="/carousel-img/1.jpg" alt=""/>
+                    <img src="/carousel-img/2.jpg" alt="" />
+                    <img src="/carousel-img/3.jpeg" alt="" />
                 </Carousel>
                 {/* space type */}
                 <div className="spaceType">
                     <div>
                         <h2 className="spaceTitle">Find the type of space that you like</h2>
                     </div>
-                    <Row className="typePics">
-                        <Col span={6}>
-                            <Link to="/search">
-                                <div style={{textAlign: "center"}} onClick={() => {this.props.search('', 'House', '', '')}}>
-                                        <img src="/space-type/house.png" alt=""/>
-                                </div>
-                            </Link>
-                            <div className="allTypes">House</div>
-                        </Col>
-                        <Col span={6}>
-                            <Link to="/search">
-                                <div style={{textAlign: "center"}} onClick={() => {this.props.search('', 'Apartment', '', '')}}>
-                                    <img src="/space-type/apartment.png" alt=""/>
-                                </div>
-                            </Link>
-                            <div className="allTypes">Apartment</div>
-                        </Col>
-                        <Col span={6}>
-                            <Link to="/search">
-                                <div style={{textAlign: "center"}} onClick={() => {this.props.search('', 'Studio', '', '')}}>
-                                    <img src="/space-type/studio.png" alt=""/>
-                                </div>
-                                <div className="allTypes">Studio</div>
-                            </Link> 
-                        </Col>
-                        <Col span={6}>
-                            <Link to="/search">
-                                <div style={{textAlign: "center"}} onClick={() => {this.props.search('', 'Unit', '', '')}}>
-                                    <img src="/space-type/unit.png" alt=""/>
-                                </div>
-                            </Link>
-                            <div className="allTypes">Unit</div>
-                        </Col>
+                    <Row>
+                        {
+                            typeImages.map((item, index) => {
+                                return (
+                                    <Col span={6} key={index}>
+                                        <Link to="/search">
+                                            <div style={{textAlign: "center"}} onClick={() => {this.props.search('', typeOptions[index], '', '')}}>
+                                                    <img className="typeImage" src={item} alt=""/>
+                                            </div>
+                                        </Link>
+                                        <div className="allTypes">{typeOptions[index]}</div>
+                                    </Col>
+                                )
+                            })
+                        }
                     </Row>
                 </div >
                 {/* Recommend hotels */}
@@ -142,7 +125,9 @@ class Home extends Component {
                                     return (
                                         <Col span={6} key={index}>
                                             <Link to={`/props/${ item.get('property_id')}`}>
-                                                <div style={{textAlign: "center"}}><img src={item.get('image').get(1)} alt=""/></div>
+                                                <div style={{textAlign: "center"}}>
+                                                    <img className="recomImage" src={item.get('image').get(1)} alt=""/>
+                                                </div>
                                                 <div className="title">{item.get('title')}</div>
                                             </Link>
                                             <div className="location">{item.get('location')}</div>
@@ -166,7 +151,9 @@ class Home extends Component {
         if (localStorage.linkToken){
             this.props.isLogin(localStorage.linkToken)
         }
-        this.props.getHomeInfo()
+        if (!this.props.homePropInfo) {
+            this.props.getHomeInfo()
+        }
     }
 
 }

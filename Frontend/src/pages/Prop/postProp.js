@@ -97,7 +97,7 @@ class Host extends Component{
         const stateOptions = ['New South Wales', 'Victoria','Queensland', 'South Australia']
         const bedroomNum = ['1', '2', '3', '4', '5', '6']
         const bathroomNum = ['0', '1', '2', '3', '4', '5', '6']
-        const guestNum = ['1', '2', '3', '4', '5', '6']
+        const guestNum = ['1', '2', '3', '4', '5', '6', '7', '8']
 
         if (this.state.postPropFlag){
             return (<Redirect to="/myProps" />)

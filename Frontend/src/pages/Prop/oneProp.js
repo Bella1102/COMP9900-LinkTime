@@ -92,7 +92,7 @@ class OneProp extends Component {
         const { token, propDetail } = this.props;
         const { getFieldDecorator } = this.props.form;
         const prop_id = this.props.match.params.id;
-        const guestNum = ['1  Guest', '2  Guests', '3  Guests', '4  Guests', '5  Guests', '6  Guests'];
+        const guestNum = ['1  Guest', '2  Guests', '3  Guests', '4  Guests', '5  Guests', '6  Guests', '7  Guests', '8  Guests'];
         const tagColors = ["red", "gold", "blue", "lime", "cyan", "purple", "orange", "volcano", "magenta", "geekblue"]
         let available_dates; 
         if (propDetail){
@@ -110,8 +110,6 @@ class OneProp extends Component {
 
         if (propDetail) {
             let amenities = propDetail.get('amenities').slice(1, -1).split(',')
-            console.log("amenties: ")
-            console.log(amenities)
             return (
                 <div className="content">
                     <Row className="oneProp">
@@ -164,9 +162,15 @@ class OneProp extends Component {
                                 <div className="title">{ propDetail.get("title") }</div>
                                 <p className="location">{ propDetail.get("location") }</p>
                                 <p>
-                                    <span style={{marginRight: 10}}>{ `${ propDetail.get("bedrooms") } bedroom` }</span>
-                                    <span style={{marginRight: 10}}>{ `${ propDetail.get("bathrooms") } bathroom` }</span>
-                                    <span style={{marginRight: 10}}>{ `${ propDetail.get("accommodates") } guests` }</span>
+                                    <span style={{marginRight: "1%"}}>
+                                        {propDetail.get("bedrooms")} {propDetail.get("bedrooms") > 1 ? "bedrooms" : "bedroom"}
+                                    </span>
+                                    <span style={{marginRight: "1%"}}>
+                                        { propDetail.get("bathrooms")} {propDetail.get("bedrooms") > 1 ? "bathrooms" : "bathroom"}
+                                    </span>
+                                    <span style={{marginRight: "1%"}}>
+                                        { propDetail.get("accommodates")} {propDetail.get("accommodates") > 1 ? "guests" : "guest"}
+                                    </span>
                                 </p>
                             </div>
                         </div>
@@ -190,8 +194,13 @@ class OneProp extends Component {
                                 }
                                 <Panel header="Amenities" key="3">
                                     {
-                                        amenities.map((element, index) => {
-                                            return(<Tag key={index} color={tagColors[parseInt(Math.random()*10)]} style={{ marginBottom: 10 }}>{element}</Tag>)
+                                        amenities.slice(0, 20).map((element, index) => {
+                                            let indexList = index.toString().split('')
+                                            let newIndex = parseInt(indexList[indexList.length - 1])
+                                            return(
+                                                <Tag key={index} color={tagColors[newIndex]} style={{ marginBottom: 10 }}>
+                                                    {element}
+                                                </Tag>)
                                         })
                                     }
                                 </Panel>

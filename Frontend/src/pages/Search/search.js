@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import GoogleMapReact from 'google-map-react';
-import { Form, DatePicker, Cascader, Button, Select, Row, Col, Pagination, Icon } from 'antd';
+import { Form, DatePicker, Cascader, Button, Select, 
+    Row, Col, Pagination, Icon, Tag} from 'antd';
 import { actionCreators } from '../../redux/oneStore';
 import * as helpers from '../../utils/helpers';
 import './search.less';
@@ -66,6 +67,7 @@ class Search extends Component {
 
         const { homePropInfo, searchResults } = this.props;
         const { getFieldDecorator } = this.props.form;
+        const tagColors = ["red", "gold", "blue", "lime", "cyan", "purple", "orange", "volcano", "magenta", "geekblue"]
 
         const AnyReactComponent = ({ text, index }) =>
             <div className = {`item ${index === this.state.target ? "item_hover" : "null"}`}>
@@ -163,19 +165,37 @@ class Search extends Component {
                                         </Link>
                                         {/* detail */}
                                         <div className="detail">
+                                            <span className="propType">
+                                                <Icon type="star"/> Entire {item.get('property_type')}
+                                            </span>
                                             <Link to={`/props/${ item.get('property_id')}`}>
                                                 <div className="title">{item.get('title')}</div>
                                             </Link>
-                                            <div className="location"> <Icon type="environment"/> {item.get('suburb')} · NSW</div>
-                                            <div style={{height: 35}}>
-                                                <span className="type">{`${item.get('property_type')}: `}</span>
-                                                <span>{`${item.get('bedrooms')} bedroom · `}</span>
-                                                <span>{`${item.get('bathrooms')} bath`}</span>
+
+                                            <div className="roomsLocation">
+                                                <Icon type="home" theme="twoTone" style={{marginRight: "1%"}}/>
+                                                <span>
+                                                    {item.get('bedrooms')} {item.get('bedrooms') > 1 ? "bedrooms · " : "bedroom · "}
+                                                </span>
+                                                <span style={{marginRight: "3%"}}>
+                                                    {item.get('bathrooms')} {item.get('bathrooms') > 1 ? "bathrooms" : "bathroom"}
+                                                </span>
+                                                <span style={{color: "#ad6800"}}>
+                                                    <Icon type="environment" style={{marginRight: "1%"}}/> 
+                                                    {item.get('suburb')} · NSW
+                                                </span>
                                             </div>
-                                            <div style={{height: 35}}>
-                                                <span style={{ marginRight: 5}}>{`${amenities[0]}`}</span>
-                                                <span style={{ marginRight: 5}}>{`${amenities[1]}`}</span>
-                                                <span style={{ marginRight: 5}}>{`${amenities[2]}`}</span>
+                                            <div className="amenityTags">
+                                            {
+                                                amenities.slice(0, 5).map((element, index) => {
+                                                    let indexList = index.toString().split('')
+                                                    let newIndex = parseInt(indexList[indexList.length - 1])
+                                                    return(
+                                                        <Tag key={index} color={tagColors[newIndex]} style={{ marginBottom: 10}}>
+                                                            {element}
+                                                        </Tag>)
+                                                })
+                                            }
                                             </div>
                                             <div className="priceLine">
                                                 <span className="price">{`${price} AUD `}</span>

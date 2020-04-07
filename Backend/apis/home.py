@@ -32,7 +32,7 @@ class Property(Resource):
         # res['state']=state_suburb
         res.append({"state":state_suburb})
 
-        ran_num = [random.randint(1, 230) for i in range(12)]
+        ran_num = random.sample(range(1, 231), 12)
         for num in ran_num:
             i = pro_info[num]
             add_info = session.query(db.Address).filter_by(property_id=i.property_id).first()
