@@ -27,7 +27,7 @@ class Review(Resource):
             abort(403, 'Invalid Auth Token')
 
         (property_id, review_content) = unpack(request.json, 'property_id', 'review_content')
-        review_date = getLocalTime()
+        review_date = getLocalTime().split(' ')[0]
 
         new_review = db.Review(property_id=property_id,
                                reviewer_id=userInfo.id,
