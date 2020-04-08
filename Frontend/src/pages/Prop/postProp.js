@@ -8,6 +8,7 @@ import {Form, Button, Input, Radio, Select, DatePicker,
 import { actionCreators } from '../../redux/oneStore';
 import  { axiosPostConfig } from '../../redux/oneStore/actionCreators';
 import * as helpers from '../../utils/helpers';
+import FourOThree from '../../pages/403';
 
 
 
@@ -65,8 +66,9 @@ class Host extends Component{
                 this.state.fileList.forEach((item) => { filenames.push(item['name']) })
                 const start_date = propInfo.available_time[0].format('YYYY-MM-DD');
                 const end_date = propInfo.available_time[1].format('YYYY-MM-DD');
+                const price = "$" + propInfo.price.toString()
                 const propData = {"title": propInfo.title, "type": propInfo.type, "amenities": '{' + propInfo.amenity.toString() + '}', 
-                    "price": propInfo.price, "state": propInfo.state, "suburb": propInfo.suburb, "location": propInfo.location, 
+                    "price": price, "state": propInfo.state, "suburb": propInfo.suburb, "location": propInfo.location, 
                     "postcode": propInfo.postcode, "bedrooms": propInfo.bedrooms, "bathrooms": propInfo.bathrooms, "accommodates": propInfo.accommodates,
                     "start_date": start_date, "end_date": end_date, "house_rules": propInfo.houseRules,
                     "other_details": propInfo.description, "filename": filenames}
@@ -83,7 +85,7 @@ class Host extends Component{
     }
 
     render(){
-        const { token } = this.props;
+        const { loginStatus, token } = this.props;
         const { previewVisible, previewImage, fileList } = this.state;
         const { getFieldDecorator } = this.props.form;
 
@@ -92,13 +94,16 @@ class Host extends Component{
             wrapperCol: { xs: 16, sm: 9, xl: 6 }
         }
         const typeOptions = ['Apartment', 'Studio', 'House', 'Unit']
-        const amenityOptions = ['TV', 'Internet', 'Wifi', 'Washer', 'Dryer', 
-                                'Hair dryer', 'Kitchen', 'Smoke detector', 'Air Conditioning', 'Free parking on premises']
+        const amenityOptions = ['TV', 'Internet', 'Wifi', 'Washer', 'Dryer', 'Hair dryer', "Self check-in", "Private entrance", 
+                'Kitchen', 'Smoke detector', 'Air conditioning', 'Free parking on premises']
         const stateOptions = ['New South Wales', 'Victoria','Queensland', 'South Australia']
         const bedroomNum = ['1', '2', '3', '4', '5', '6']
         const bathroomNum = ['0', '1', '2', '3', '4', '5', '6']
         const guestNum = ['1', '2', '3', '4', '5', '6', '7', '8']
 
+        if (!loginStatus){
+            return (<FourOThree subTitle={"Sorry, you are not authorized to access post property page before logining."}/>)
+        }
         if (this.state.postPropFlag){
             return (<Redirect to="/myProps" />)
         }
@@ -178,9 +183,9 @@ class Host extends Component{
                                 initialValue: '',
                                 rules: [
                                     { required: true },
-                                    { pattern: new RegExp("^\\$[1-9][0-9]*$", 'g'), message: 'The input price format is not Valid!' }
+                                    { pattern: new RegExp("^[1-9][0-9]*$", 'g'), message: 'The input price must be an integer' }
                                 ]
-                            })(<Input placeholder="$100"/>)
+                            })(<Input placeholder="Please input the price" prefix="$" suffix="AUD"/>)
                         }
                     </Form.Item>
                     <Form.Item label="State" {...formItemLayout}>

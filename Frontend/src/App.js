@@ -14,10 +14,7 @@ import OneProp from './pages/Prop/oneProp';
 import Search from './pages/Search/search';
 import Order from './pages/Order/order';
 import Request from './pages/Request/request';
-
-import Success from './pages/success';
 import FourOFour from './pages/404';
-import FourOThree from './pages/403';
 
 
 
@@ -42,10 +39,7 @@ class App extends Component {
 							<Route path='/postProp' exact component={ Host }></Route>
 							<Route path='/myProps' exact component={ MyProp }></Route>
 							<Route path='/props/:id' exact component={ OneProp }></Route>
-
-							<Route path='/success' exact component={ Success }></Route>
-							<Route path='/404' exact component={ FourOFour }></Route>
-							<Route path='/403' exact component={ FourOThree }></Route>
+							<Route component={ FourOFour }></Route>
 						</Switch>
 					</Admin> }>
 				</Route>

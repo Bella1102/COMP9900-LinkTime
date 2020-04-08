@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
-import { Row, Col, Button, Icon, Card, Modal, 
-    Drawer, Form, Input, DatePicker, Upload, Select, message} from 'antd';
+import { Row, Col, Button, Icon, Card, Modal, Drawer, 
+    Form, Input, DatePicker, Upload, Select, message} from 'antd';
 import * as helpers from '../../utils/helpers';
 import { actionCreators } from '../../redux/oneStore';
+import FourOThree from '../../pages/403';
 import './myProp.less';
 
 
@@ -83,8 +84,9 @@ class MyProp extends Component {
                     start_date = propInfo.available_time[0].format('YYYY-MM-DD');
                     end_date = propInfo.available_time[1].format('YYYY-MM-DD');
                 }
+                const price = "$" + propInfo.price.toString()
                 const propData = {"title": propInfo.title, "amenities": '{' + propInfo.amenity.toString() + '}', 
-                        "price": propInfo.price, "start_date": start_date, "end_date": end_date, 
+                        "price": price, "start_date": start_date, "end_date": end_date, 
                         "house_rules": propInfo.houseRules, "other_details": propInfo.description, "filename": filenames}
                 
                 if (propInfo.title || propInfo.amenity.length || propInfo.price || propInfo.available_time || propInfo.houseRules || propInfo.description || filenames.length) {
@@ -99,12 +101,16 @@ class MyProp extends Component {
 
 
     render() {
-        const { token, allProps } = this.props;
+        const { loginStatus, token, allProps } = this.props;
         const { getFieldDecorator } = this.props.form;
         const { previewVisible, previewImage, fileList } = this.state;
 
         const amenityOptions = ['TV', 'Internet', 'Wifi', 'Washer', 'Dryer', 
             'Hair dryer', 'Kitchen', 'Smoke detector', 'Air Conditioning', 'Free parking on premises']
+
+        if (!loginStatus){
+            return (<FourOThree subTitle={"Sorry, you are not authorized to access user current properties page before logining."}/>)
+        }
 
         return (
             <div className="myPropContent">
@@ -223,8 +229,8 @@ class MyProp extends Component {
                             {
                                 getFieldDecorator('price', {
                                     initialValue: '',
-                                    rules: [{ pattern: new RegExp("^\\$[1-9][0-9]*$", 'g'), message: 'The input price format is not Valid!' }]
-                                })(<Input placeholder="$100"/>)
+                                    rules: [{ pattern: new RegExp("^[1-9][0-9]*$", 'g'), message: 'The input price must be an integer' }]
+                                })(<Input placeholder="Please input the price" prefix="$" suffix="AUD"/>)
                             }
                         </Form.Item>
                         <Form.Item label="Available Time">

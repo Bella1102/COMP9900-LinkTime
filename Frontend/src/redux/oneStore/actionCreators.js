@@ -71,6 +71,7 @@ export const getUserInfo = (token) => {
 			dispatch(getUserData(res.data, token));
 		}).catch((error) => {
 			console.log(error.response.data.message);
+			localStorage.removeItem('linkToken')
 		});
 	}
 }
@@ -345,3 +346,11 @@ export const deleteRequestComment = (token, comment_id) => {
 		})
 	}
 };
+
+
+//############################################################
+export const filterProperty = (temp) => ({
+	type: constants.FILTER,
+	filterResults: temp,
+});
+

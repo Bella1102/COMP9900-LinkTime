@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import { fromJS } from 'immutable';
 import GoogleMapReact from 'google-map-react';
-import { Form, DatePicker, Cascader, Button, Select, 
-    Row, Col, Pagination, Icon, Tag} from 'antd';
+import { Form, DatePicker, Cascader, Button, Select, Row, Col, 
+    Pagination, Icon, Tag, Popover, Checkbox, Radio, Slider, Empty} from 'antd';
 import { actionCreators } from '../../redux/oneStore';
 import * as helpers from '../../utils/helpers';
 import './search.less';
@@ -12,6 +13,10 @@ import './search.less';
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
+
+function formatter(value) {
+    return value;
+}
 
 
 class Search extends Component {
@@ -23,7 +28,13 @@ class Search extends Component {
             zoom: 15,
             target: -1,
             current: 1,
-            pageSize: 10
+            pageSize: 10,
+            bed_value: 0,
+            bath_value: 0,
+            guest_value: 0,
+            feature_value: [],
+            sortPrice_value: "Default",
+            showWhichResult: "search"
         };
         this.handleMouseOver = this.handleMouseOver.bind(this);
         this.handleMouseLeave = this.handleMouseLeave.bind(this);
@@ -31,6 +42,7 @@ class Search extends Component {
 
     // same as home page1: both need to submit search form
     handleSubmit = () => {
+        this.setState({  showWhichResult: "search" });
         this.props.form.validateFields((err, values) => {
             if(!err){
                 let location, house_type, start_date, end_date;
@@ -52,49 +64,251 @@ class Search extends Component {
         this.setState({ target: -1 })
     }
 
-    onChange = page => {
-        this.setState({
-            current: page
-        })
-    }
     onShowSizeChange = (current, pageSize) => {
         this.setState({
             pageSize: pageSize
         })
     }
+    //############################################################
+    handleBedNumChange = value => {
+        console.log(value)
+        this.setState({ bed_value: value });
+    };
+
+    handleBathNumChange = value => {
+        console.log(value)
+        this.setState({ bath_value: value });
+    };
+
+    handleGuestNumChange = value => {
+        console.log(value)
+        this.setState({ guest_value: value });
+    };
+
+    handleFilterFeature(value){
+        console.log(value)
+        this.setState({ feature_value: value });
+    }
+
+    handleSortPrice(value) {
+        console.log(value)
+        this.setState({ sortPrice_value: value });
+    }
+    //############################################################
+
+    filterNum = (type, temp) => {
+        let res;
+        if (type === 'bedrooms'){
+            res = temp.filter((item) => {
+                let bed_num = item.get('bedrooms')
+                if (this.state.bed_value <= bed_num){
+                    return true
+                }
+                return false
+            })
+        }
+        if (type === 'bathrooms'){
+            res = temp.filter((item) => {
+                let bath_num = item.get('bathrooms')
+                if (this.state.bath_value <= bath_num){
+                    return true
+                }
+                return false
+            })
+            
+        }
+        if (type === 'guests'){
+            res = temp.filter((item) => {
+                let guests_num = item.get('accommodates')
+                if (this.state.guest_value <= guests_num){
+                    return true
+                }
+                return false
+            })
+        }
+        return res
+    }
+
+    filterFeature = (temp) => {
+        let res = temp.filter((item) => {
+            let amenities = new Set(item.get("amenities").slice(1, -1).split(','))
+            let flag = true
+            this.state.feature_value.map((a) => {
+                if (amenities.has(a) === false){
+                    flag = false
+                }
+                return flag
+            })
+            return flag
+        })
+        return res
+    }
+
+    sortPrice = (temp) => {
+        let res = JSON.parse(JSON.stringify(temp))
+        res.sort((a, b) => {
+            let a_price = parseFloat(a.price.split('$')[1].replace(/,/g, ''))
+            let b_price = parseFloat(b.price.split('$')[1].replace(/,/g, ''))
+            return a_price - b_price
+        })
+
+        if (this.state.sortPrice_value === 'Low to High'){
+            return res
+        } else if (this.state.sortPrice_value === 'High to Low'){
+            return res.reverse()
+        } else {
+            return temp
+        }
+    }
+
+    allSubFilter = () => {
+        this.setState({  showWhichResult: "filter" });
+        let res
+        let temp = this.props.searchResults
+        res = this.filterNum('bedrooms', temp)
+        res = this.filterNum('bathrooms', res)
+        res = this.filterNum('guests', res)
+        res = this.filterFeature(res)
+        res = this.sortPrice(res.toJS())
+        res = fromJS(res)
+        this.props.filterProperty(res)
+    }
+    //############################################################
 
     render() {
-
-        const { homePropInfo, searchResults } = this.props;
-        const { getFieldDecorator } = this.props.form;
+        const { bed_value, bath_value, guest_value, showWhichResult } = this.state;
+        const { homePropInfo, searchResults, filterResults } = this.props;
+        const { getFieldDecorator, getFieldsValue } = this.props.form;
+        const typeOptions = ['Apartment', 'Studio', 'House', 'Unit']
         const tagColors = ["red", "gold", "blue", "lime", "cyan", "purple", "orange", "volcano", "magenta", "geekblue"]
+
+        let location, house_type, start_date, end_date;
+        [location, house_type, start_date, end_date] = helpers.searchSubmit(getFieldsValue())
+
+        const searchURL = "?location=" + location + "&type=" + house_type + 
+                          "&start_date=" + start_date + "&end_date=" + end_date
+
+        const marks = {1: "1+", 2: "2+", 3: "3+", 4: "4+", 5: "5+", 6: "6+"}
+        const bedContent = (
+            <Fragment>
+               <Slider  min={1} 
+                        max={6}
+                        marks={marks}
+                        value={bed_value}
+                        onChange={this.handleBedNumChange}
+                        tipFormatter={formatter}
+                        style={{width: 240, marginBottom: "15%"}}/>
+               <div style={{textAlign: "center"}}><Button type="primary" onClick={this.allSubFilter}>Apply</Button></div>
+            </Fragment>
+        );
+
+        const bathContent = (
+            <Fragment>
+                <Slider min={1} 
+                        max={6}
+                        marks={marks}
+                        value={bath_value}
+                        onChange={this.handleBathNumChange}
+                        tipFormatter={formatter}
+                        style={{width: 240, marginBottom: "15%"}}/>
+                <div style={{textAlign: "center"}}><Button type="primary" onClick={this.allSubFilter}>Apply</Button></div>
+            </Fragment>
+        );
+
+        const guestContent = (
+            <Fragment>
+                <Slider min={1} 
+                        max={6}
+                        marks={marks}
+                        value={guest_value}
+                        onChange={this.handleGuestNumChange}
+                        tipFormatter={formatter}
+                        style={{width: 240, marginBottom: "15%"}}/>
+                <div style={{textAlign: "center"}}><Button type="primary" onClick={this.allSubFilter}>Apply</Button></div>
+            </Fragment>
+        );
+
+        const amenityOptions = ['TV', 'Wifi', 'Dryer', 'Washer', 'Air conditioning', "Self check-in"]
+        const featureContent = (
+            <Fragment>
+                <Checkbox.Group defaultValue={[]} style={{marginBottom: "10%"}} onChange={(e) => this.handleFilterFeature(e)}>
+                    { 
+                        amenityOptions.map((item, index) => {
+                            return (
+                                <Fragment key={index}>
+                                    <Checkbox style={{ height: "30px", lineHeight: "30px" }} key={index} value={item}>{item}</Checkbox>
+                                    <br/>
+                            </Fragment>
+                            )
+                        })
+                    }
+                </Checkbox.Group>
+                <br/>
+                <Button type="primary" onClick={this.allSubFilter}>Apply</Button>
+            </Fragment>
+        );
+
+        const sortOptions = ['Default', 'Low to High', 'High to Low']
+        const sortPrice = (
+            <Fragment>
+                <Radio.Group style={{marginBottom: "10%"}} defaultValue="Default" onChange={(e) => this.handleSortPrice(e.target.value)}>
+                { 
+                    sortOptions.map((item, index) => {
+                        return (
+                            <Fragment key={index}>
+                                <Radio style={{ height: "30px", lineHeight: "30px" }} key={index} value={item}>{item}</Radio>
+                                <br/>
+                            </Fragment>
+                        )
+                    })
+                }
+                </Radio.Group>
+                <br/>
+                <Button type="primary" onClick={this.allSubFilter}>Apply</Button>
+            </Fragment>
+        );
 
         const AnyReactComponent = ({ text, index }) =>
             <div className = {`item ${index === this.state.target ? "item_hover" : "null"}`}>
                 <span className='map_item_text'>{text}</span>
             </div>;
 
+        // showWhichResult: "search", "filter"
+        // filterResults
         let part_results = [];
-        if (searchResults){
-            if (this.state.current === 1) {
-                part_results = searchResults.slice(0, this.state.pageSize)
-
-            } else {
-                let start = (this.state.current - 1) * this.state.pageSize;
-                let end = start + this.state.pageSize;
-                part_results = searchResults.slice(start, end)
+        if (showWhichResult === "search") {
+            if (searchResults){
+                if (this.state.current === 1) {
+                    part_results = searchResults.slice(0, this.state.pageSize)
+    
+                } else {
+                    let start = (this.state.current - 1) * this.state.pageSize;
+                    let end = start + this.state.pageSize;
+                    part_results = searchResults.slice(start, end)
+                }
+            }
+        } else {
+            if (filterResults){
+                if (this.state.current === 1) {
+                    part_results = filterResults.slice(0, this.state.pageSize)
+    
+                } else {
+                    let start = (this.state.current - 1) * this.state.pageSize;
+                    let end = start + this.state.pageSize;
+                    part_results = filterResults.slice(start, end)
+                }
             }
         }
-
-        const typeOptions = ['Apartment', 'Studio', 'House', 'Unit']
+        
         // same as home page2: same locationOptions
         let locationOptions = []
         if (homePropInfo !== null){
             locationOptions =  helpers.getLocationOptions(homePropInfo)
         }
 
+
         return (
-            <div className="content">
+            <div className="searchContent">
                 {/* same as home page3: same search from  */}
                 <Form layout="inline" className="searchModule">
                     <Form.Item>
@@ -128,17 +342,28 @@ class Search extends Component {
                         }
                     </Form.Item>
                     <Form.Item>
-                        <Button type="primary" style={{width: 100}} onClick={this.handleSubmit}> Search</Button>
+                        <Link to={{pathname: "/search", search: searchURL}}>
+                            <Button type="primary" style={{width: 100}} onClick={this.handleSubmit}> Search</Button>
+                        </Link>
                     </Form.Item>
                 </Form>
 
                 <div className="filterBar">
-                    <Button className="filterButton">Location</Button>
-                    <Button className="filterButton">Dates</Button>
-                    <Button className="filterButton">Guests</Button>
-                    <Button className="filterButton">Price</Button>
-                    <Button className="filterButton">Features</Button>
-                    <Button className="filterButton">Property type</Button>
+                    <Popover content={bedContent} title="Bedroom number" placement="bottomLeft">
+                        <Button className="filterButton">Bedrooms</Button>
+                    </Popover>
+                    <Popover content={bathContent} title="Bathroom number" placement="bottom">
+                        <Button className="filterButton">Bathrooms</Button>
+                    </Popover>
+                    <Popover content={guestContent} title="Accomodate number" placement="bottom">
+                        <Button className="filterButton">Guests</Button>
+                    </Popover>
+                    <Popover content={featureContent} title="Features" placement="bottom">
+                        <Button className="filterButton">Features</Button>
+                    </Popover>
+                    <Popover content={sortPrice} title="Sort price" placement="bottom">
+                        <Button className="filterButton">Sort Price</Button>
+                    </Popover>
                 </div>
 
                 <Row className="searchResult">
@@ -204,7 +429,7 @@ class Search extends Component {
                                         </div>
                                     </div>
                                 )
-                            }) : null
+                            }) : <Empty description={false} />
                         }
                         </div>
                         <Pagination
@@ -214,8 +439,10 @@ class Search extends Component {
                             defaultPageSize={10}
                             pageSizeOptions={['5', '10', '15', '20']}
                             current={this.state.current}
-                            total={searchResults === null ? 10 : searchResults.size}
-                            onChange={this.onChange}
+                            total={ showWhichResult === "search" ? 
+                                    searchResults === null ? 10 : searchResults.size : 
+                                    filterResults === null ? 10 : filterResults.size}
+                            onChange={ (page) => this.setState({ current: page }) }
                             className="pagination"
                         />
                     </Col>
@@ -245,8 +472,27 @@ class Search extends Component {
     }
 
     UNSAFE_componentWillMount(){
-        this.props.getHomeInfo();
+        if (!this.props.homePropInfo) {
+            this.props.getHomeInfo()
+        }
+        console.log(this.props)
 
+        let temp = this.props.location.search
+        let exp = /^\?location=\w*&type=\w*&start_date=([\d]{4}-[\d]{2}-[\d]{2})*&end_date=([\d]{4}-[\d]{2}-[\d]{2})*/g
+        if (!temp.match(exp)){
+            this.props.search("", "", "", "")
+        } else {
+            let searchURL = this.props.location.search.split('&')
+            let urlList = []
+            searchURL.map((item, index) => {
+                return(
+                    urlList.push(item.split('=')[1])
+                )
+            })
+            let location, house_type, start_date, end_date
+            [location, house_type, start_date, end_date] = urlList
+            this.props.search(location, house_type, start_date, end_date)
+        }
     }
 
 }
@@ -258,7 +504,7 @@ const mapState = (state) => {
         loginStatus: state.getIn(["combo", "loginStatus"]),
         homePropInfo: state.getIn(["combo", "homePropInfo"]),
         searchResults: state.getIn(["combo", "searchResults"]),
-        propDetail: state.getIn(["combo", "propDetail"]),
+        filterResults: state.getIn(["combo", "filterResults"]),
 	}
 }
 
@@ -268,7 +514,10 @@ const mapDispatch = (dispatch) => ({
     },
     search(location, house_type, start_date, end_date) {
 		dispatch(actionCreators.search(location, house_type, start_date, end_date))
-    } 
+    },
+    filterProperty(temp) {
+        dispatch(actionCreators.filterProperty(temp))
+    }
 });
 
 

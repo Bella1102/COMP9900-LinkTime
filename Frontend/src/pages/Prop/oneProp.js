@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
-import { Redirect } from 'react-router-dom';
 import moment from 'moment';
 import { Form, Button, Row, Col, Collapse, DatePicker, 
-    Select, Modal, Avatar, Tag, message } from 'antd';
+    Select, Modal, Avatar, Tag, Tooltip, message } from 'antd';
 import { actionCreators } from '../../redux/oneStore';
 import  { axiosPostConfig } from '../../redux/oneStore/actionCreators';
 import * as helpers from '../../utils/helpers';
-import './oneProp.less';
 import Newmodal from './modal';
+import Success from '../../pages/success';
+import './oneProp.less';
 
 const { Option } = Select;
 const { Panel } = Collapse;
@@ -98,7 +98,7 @@ class OneProp extends Component {
         }
 
         if (this.state.orderFlag){
-            return (<Redirect to="/success" />)
+            return (<Success />)
         }
 
         if (propDetail) {
@@ -115,20 +115,19 @@ class OneProp extends Component {
                             </div>
                         </Col>
                         <Col span={12}>
-                            {
+                        {
                             [1,2,3,4].map((value, index) => {
-                                if (index !== 4){
+                                if (index !== 4) {
                                     return(
-                                            <div className='right' key={index}>
-                                                <img className="pic" 
-                                                    src={ propDetail.get('img_url').get(value) } 
-                                                    onError={(e) => e.target.src=`${propDetail.get('img_url').get(value)}`}
-                                                    alt=""/>
-                                                <Newmodal img_url={propDetail.get('img_url')} img_alt={propDetail.get('img_alt')} visible={this.state.visible}/>
-                                                {/* <Button className='showBtn' type='primary' onClick={this.showModal.bind(this)}>Show Photos</Button> */}
-                                            </div>
+                                        <div className='right' key={index}>
+                                            <img className="pic" 
+                                                src={ propDetail.get('img_url').get(value) } 
+                                                onError={(e) => e.target.src=`${propDetail.get('img_url').get(value)}`}
+                                                alt=""/>
+                                            <Newmodal img_url={propDetail.get('img_url')} img_alt={propDetail.get('img_alt')} visible={this.state.visible}/>
+                                        </div>
                                     )
-                                }else{
+                                } else {
                                     return(
                                         <div className='right' key={index}>
                                             <img className="pic" 
@@ -137,10 +136,9 @@ class OneProp extends Component {
                                                 alt=""/>
                                         </div>
                                     )
-                                }
-                                
+                                } 
                             })
-                            }
+                        }
                         </Col>
                     </Row>                    
                     <Row className="showDetail">
@@ -185,7 +183,7 @@ class OneProp extends Component {
                                 }
                                 <Panel header="Amenities" key="3">
                                     {
-                                        amenities.slice(0, 20).map((element, index) => {
+                                        amenities.map((element, index) => {
                                             let indexList = index.toString().split('')
                                             let newIndex = parseInt(indexList[indexList.length - 1])
                                             return(
@@ -213,7 +211,11 @@ class OneProp extends Component {
                                                 <Avatar size={48} className="review_photo" src={item.get('head_picture')} alt=""></Avatar>
                                                 <div className="review_info">
                                                     <div style={{paddingTop: 2, color: "#ad6800", fontSize: 16, fontWeight: 600}}>{item.get("reviewer_name")}</div>
-                                                    <div style={{paddingTop: 2, color: "#bfbfbf", fontSize: 12}}>{item.get("review_date")}</div>
+                                                    <div style={{paddingTop: 2, color: "#bfbfbf", fontSize: 12}}>
+                                                        <Tooltip title={item.get("review_date")}>
+                                                            {moment(item.get("review_date")).fromNow()}
+                                                        </Tooltip>
+                                                    </div>
                                                 </div>
                                                 
                                             </div>

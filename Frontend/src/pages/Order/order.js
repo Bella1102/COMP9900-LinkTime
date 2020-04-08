@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Form, Row, Col, Button, Modal, Tabs, Input } from 'antd';
 import { actionCreators } from '../../redux/oneStore';
+import FourOThree from '../../pages/403';
 import './order.less';
 
 
@@ -153,8 +154,12 @@ class Order extends Component {
 
   
     render() {
-        const { token, allOrders } = this.props;  
+        const { loginStatus, token, allOrders } = this.props;  
         const { getFieldDecorator } = this.props.form;
+
+        if (!loginStatus){
+            return (<FourOThree subTitle={"Sorry, you are not authorized to access user orders page before logining."}/>)
+        }
 
         return (
             <div className="orderContent">
