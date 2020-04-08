@@ -134,7 +134,7 @@ class Home extends Component {
                                         <Col span={6} key={index}>
                                             <Link to={`/props/${ item.get('property_id')}`}>
                                                 <div style={{textAlign: "center"}}>
-                                                    <img className="recomImage" src={item.get('image').get(1)} alt=""/>
+                                                    <img className="recomImage" src={item.get('image').get(0)} alt=""/>
                                                 </div>
                                                 <div className="title">{item.get('title')}</div>
                                             </Link>

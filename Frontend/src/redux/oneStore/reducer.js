@@ -8,8 +8,8 @@ const defaultState = fromJS({
 	allProps: null,
 	token: null,
 	homePropInfo: null,
-	searchResults: null,
-	filterResults: null,
+	searchResults: [],
+	filterResults: [],
 	propDetail: null,
 	allOrders: null,
 	allRequests: null

@@ -150,7 +150,7 @@ class Host extends Component{
                                         onChange={this.handleChange}
                                     >
                                     {
-                                        fileList.length <= 9 ? 
+                                        fileList.length <= 20 ? 
                                         <Button style={{backgroundColor: "#f0f0f0"}}>
                                             <Icon type="upload" />
                                             Upload Property Photos

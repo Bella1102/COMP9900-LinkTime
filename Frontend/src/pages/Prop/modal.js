@@ -110,6 +110,7 @@ class Newmodal extends React.Component {
             <br/>
             <br/>
             <br/>
+            <br/>
             </Modal>
         </div>
     );

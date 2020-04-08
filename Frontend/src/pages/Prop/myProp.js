@@ -4,7 +4,7 @@ import cookie from 'react-cookies'
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import { Row, Col, Button, Icon, Card, Modal, Drawer, 
-    Form, Input, DatePicker, Upload, Select, message} from 'antd';
+    Form, Input, DatePicker, Upload, Select, Empty, message} from 'antd';
 import * as helpers from '../../utils/helpers';
 import { actionCreators } from '../../redux/oneStore';
 import FourOThree from '../../pages/403';
@@ -135,6 +135,9 @@ class MyProp extends Component {
                     <Row>
                         {   
                             allProps !== null ?
+                            allProps.size === 0 ? 
+                            <Empty description={<span><Icon type="frown" theme="twoTone"/> so sad, no property!</span>} 
+                                   style={{marginTop: 50, marginBottom: 30, fontSize: 22}}/> : 
                             allProps.map((item, index) => {
                                 const price = item.get('price').split('.')[0]
                                 return (

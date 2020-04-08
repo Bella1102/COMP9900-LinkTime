@@ -171,10 +171,13 @@ class Order extends Component {
                     <TabPane tab="Active Orders" key="1">
                         { this.showOrders(token, allOrders, "Active") }
                     </TabPane>
-                    <TabPane tab="Cancelled Orders" key="2">
+                    <TabPane tab="Finished Orders" key="2">
+                        
+                    </TabPane>
+                    <TabPane tab="Cancelled Orders" key="3">
                         { this.showOrders(token, allOrders, "Canceled") }
                     </TabPane>
-                    <TabPane tab="All Orders" key="3">
+                    <TabPane tab="All Orders" key="4">
                         { this.showOrders(token, allOrders, "all") }
                     </TabPane>
                 </Tabs>

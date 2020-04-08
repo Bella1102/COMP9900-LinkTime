@@ -4,7 +4,7 @@ import cookie from 'react-cookies'
 import axios from 'axios';
 import moment from 'moment';
 import { Form, Button, Row, Col, Collapse, DatePicker, 
-    Select, Modal, Avatar, Tag, Tooltip, message, Affix } from 'antd';
+    Select, Modal, Avatar, Tag, Tooltip, message, Affix, Empty } from 'antd';
 import { actionCreators } from '../../redux/oneStore';
 import  { axiosPostConfig } from '../../redux/oneStore/actionCreators';
 import * as helpers from '../../utils/helpers';
@@ -82,7 +82,7 @@ class OneProp extends Component {
     };
     
     render() {
-        console.log(this.state)
+
         const { token, propDetail } = this.props;
         const { getFieldDecorator } = this.props.form;
         const prop_id = this.props.match.params.id;
@@ -205,6 +205,7 @@ class OneProp extends Component {
                                 }
                             </div>
                             {
+                                propDetail.get("reviews").size === 0 ? <Empty description={<span>No review!</span>} style={{marginTop: "50px"}}/> : 
                                 propDetail.get("reviews").map((item, index) => {
                                     return (
                                         <div key={index} style={{marginBottom: 30}}>
@@ -228,7 +229,7 @@ class OneProp extends Component {
                           
                         </Col>
                         <Col span={9}>
-                            <Affix offset={20}>
+                            <Affix offsetTop={20}>
                             <div className="checkInOut">
                                 <p className="checkLine">
                                     <span className="checkPrice">{propDetail.get("price")}</span>
