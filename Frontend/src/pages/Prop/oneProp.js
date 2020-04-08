@@ -185,7 +185,7 @@ class OneProp extends Component {
                                 }
                                 <Panel header="Amenities" key="3">
                                     {
-                                        amenities.slice(0, 20).map((element, index) => {
+                                        amenities.map((element, index) => {
                                             let indexList = index.toString().split('')
                                             let newIndex = parseInt(indexList[indexList.length - 1])
                                             return(

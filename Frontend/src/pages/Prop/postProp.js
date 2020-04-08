@@ -94,7 +94,7 @@ class Host extends Component{
         }
         const typeOptions = ['Apartment', 'Studio', 'House', 'Unit']
         const amenityOptions = ['TV', 'Internet', 'Wifi', 'Washer', 'Dryer', 'Hair dryer', "Self check-in", "Private entrance", 
-                'Kitchen', 'Smoke detector', 'Air Conditioning', 'Free parking on premises']
+                'Kitchen', 'Smoke detector', 'Air conditioning', 'Free parking on premises']
         const stateOptions = ['New South Wales', 'Victoria','Queensland', 'South Australia']
         const bedroomNum = ['1', '2', '3', '4', '5', '6']
         const bathroomNum = ['0', '1', '2', '3', '4', '5', '6']

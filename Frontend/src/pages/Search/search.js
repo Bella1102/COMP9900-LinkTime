@@ -29,10 +29,10 @@ class Search extends Component {
             target: -1,
             current: 1,
             pageSize: 10,
-            bed_value: -1,
-            bath_value: -1,
-            guest_value: -1,
-            feature_value: ["Self check-in"],
+            bed_value: 0,
+            bath_value: 0,
+            guest_value: 0,
+            feature_value: ["TV"],
             sortPrice_value: "Default",
             // search_res: this.props.searchResults
         };
@@ -70,7 +70,7 @@ class Search extends Component {
     }
     //############################################################
     handleBedNumChange = value => {
-        console.log(value)
+        console.log(value + "1")
         this.setState({ bed_value: value });
     };
 
@@ -142,8 +142,8 @@ class Search extends Component {
                 if (amenities.has(a) === false){
                     flag = false
                 }
+                return null
             })
-            console.log(flag)
             return flag
         })
         this.props.filterProperty(res)
@@ -152,8 +152,8 @@ class Search extends Component {
     sortPrice = () => {
         let temp = this.props.searchResults.toJS()
         temp.sort((a, b) => {
-            let a_price = parseFloat(a.price.split('$')[1])
-            let b_price = parseFloat(b.price.split('$')[1])
+            let a_price = parseFloat(a.price.split('$')[1].replace(/,/g, ''))
+            let b_price = parseFloat(b.price.split('$')[1].replace(/,/g, ''))
             return a_price - b_price
         })
 
@@ -162,6 +162,16 @@ class Search extends Component {
         } else if (this.state.sortPrice_value === 'High to Low'){
             this.props.filterProperty(fromJS(temp.reverse()))
         }
+    }
+
+    // bed_value
+    // bath_value
+    // guest_value
+    // feature_value
+    // sortPrice_value
+
+    subFilter = () => {
+
     }
     //############################################################
 
@@ -178,7 +188,7 @@ class Search extends Component {
         const searchURL = "?location=" + location + "&type=" + house_type + 
                           "&start_date=" + start_date + "&end_date=" + end_date
 
-        const marks = {1: "1", 2: "2", 3: "3", 4: "4", 5: "5", 6: "6+"}
+        const marks = {1: "1+", 2: "2+", 3: "3+", 4: "4+", 5: "5+", 6: "6+"}
         const bedContent = (
             <Fragment>
                <Slider  min={1} 
@@ -218,10 +228,10 @@ class Search extends Component {
             </Fragment>
         );
 
-        const amenityOptions = ['TV', 'Wifi', 'Dryer', 'Washer', 'Air Conditioning', "Self check-in"]
+        const amenityOptions = ['TV', 'Wifi', 'Dryer', 'Washer', 'Air conditioning', "Self check-in"]
         const featureContent = (
             <Fragment>
-                <Checkbox.Group defaultValue={["Self check-in"]} style={{marginBottom: "10%"}} onChange={(e) => this.handleFeatureFilter(e)}>
+                <Checkbox.Group defaultValue={["TV"]} style={{marginBottom: "10%"}} onChange={(e) => this.handleFeatureFilter(e)}>
                     { 
                         amenityOptions.map((item, index) => {
                             return (
