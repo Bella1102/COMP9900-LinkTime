@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import moment from 'moment';
 import { Form, Button, Row, Col, Collapse, DatePicker, 
-    Select, Modal, Avatar, Tag, Tooltip, message } from 'antd';
+    Select, Modal, Avatar, Tag, Tooltip, message, Affix } from 'antd';
 import { actionCreators } from '../../redux/oneStore';
 import  { axiosPostConfig } from '../../redux/oneStore/actionCreators';
 import * as helpers from '../../utils/helpers';
@@ -227,6 +227,7 @@ class OneProp extends Component {
                           
                         </Col>
                         <Col span={9}>
+                            <Affix offset={20}>
                             <div className="checkInOut">
                                 <p className="checkLine">
                                     <span className="checkPrice">{propDetail.get("price")}</span>
@@ -273,6 +274,7 @@ class OneProp extends Component {
                                 </Form>
                                 <div className="checkNotes">Enter dates and number of guests to check the total trip price, no extra charge and any taxes.</div>
                             </div>
+                            </Affix>
                         </Col>
                     </Row>
                 </div>
