@@ -29,8 +29,8 @@ class Search(Resource):
     @search.param('location', '[Bondi,Pyrmont,Paddington...]')
     @search.doc(description="Search rule:\n"
                             "1. no parameters\n"
-                            "2. one parameters(location is required and the location need to be a suburb): \n"
-                            "3. one parameters(house_type)\n"
+                            "2. one parameters(house_type)\n"
+                            "3. one parameters(location is required and the location need to be a suburb): \n"
                             "4. two parameters(start_date and end date): " 
                             "5. two parameters(location and house_type): /search?location=Bondi&house_type=House\n"
                             "6. three parameters(location, start_date, end_date):/search?location=Bondi&start_date=2020-3-20&end_date=2020-3-23\n"
