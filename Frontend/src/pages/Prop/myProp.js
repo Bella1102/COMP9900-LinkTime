@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
-import { Row, Col, Button, Icon, Card, Modal, 
-    Drawer, Form, Input, DatePicker, Upload, Select, message} from 'antd';
+import { Row, Col, Button, Icon, Card, Modal, Drawer, 
+    Form, Input, DatePicker, Upload, Select, message} from 'antd';
 import * as helpers from '../../utils/helpers';
 import { actionCreators } from '../../redux/oneStore';
+import FourOThree from '../../pages/403';
 import './myProp.less';
 
 
@@ -100,12 +101,16 @@ class MyProp extends Component {
 
 
     render() {
-        const { token, allProps } = this.props;
+        const { loginStatus, token, allProps } = this.props;
         const { getFieldDecorator } = this.props.form;
         const { previewVisible, previewImage, fileList } = this.state;
 
         const amenityOptions = ['TV', 'Internet', 'Wifi', 'Washer', 'Dryer', 
             'Hair dryer', 'Kitchen', 'Smoke detector', 'Air Conditioning', 'Free parking on premises']
+
+        if (!loginStatus){
+            return (<FourOThree subTitle={"Sorry, you are not authorized to access user current properties page before logining."}/>)
+        }
 
         return (
             <div className="myPropContent">

@@ -8,6 +8,7 @@ import {Form, Button, Input, Radio, Select, DatePicker,
 import { actionCreators } from '../../redux/oneStore';
 import  { axiosPostConfig } from '../../redux/oneStore/actionCreators';
 import * as helpers from '../../utils/helpers';
+import FourOThree from '../../pages/403';
 
 
 
@@ -84,7 +85,7 @@ class Host extends Component{
     }
 
     render(){
-        const { token } = this.props;
+        const { loginStatus, token } = this.props;
         const { previewVisible, previewImage, fileList } = this.state;
         const { getFieldDecorator } = this.props.form;
 
@@ -100,6 +101,9 @@ class Host extends Component{
         const bathroomNum = ['0', '1', '2', '3', '4', '5', '6']
         const guestNum = ['1', '2', '3', '4', '5', '6', '7', '8']
 
+        if (!loginStatus){
+            return (<FourOThree subTitle={"Sorry, you are not authorized to access post property page before logining."}/>)
+        }
         if (this.state.postPropFlag){
             return (<Redirect to="/myProps" />)
         }

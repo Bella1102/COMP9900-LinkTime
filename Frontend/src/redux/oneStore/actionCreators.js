@@ -351,6 +351,6 @@ export const deleteRequestComment = (token, comment_id) => {
 //############################################################
 export const filterProperty = (temp) => ({
 	type: constants.FILTER,
-	searchResults: temp,
+	filterResults: temp,
 });
 

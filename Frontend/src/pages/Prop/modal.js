@@ -1,7 +1,10 @@
-import { Modal, Button } from 'antd';
 import React from 'react';
+import { Modal, Button } from 'antd';
 import './modal.less';
 import './oneProp.less';
+
+
+
 
 class Newmodal extends React.Component {
     
@@ -48,7 +51,7 @@ class Newmodal extends React.Component {
 
     return (
       <div>
-        <Button type="primary" onClick={this.showModal} className='showBtn'>
+        <Button className='showBtn' onClick={this.showModal}>
             Show Photos
         </Button>
         <Modal

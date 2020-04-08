@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Row, Col, Icon, Avatar } from 'antd';
 import { actionCreators } from '../../redux/oneStore';
+import FourOThree from '../../pages/403';
 import './profile.less';
 
 
@@ -9,7 +10,11 @@ class Profile extends Component {
 
 
     render() {
-        const { userInfo } = this.props;
+        const { loginStatus, userInfo } = this.props;
+
+        if (!loginStatus){
+            return (<FourOThree subTitle={"Sorry, you are not authorized to access user orders page before logining."}/>)
+        }
 
         if (userInfo) {
             return (

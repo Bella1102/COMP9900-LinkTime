@@ -36,7 +36,7 @@ export default (state = defaultState, action) => {
 		case constants.SEARCH_RES:
 			return state.set('searchResults', action.searchResults);
 		case constants.FILTER:
-			return state.set('searchResults', action.searchResults);
+			return state.set('filterResults', action.filterResults);
 		case constants.GET_PROP_DETAIL:
 			return state.set('propDetail', action.propDetail);
 		case constants.GET_ORDERS:
