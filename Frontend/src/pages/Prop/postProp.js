@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import { connect } from 'react-redux';
+import cookie from 'react-cookies'
+import axios from 'axios';
 import { Redirect } from 'react-router-dom';
 import moment from 'moment';
 import {Form, Button, Input, Radio, Select, DatePicker, 
@@ -304,8 +305,8 @@ class Host extends Component{
     }
 
     UNSAFE_componentWillMount(){
-        if (localStorage.linkToken){
-            this.props.isLogin(localStorage.linkToken)
+        if (cookie.load('userInfo')){
+            this.props.isLogin(cookie.load('userInfo'))
         }
     }
 }

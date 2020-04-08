@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
+import cookie from 'react-cookies'
 import { Link } from 'react-router-dom';
 import { Form, Row, Col, Button, Modal, Tabs, Input } from 'antd';
 import { actionCreators } from '../../redux/oneStore';
@@ -201,8 +202,8 @@ class Order extends Component {
     }
 
     UNSAFE_componentWillMount(){
-        if (localStorage.linkToken){
-            this.props.isLogin(localStorage.linkToken)
+        if (cookie.load('userInfo')){
+            this.props.isLogin(cookie.load('userInfo'))
         }
         this.props.getMyOrders(this.props.token)
     }

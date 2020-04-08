@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import cookie from 'react-cookies'
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import { Row, Col, Button, Icon, Card, Modal, Drawer, 
@@ -155,12 +156,12 @@ class MyProp extends Component {
                                             <Link to={`/props/${ item.get('property_id')}`}>
                                                 <Meta
                                                     title={<div>
-                                                                <div style={{float: "left", paddingBottom: "5%"}}>{item.get('title')}</div>
-                                                                <div style={{float: "right"}}>
-                                                                    <span style={{marginRight: "1%", color: "#ad6800", fontWeight: "bold"}}>{price}</span>
-                                                                    <span style={{fontSize: "12px", marginTop: "1.5%"}}> AUD/night</span>
-                                                                </div>
-                                                            </div>}
+                                                            <div style={{float: "left", paddingBottom: "5%"}}>{item.get('title')}</div>
+                                                            <div style={{float: "right"}}>
+                                                                <span style={{marginRight: "1%", color: "#ad6800", fontWeight: "bold"}}>{price}</span>
+                                                                <span style={{fontSize: "12px", marginTop: "1.5%"}}> AUD/night</span>
+                                                            </div>
+                                                        </div>}
                                                     description={item.get('location')}
                                                 />
                                             </Link>
@@ -276,8 +277,8 @@ class MyProp extends Component {
     }
 
     UNSAFE_componentWillMount(){
-        if (localStorage.linkToken){
-            this.props.isLogin(localStorage.linkToken)
+        if (cookie.load('userInfo')){
+            this.props.isLogin(cookie.load('userInfo'))
         }
 
         this.props.getUserInfo(this.props.token)

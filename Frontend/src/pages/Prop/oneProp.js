@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import cookie from 'react-cookies'
 import axios from 'axios';
 import moment from 'moment';
 import { Form, Button, Row, Col, Collapse, DatePicker, 
@@ -284,8 +285,8 @@ class OneProp extends Component {
     UNSAFE_componentWillMount(){
         const prop_id = this.props.match.params.id
         this.props.getPropDetail(prop_id)
-        if (localStorage.linkToken){
-            this.props.isLogin(localStorage.linkToken)
+        if (cookie.load('userInfo')){
+            this.props.isLogin(cookie.load('userInfo'))
         }
     }
 }

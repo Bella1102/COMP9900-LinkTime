@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import cookie from 'react-cookies'
 import moment from 'moment';
 import { Form, Row, Col, Button, Card, Drawer, Input, 
     Modal, Avatar, Icon, Tooltip, Comment, List } from 'antd';
@@ -221,8 +222,8 @@ class Request extends Component {
 
 
     UNSAFE_componentWillMount(){
-        if (localStorage.linkToken){
-            this.props.isLogin(localStorage.linkToken)
+        if (cookie.load('userInfo')){
+            this.props.isLogin(cookie.load('userInfo'))
         }
         this.props.getRequests()
     }

@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import cookie from 'react-cookies'
 import moment from 'moment';
 import { fromJS } from 'immutable';
 import GoogleMapReact from 'google-map-react';
@@ -51,7 +52,10 @@ class Search extends Component {
             }
         })
     }
-
+    disabledDate = (current)=>{
+        // Can not select days before today and today
+        return current && current < moment().endOf('day');
+      }
     handleMouseOver(index, latitude, longitude){
         let center = { lat: latitude, lng: longitude }
         this.setState({
@@ -337,7 +341,9 @@ class Search extends Component {
                         {
                             getFieldDecorator('time', {
                                 initialValue: ''
-                            }) ( <RangePicker ranges={{ Today: [moment(), moment()], 
+                            }) ( <RangePicker 
+                                            disabledDate={this.disabledDate}
+                                            ranges={{ Today: [moment(), moment()], 
                                             'This Month': [moment().startOf('month'), moment().endOf('month')]}}/>)
                         }
                     </Form.Item>
@@ -475,7 +481,9 @@ class Search extends Component {
         if (!this.props.homePropInfo) {
             this.props.getHomeInfo()
         }
-        console.log(this.props)
+        if (cookie.load('userInfo')){
+            this.props.isLogin(cookie.load('userInfo'))
+        }
 
         let temp = this.props.location.search
         let exp = /^\?location=\w*&type=\w*&start_date=([\d]{4}-[\d]{2}-[\d]{2})*&end_date=([\d]{4}-[\d]{2}-[\d]{2})*/g
@@ -509,6 +517,9 @@ const mapState = (state) => {
 }
 
 const mapDispatch = (dispatch) => ({
+    isLogin(token){
+        dispatch(actionCreators.isLogin(token))
+    },
     getHomeInfo() {
         dispatch(actionCreators.getHomeInfo())
     },

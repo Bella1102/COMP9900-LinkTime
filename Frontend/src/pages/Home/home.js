@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import cookie from 'react-cookies'
 import moment from 'moment';
 import { Form, Row, Col, Button, Select, Carousel, DatePicker, Cascader } from 'antd';
 import { actionCreators } from '../../redux/oneStore';
@@ -155,8 +156,12 @@ class Home extends Component {
     }
 
     UNSAFE_componentWillMount(){
-        if (localStorage.linkToken){
-            this.props.isLogin(localStorage.linkToken)
+        // if (localStorage.linkToken){
+        //     this.props.isLogin(localStorage.linkToken)
+        // }
+        console.log(cookie.load('userInfo'))
+        if (cookie.load('userInfo')){
+            this.props.isLogin(cookie.load('userInfo'))
         }
         if (!this.props.homePropInfo) {
             this.props.getHomeInfo()
