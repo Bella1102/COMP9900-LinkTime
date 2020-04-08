@@ -71,7 +71,7 @@ export const getUserInfo = (token) => {
 			dispatch(getUserData(res.data, token));
 		}).catch((error) => {
 			console.log(error.response.data.message);
-			localStorage.removeItem('linkToken')
+			// localStorage.removeItem('linkToken')
 		});
 	}
 }

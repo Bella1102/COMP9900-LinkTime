@@ -84,7 +84,10 @@ class MyProp extends Component {
                     start_date = propInfo.available_time[0].format('YYYY-MM-DD');
                     end_date = propInfo.available_time[1].format('YYYY-MM-DD');
                 }
-                const price = "$" + propInfo.price.toString()
+                let price = '';
+                if (propInfo.price) {
+                    price = "$" + propInfo.price.toString()
+                }
                 const propData = {"title": propInfo.title, "amenities": '{' + propInfo.amenity.toString() + '}', 
                         "price": price, "start_date": start_date, "end_date": end_date, 
                         "house_rules": propInfo.houseRules, "other_details": propInfo.description, "filename": filenames}
@@ -134,10 +137,10 @@ class MyProp extends Component {
                             allProps.map((item, index) => {
                                 const price = item.get('price').split('.')[0]
                                 return (
-                                    <Col span={12} key={index} style={{marginBottom: "10px"}}>
+                                    <Col span={12} key={index} style={{marginBottom: "30px", paddingLeft: "4%"}}>
                                         <Card
                                             style={{ width: "90%" }}
-                                            cover={ <img alt="" src={item.get('img_url')} style={{height: 290}}/> }
+                                            cover={ <img alt="" src={item.get('img_url')} style={{width: "100%", height: 310}}/> }
                                             actions={[
                                                 <Icon type="edit" 
                                                     key="edit"
@@ -152,9 +155,11 @@ class MyProp extends Component {
                                             <Link to={`/props/${ item.get('property_id')}`}>
                                                 <Meta
                                                     title={<div>
-                                                                <p style={{display: 'inline-block', width: 180, overflow: 'hidden', position: 'relative'}}>{item.get('title')}</p>
-                                                                <span style={{float: "right", fontWeight: "normal"}}> AUD/night</span>
-                                                                <span style={{float: "right", marginRight: "1%", color: "#ad6800", fontWeight: "bold"}}>{price}</span>
+                                                                <div style={{float: "left", paddingBottom: "5%"}}>{item.get('title')}</div>
+                                                                <div style={{float: "right"}}>
+                                                                    <span style={{marginRight: "1%", color: "#ad6800", fontWeight: "bold"}}>{price}</span>
+                                                                    <span style={{fontSize: "12px", marginTop: "1.5%"}}> AUD/night</span>
+                                                                </div>
                                                             </div>}
                                                     description={item.get('location')}
                                                 />
@@ -274,6 +279,7 @@ class MyProp extends Component {
         if (localStorage.linkToken){
             this.props.isLogin(localStorage.linkToken)
         }
+
         this.props.getUserInfo(this.props.token)
     }
 }
