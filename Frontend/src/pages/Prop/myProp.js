@@ -103,6 +103,10 @@ class MyProp extends Component {
         })
     }
 
+    disabledDate = (current) => {
+        return current && current < moment().add(-1, 'days');
+    }
+
 
     render() {
         const { loginStatus, token, allProps } = this.props;
@@ -247,7 +251,9 @@ class MyProp extends Component {
                                 getFieldDecorator('available_time', {
                                     initialValue: '',
                                     rules: []
-                                })( <RangePicker format="YYYY-MM-DD" style={{width: "100%"}}
+                                })( <RangePicker 
+                                                disabledDate={this.disabledDate}
+                                                format="YYYY-MM-DD" style={{width: "100%"}}
                                                 ranges={{ Today: [moment(), moment()], 
                                                 'This Month': [moment().startOf('month'), moment().endOf('month')]}} />)
                             }

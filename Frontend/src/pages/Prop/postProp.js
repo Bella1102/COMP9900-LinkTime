@@ -85,6 +85,10 @@ class Host extends Component{
         })
     }
 
+    disabledDate = (current) => {
+        return current && current < moment().add(-1, 'days');
+    }
+
     render(){
         const { loginStatus, token } = this.props;
         const { previewVisible, previewImage, fileList } = this.state;
@@ -274,9 +278,11 @@ class Host extends Component{
                             getFieldDecorator('available_time', {
                                 initialValue: '',
                                 rules: [{ required: true, message: 'Please select available time' }]
-                            })( <RangePicker format="YYYY-MM-DD" style={{width: "100%"}}
-                                             ranges={{ Today: [moment(), moment()], 
-                                             'This Month': [moment().startOf('month'), moment().endOf('month')]}} />)
+                            })( <RangePicker 
+                                            disabledDate={this.disabledDate}
+                                            format="YYYY-MM-DD" style={{width: "100%"}}
+                                            ranges={{ Today: [moment(), moment()], 
+                                            'This Month': [moment().startOf('month'), moment().endOf('month')]}} />)
                         }
                     </Form.Item>
                     <Form.Item label="House Rules" {...formItemLayout}>

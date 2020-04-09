@@ -52,10 +52,12 @@ class Search extends Component {
             }
         })
     }
-    disabledDate = (current)=>{
-        // Can not select days before today and today
-        return current && current < moment().endOf('day');
-      }
+    
+    disabledDate = (current) => {
+        // Can not select days before today
+        return current && current < moment().add(-1, 'days');
+    }
+
     handleMouseOver(index, latitude, longitude){
         let center = { lat: latitude, lng: longitude }
         this.setState({

@@ -26,6 +26,11 @@ class Home extends Component {
             }
         })
     }
+
+    disabledDate = (current) => {
+        // Can not select days before today
+        return current && current < moment().add(-1, 'days');
+    }
     
     render() {
         const { homePropInfo } = this.props;
@@ -79,7 +84,9 @@ class Home extends Component {
                             {
                                 getFieldDecorator('time', {
                                     initialValue: ''
-                                }) ( <RangePicker ranges={{ Today: [moment(), moment()], 
+                                }) ( <RangePicker 
+                                                disabledDate={this.disabledDate}
+                                                ranges={{ Today: [moment(), moment()], 
                                                 'This Month': [moment().startOf('month'), moment().endOf('month')]}} />)
                             }
                         </Form.Item>
