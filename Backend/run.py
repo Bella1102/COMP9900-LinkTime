@@ -1,7 +1,7 @@
-import os
 from flask import Flask
 from flask_restplus import Api
 from flask_cors import CORS
+
 
 
 import db.init_db as db
@@ -14,6 +14,8 @@ from apis.search import search
 from apis.requests import requests
 from apis.review import review
 from apis.upload import upload
+import utils.helpers
+from dotenv import load_dotenv
 
 
 db.init_db()
@@ -41,6 +43,7 @@ api.add_namespace(upload)
 
 
 if __name__ == '__main__':
+    load_dotenv()
     app.run(debug=True)
 
 

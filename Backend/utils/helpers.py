@@ -5,6 +5,7 @@ import requests
 import random
 import time
 import datetime
+import os
 from flask_mail import Message, Mail
 
 BASE_HOST = 'http://127.0.0.1'
@@ -15,12 +16,14 @@ head_picture_url = 'https://www.logoshirt-shop.de/out/pictures/master/product/1/
 
 base_img_url = BASE_HOST + ':' + str(BASE_PORT) + '/upload/?img_name='
 
-
+def get_env_parameter():
+    return os.getenv('BASE_HOST'), os.getenv('BASE_PORT')
 def gen_token():
     token = secrets.token_hex(32)
     return token
 
 def unpack(j, *args, **kargs):
+
     res = [j.get(arg, None) for arg in args]
     if kargs.get("required", True):
         [abort(kargs.get("Missing Arguments", 400)) for e in res if e == None]
@@ -66,7 +69,7 @@ def allowed_file(filename):
 #     res = geo_info["results"][0]["formatted_address"].rsplit(',', 1)[0]
 #     return res
 def getLatLng(state, suburb, location,):
-    key = 'AIzaSyDsg88VPvJzXpu_6S3ycJpfipLcm1FG_xk'
+    key = os.getenv('GOOGLE_MAP_KEY')
     base_url = 'https://maps.googleapis.com/maps/api/geocode/json?'
     parameters = 'address=%s+%s+%s' % (location, suburb,state)
     geo_info = requests.get(base_url + parameters + '&key=' + key).json()
@@ -177,13 +180,19 @@ def getPropertyInfo(pro_obj, img_obj, add_obj, rev_obj, host_obj):
 
 def getOrderInfo(order_obj, pro_obj, img_obj, add_obj):
     img_url_list = changeTextToList(img_obj.img_url)
+    now_time = getLocalTime().split(' ')[0]
+    order_status = order_obj.order_status
+    if order_status == 'Active':
+        if order_obj.checkOut < now_time:
+            order_status = 'Finished'
+
     temp={"order_id": order_obj.id,
           "property_id": order_obj.property_id,
           "order_time": order_obj.order_time,
           "checkIn": order_obj.checkIn,
           "checkOut": order_obj.checkOut,
           "guests": order_obj.guests,
-          "order_status": order_obj.order_status,
+          "order_status": order_status,
           "title": pro_obj.title,
           "price": pro_obj.price,
           "img_url":img_url_list[0],
@@ -249,7 +258,7 @@ def mail_config(app):
         MAIL_DEFAULT_SENDER=('admin', "unswlinktime@gmail.com"),
         MAIL_MAX_EMAILS=10,
         MAIL_USERNAME="apikey",
-        MAIL_PASSWORD='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'
+        MAIL_PASSWORD=os.getenv('MAIL_PASSWORD')
     )
     return Mail(app)
 def send_async_register_email(app, user_name, user_email):

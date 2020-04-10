@@ -1,5 +1,4 @@
-import os
-from flask import request, send_from_directory
+from flask import request
 from flask_restplus import Namespace, Resource
 
 import db.init_db as db
