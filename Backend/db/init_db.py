@@ -122,7 +122,7 @@ class Order(Base):
                         Column('checkOut', VARCHAR(20)),
                         Column('guests', Integer),
                         Column('order_status', VARCHAR(20)),
-                        Column('comment_status', VARCHAR(20)))
+                        Column('comment_status', Boolean))
     def __repr__(self):
         return 'Order: %s' % (self.id)
 
@@ -307,14 +307,14 @@ def init_comment(session):
 def init_order(session):
     res = read_csv_return_dict('db/data/order.csv')
     now_time = getLocalTime().split(' ')[0]
-    comment_status = 'false'
+    comment_status = False
 
     for item in res:
         order_status = item['order_status']
         if order_status == 'Active':
             if item['checkOut'] < now_time:
                 order_status = 'Finished'
-                comment_status = 'true'
+                comment_status = True
 
         order = Order(user_id=int(item['user_id']),
                       property_id=int(item['property_id']),

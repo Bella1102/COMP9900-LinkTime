@@ -180,6 +180,13 @@ def getPropertyInfo(pro_obj, img_obj, add_obj, rev_obj, host_obj):
 
 def getOrderInfo(order_obj, pro_obj, img_obj, add_obj):
     img_url_list = changeTextToList(img_obj.img_url)
+    # now_time = getLocalTime().split(' ')[0]
+    # order_status = order_obj.order_status
+    # comment_status = 'false'
+    # if order_status == 'Active':
+    #     if order_obj.checkOut < now_time:
+    #         order_status = 'Finished'
+    #         comment_status = 'true'
     temp={"order_id": order_obj.id,
           "property_id": order_obj.property_id,
           "order_time": order_obj.order_time,
