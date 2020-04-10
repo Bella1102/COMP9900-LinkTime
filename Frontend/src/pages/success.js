@@ -9,7 +9,7 @@ class Success extends Component {
         return (
             <Result style={{minHeight: 660}}
                 icon={<Icon type="smile" theme="twoTone" twoToneColor="#f9c700"/>}
-                title="Successfully Reserved this Order!"
+                title="Successfully Reserved this property!"
                 subTitle="Order configuration takes 1-5 minutes, please wait."
                 extra={[
                     <Link to="/" key="Home"><Button type="primary">Go Home Page</Button></Link>,

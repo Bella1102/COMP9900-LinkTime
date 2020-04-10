@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import { connect } from 'react-redux';
+import cookie from 'react-cookies'
+import axios from 'axios';
 import { Redirect } from 'react-router-dom';
 import moment from 'moment';
 import {Form, Button, Input, Radio, Select, DatePicker, 
@@ -84,6 +85,10 @@ class Host extends Component{
         })
     }
 
+    disabledDate = (current) => {
+        return current && current < moment().add(-1, 'days');
+    }
+
     render(){
         const { loginStatus, token } = this.props;
         const { previewVisible, previewImage, fileList } = this.state;
@@ -149,7 +154,7 @@ class Host extends Component{
                                         onChange={this.handleChange}
                                     >
                                     {
-                                        fileList.length <= 9 ? 
+                                        fileList.length <= 20 ? 
                                         <Button style={{backgroundColor: "#f0f0f0"}}>
                                             <Icon type="upload" />
                                             Upload Property Photos
@@ -273,9 +278,11 @@ class Host extends Component{
                             getFieldDecorator('available_time', {
                                 initialValue: '',
                                 rules: [{ required: true, message: 'Please select available time' }]
-                            })( <RangePicker format="YYYY-MM-DD" style={{width: "100%"}}
-                                             ranges={{ Today: [moment(), moment()], 
-                                             'This Month': [moment().startOf('month'), moment().endOf('month')]}} />)
+                            })( <RangePicker 
+                                            disabledDate={this.disabledDate}
+                                            format="YYYY-MM-DD" style={{width: "100%"}}
+                                            ranges={{ Today: [moment(), moment()], 
+                                            'This Month': [moment().startOf('month'), moment().endOf('month')]}} />)
                         }
                     </Form.Item>
                     <Form.Item label="House Rules" {...formItemLayout}>
@@ -304,8 +311,8 @@ class Host extends Component{
     }
 
     UNSAFE_componentWillMount(){
-        if (localStorage.linkToken){
-            this.props.isLogin(localStorage.linkToken)
+        if (cookie.load('userInfo')){
+            this.props.isLogin(cookie.load('userInfo'))
         }
     }
 }

@@ -8,6 +8,9 @@ import { Form, Input, Button, Icon, Checkbox } from "antd";
 
 class Login extends Component{
 
+    state = {
+    }
+
     handleSubmit = () => {
         this.props.form.validateFields((err, values) => {
             if(!err){
@@ -68,6 +71,7 @@ class Login extends Component{
 			)
 		}
     }
+
 }
 
 const mapState = (state) => {

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import cookie from 'react-cookies'
 import moment from 'moment';
 import { Form, Row, Col, Button, Select, Carousel, DatePicker, Cascader } from 'antd';
 import { actionCreators } from '../../redux/oneStore';
@@ -24,6 +25,11 @@ class Home extends Component {
 
             }
         })
+    }
+
+    disabledDate = (current) => {
+        // Can not select days before today
+        return current && current < moment().add(-1, 'days');
     }
     
     render() {
@@ -78,7 +84,9 @@ class Home extends Component {
                             {
                                 getFieldDecorator('time', {
                                     initialValue: ''
-                                }) ( <RangePicker ranges={{ Today: [moment(), moment()], 
+                                }) ( <RangePicker 
+                                                disabledDate={this.disabledDate}
+                                                ranges={{ Today: [moment(), moment()], 
                                                 'This Month': [moment().startOf('month'), moment().endOf('month')]}} />)
                             }
                         </Form.Item>
@@ -133,7 +141,7 @@ class Home extends Component {
                                         <Col span={6} key={index}>
                                             <Link to={`/props/${ item.get('property_id')}`}>
                                                 <div style={{textAlign: "center"}}>
-                                                    <img className="recomImage" src={item.get('image').get(1)} alt=""/>
+                                                    <img className="recomImage" src={item.get('image').get(0)} alt=""/>
                                                 </div>
                                                 <div className="title">{item.get('title')}</div>
                                             </Link>
@@ -155,8 +163,12 @@ class Home extends Component {
     }
 
     UNSAFE_componentWillMount(){
-        if (localStorage.linkToken){
-            this.props.isLogin(localStorage.linkToken)
+        // if (localStorage.linkToken){
+        //     this.props.isLogin(localStorage.linkToken)
+        // }
+        console.log(cookie.load('userInfo'))
+        if (cookie.load('userInfo')){
+            this.props.isLogin(cookie.load('userInfo'))
         }
         if (!this.props.homePropInfo) {
             this.props.getHomeInfo()

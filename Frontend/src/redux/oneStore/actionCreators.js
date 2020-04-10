@@ -1,11 +1,14 @@
 import axios from 'axios';
 import { fromJS } from 'immutable';
+import cookie from 'react-cookies'
 import {message} from 'antd';
 import * as constants from './constants';
 import * as helpers from '../../utils/helpers';
 
 
 const baseURL = helpers.BACKEND_URL;
+// const expires = new Date()
+// expires.setDate(Date.now() + 1000 * 60 * 60 * 24 * 7)
 
 const getConfig = {
 	headers: { "accept": "application/json" }
@@ -43,7 +46,9 @@ const userLogout = () => ({
 });
 
 export const logout = () => {
+	// ##############################
 	localStorage.removeItem('linkToken')
+	cookie.remove('userInfo', { path: '/' })
 	return (dispatch) => {
 		dispatch(userLogout());
 	}
@@ -71,7 +76,6 @@ export const getUserInfo = (token) => {
 			dispatch(getUserData(res.data, token));
 		}).catch((error) => {
 			console.log(error.response.data.message);
-			// localStorage.removeItem('linkToken')
 		});
 	}
 }
@@ -83,13 +87,16 @@ export const isLogin = (token) => {
 	}
 };
 export const login = (username, password) => {
+
 	const loginURL = baseURL + '/auth/login';
 	const loginData = {"username": username, "password": password}
 	return (dispatch) => {
 		// login auth post
 		axios.post(loginURL, loginData, postConfig).then((res) => {
 			loginSuccess();
+			// ##############################
 			localStorage.setItem('linkToken', res.data.token)
+			cookie.save('userInfo', res.data.token, { path: '/', maxAge: 3600*24*7 })
 			// get user info
 			dispatch(getUserInfo(res.data.token))
 		}).catch((error) => {

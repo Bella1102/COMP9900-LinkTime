@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import cookie from 'react-cookies'
 import moment from 'moment';
 import { fromJS } from 'immutable';
 import GoogleMapReact from 'google-map-react';
@@ -50,6 +51,11 @@ class Search extends Component {
                 this.props.search(location, house_type, start_date, end_date)
             }
         })
+    }
+    
+    disabledDate = (current) => {
+        // Can not select days before today
+        return current && current < moment().add(-1, 'days');
     }
 
     handleMouseOver(index, latitude, longitude){
@@ -337,7 +343,9 @@ class Search extends Component {
                         {
                             getFieldDecorator('time', {
                                 initialValue: ''
-                            }) ( <RangePicker ranges={{ Today: [moment(), moment()], 
+                            }) ( <RangePicker 
+                                            disabledDate={this.disabledDate}
+                                            ranges={{ Today: [moment(), moment()], 
                                             'This Month': [moment().startOf('month'), moment().endOf('month')]}}/>)
                         }
                     </Form.Item>
@@ -370,7 +378,8 @@ class Search extends Component {
                     <Col span={12} style={{height: "120vh"}}>
                         <div style={{height: "110vh", overflow: "auto"}}>
                         {   
-                            part_results !== null ?
+                            part_results.size === 0 ? 
+                            <Empty description={<span>Sorry, no search results!</span>} style={{marginTop: "100px"}}/> : 
                             part_results.map((item, index) => {
                                 const price = item.get('price').split('.')[0]
                                 const amenities = item.get('amenities').slice(1, -1).split(',')
@@ -429,7 +438,7 @@ class Search extends Component {
                                         </div>
                                     </div>
                                 )
-                            }) : <Empty description={false} />
+                            })
                         }
                         </div>
                         <Pagination
@@ -475,7 +484,9 @@ class Search extends Component {
         if (!this.props.homePropInfo) {
             this.props.getHomeInfo()
         }
-        console.log(this.props)
+        if (cookie.load('userInfo')){
+            this.props.isLogin(cookie.load('userInfo'))
+        }
 
         let temp = this.props.location.search
         let exp = /^\?location=\w*&type=\w*&start_date=([\d]{4}-[\d]{2}-[\d]{2})*&end_date=([\d]{4}-[\d]{2}-[\d]{2})*/g
@@ -509,6 +520,9 @@ const mapState = (state) => {
 }
 
 const mapDispatch = (dispatch) => ({
+    isLogin(token){
+        dispatch(actionCreators.isLogin(token))
+    },
     getHomeInfo() {
         dispatch(actionCreators.getHomeInfo())
     },

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import cookie from 'react-cookies'
 import { Row, Col, Icon, Avatar } from 'antd';
 import { actionCreators } from '../../redux/oneStore';
 import FourOThree from '../../pages/403';
@@ -54,8 +55,8 @@ class Profile extends Component {
     }
 
     UNSAFE_componentWillMount(){
-        if (localStorage.linkToken){
-            this.props.isLogin(localStorage.linkToken)
+        if (cookie.load('userInfo')){
+            this.props.isLogin(cookie.load('userInfo'))
         }
         this.props.getUserInfo(this.props.token)
     }
