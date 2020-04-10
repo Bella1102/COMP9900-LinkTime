@@ -18,7 +18,8 @@ class Order extends Component {
 
     state = { 
         visible: false,
-        prop_id: null
+        prop_id: null,
+        finishedOrderCommentStatus: true
     }    
 
     confirmCancelOrder = (token, order_id) => {
@@ -47,7 +48,7 @@ class Order extends Component {
                     resolve();
                 }).then(() => { 
                     commentThis.props.submitComment(token, property_id, values.content)
-                    this.setState({ visible: false })
+                    this.setState({ visible: false, finishedOrderCommentStatus: false})
                 }).catch((reject) => console.log(reject));
             }
         })
@@ -75,7 +76,6 @@ class Order extends Component {
                                         <div className="price">{price} AUD/night</div>
                                         <div className="rentTime">Rent period: {`${item.get('checkIn')} `} to {`${item.get('checkOut')}`}</div>
                                         <div className="orderTime">Order time: {`${item.get('order_time')}`}</div>
-
                                         {
                                             item.get('order_status') === 'Active' ?
                                             <Fragment>
@@ -84,11 +84,20 @@ class Order extends Component {
                                                 >
                                                     Cancel Order
                                                 </Button>
-                                                <Button type="primary"
-                                                        style={{marginLeft: 20, width: 110}}
-                                                        onClick={ () => this.setState({ visible: true, prop_id: item.get('property_id'), order_id: item.get('order_id') }) }>
-                                                    Comment
-                                                </Button>
+                                                <Button disabled style={{marginLeft: 20, width: 110}}>Comment</Button>
+                                            </Fragment> :
+                                            item.get('order_status') === 'Finished' ?
+                                            <Fragment>
+                                                <Button disabled>Cancel Order</Button>
+                                                { 
+                                                    item.get('comment_status') === true  && this.state.finishedOrderCommentStatus === true ?
+                                                    <Button type="primary"
+                                                            style={{marginLeft: 20, width: 110}}
+                                                            onClick={ () => this.setState({ visible: true, prop_id: item.get('property_id') }) }>
+                                                        Comment
+                                                    </Button> :
+                                                    <Button disabled style={{marginLeft: 20, width: 110}}>Comment</Button>
+                                                }
                                             </Fragment> :
                                             <Fragment>
                                                 <Button disabled>Cancel Order</Button>
@@ -117,15 +126,37 @@ class Order extends Component {
                                         >
                                             Cancel Order
                                         </Button>
-
-                                        <Button type="primary"
-                                                style={{marginLeft: 20, width: 110}}
-                                                onClick={ () => this.setState({ visible: true, prop_id: item.get('property_id') }) }>
-                                            Comment
-                                        </Button>
+                                        <Button disabled style={{marginLeft: 20, width: 110}}>Comment</Button>
                                     </div>
                                 </Col>
                             )
+                        } else if (tab === "Finished" & item.get('order_status') === 'Finished' ) {
+                                return (
+                                    <Col span={12} key={index} className="allOrders">
+                                        <Link to={`/props/${ item.get('property_id')}`}>
+                                            <img src={item.get('img_url')} 
+                                                onError={(e) => e.target.src=`${item.get('img_url')}`}
+                                                alt="" className="image"/>
+                                        </Link>
+                                        <div className="detail">
+                                            <div className="title">{item.get('title')}</div>
+                                            <div className="location" style={{ marginTop: 5 }}>{item.get('location')}</div>
+                                            <div className="price">{price} AUD/night</div>
+                                            <div className="rentTime">Rent period: {`${item.get('checkIn')} `} to {`${item.get('checkOut')}`}</div>
+                                            <div className="orderTime">Order time: {`${item.get('order_time')}`}</div>
+                                            <Button disabled>Cancel Order</Button>
+                                            { 
+                                                item.get('comment_status') === true  && this.state.finishedOrderCommentStatus === true ?
+                                                <Button type="primary"
+                                                        style={{marginLeft: 20, width: 110}}
+                                                        onClick={ () => this.setState({ visible: true, prop_id: item.get('property_id') }) }>
+                                                    Comment
+                                                </Button> :
+                                                <Button disabled style={{marginLeft: 20, width: 110}}>Comment</Button>
+                                            }
+                                        </div>
+                                    </Col>
+                                )
                         } else if (tab === "Canceled" & item.get('order_status') === 'Canceled' ){
                             return (
                                 <Col span={12} key={index} className="allOrders">
@@ -172,7 +203,7 @@ class Order extends Component {
                         { this.showOrders(token, allOrders, "Active") }
                     </TabPane>
                     <TabPane tab="Finished Orders" key="2">
-                        
+                        { this.showOrders(token, allOrders, "Finished") }
                     </TabPane>
                     <TabPane tab="Cancelled Orders" key="3">
                         { this.showOrders(token, allOrders, "Canceled") }
@@ -195,7 +226,8 @@ class Order extends Component {
                                 getFieldDecorator('content', {
                                     initialValue: '',
                                     rules: [{ required: true, message: 'content is required' }]
-                                })( <Input.TextArea rows={6} placeholder="Please input your review for this property" allowClear/> )
+                                })( <Input.TextArea rows={6} allowClear 
+                                                    placeholder="Please input your review for this property"/>)
                             }
                         </Form.Item>
                     </Form>

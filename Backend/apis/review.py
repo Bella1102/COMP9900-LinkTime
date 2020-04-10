@@ -27,7 +27,7 @@ class Review(Resource):
             abort(403, 'Invalid Auth Token')
 
         (property_id, review_content) = unpack(request.json, 'property_id', 'review_content')
-        review_date = getLocalTime().split(' ')[0]
+        review_date = getLocalTime()
 
         new_review = db.Review(property_id=property_id,
                                reviewer_id=userInfo.id,
@@ -40,7 +40,7 @@ class Review(Resource):
         order_info = session.query(db.Order).filter_by(user_id=userInfo.id,property_id=property_id).first()
 
         if order_info:
-            order_info.comment_status = 'false'
+            order_info.comment_status = False
 
         session.add(new_review)
         session.commit()
