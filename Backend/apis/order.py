@@ -61,7 +61,8 @@ class Order(Resource):
                              checkIn=checkIn,
                              checkOut=checkOut,
                              guests=guests,
-                             order_status="Active")
+                             order_status="Active",
+                             comment_status='false')
 
         available_dates_list = proInfo.available_dates.split(',')
         order_dates_list = dateRange(checkIn, checkOut)

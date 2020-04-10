@@ -36,6 +36,12 @@ class Review(Resource):
                                review_content=review_content,
                                head_picture=userInfo.avatar)
 
+
+        order_info = session.query(db.Order).filter_by(user_id=userInfo.id,property_id=property_id).first()
+
+        if order_info:
+            order_info.comment_status = 'false'
+
         session.add(new_review)
         session.commit()
         session.close()
