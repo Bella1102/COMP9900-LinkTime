@@ -489,7 +489,7 @@ class Search extends Component {
         }
 
         let temp = this.props.location.search
-        let exp = /^\?location=\w*&type=\w*&start_date=([\d]{4}-[\d]{2}-[\d]{2})*&end_date=([\d]{4}-[\d]{2}-[\d]{2})*/g
+        let exp = /^\?location=\w*[ \w*]*&type=\w*&start_date=([\d]{4}-[\d]{2}-[\d]{2})*&end_date=([\d]{4}-[\d]{2}-[\d]{2})*/g
         if (!temp.match(exp)){
             this.props.search("", "", "", "")
         } else {

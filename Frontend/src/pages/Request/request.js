@@ -139,7 +139,7 @@ class Request extends Component {
                                                                 <Comment style={{backgroundColor: "#f5f5f5", marginBottom: 10}}
                                                                     actions={[
                                                                             loginStatus && item.get("commenter_id") === userInfo.get("id") ?
-                                                                            <span key="delete" onClick={() => this.props.deleteRequestComment(token, item.get("id"))}>Delete reply</span>
+                                                                            <span key="delete" onClick={() => this.props.deleteRequestComment(token, item.get("id"))}>Delete</span>
                                                                             : null
                                                                         ]}
                                                                     author={item.get("commenter_name")}

@@ -60,8 +60,7 @@ class Register extends Component{
                 const regData = {"username": values.username, "password": values.password, 
                     "email": values.email, "phone": values.phone, "avatar": avatar}
 
-                axios.post(regURL, regData, postConfig)
-                .then((res) => {
+                axios.post(regURL, regData, postConfig).then((res) => {
                     this.regSuccess()
                     this.setState({regFlag: 1})
                 }).catch((error) => {
