@@ -379,7 +379,12 @@ class Search extends Component {
                         <div style={{height: "110vh", overflow: "auto"}}>
                         {   
                             part_results.size === 0 ? 
-                            <Empty description={<span>Sorry, no search results!</span>} style={{marginTop: "100px"}}/> : 
+                            <Fragment>
+                            <Empty description={<span>Sorry, no search result!</span>} style={{marginTop: "100px"}}/>
+                            <Link to="/requests">
+                                <div style={{textAlign: "center", marginTop: "30px"}}><Button type="primary">Go To Post Request</Button></div>
+                            </Link>
+                            </Fragment> : 
                             part_results.map((item, index) => {
                                 const price = item.get('price').split('.')[0]
                                 const amenities = item.get('amenities').slice(1, -1).split(',')
