@@ -255,7 +255,7 @@ class MyProp extends Component {
                                                 disabledDate={this.disabledDate}
                                                 format="YYYY-MM-DD" style={{width: "100%"}}
                                                 ranges={{ Today: [moment(), moment()], 
-                                                'This Month': [moment().startOf('month'), moment().endOf('month')]}} />)
+                                                'This Month': [moment(), moment().endOf('month')]}} />)
                             }
                         </Form.Item>
                         <Form.Item label="House Rules">

@@ -346,7 +346,7 @@ class Search extends Component {
                             }) ( <RangePicker 
                                             disabledDate={this.disabledDate}
                                             ranges={{ Today: [moment(), moment()], 
-                                            'This Month': [moment().startOf('month'), moment().endOf('month')]}}/>)
+                                            'This Month': [moment(), moment().endOf('month')]}}/>)
                         }
                     </Form.Item>
                     <Form.Item>
