@@ -72,11 +72,10 @@ class Order(Resource):
         proInfo.available_dates = ','.join(available_dates)
 
         session.add(new_order)
+        from run import app
+        send_order_email(app, userInfo.username,property_id, checkIn, checkOut, order_time, userInfo.email)
         session.commit()
         session.close()
-        from run import app
-        img_url='http://localhost:5000/upload/?img_name=h2.png'
-        send_order_email(app, userInfo.username,img_url, property_id, checkIn, checkOut, order_time, userInfo.email)
         return {'message': 'success'}
 
     @order.response(200, 'Success')

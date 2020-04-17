@@ -31,6 +31,7 @@ class Requests(Resource):
             res.append(temp)
 
         session.close()
+        res.sort(key=lambda x: x['request_time'], reverse=True)
         return res
 
     @requests.response(200, 'Success')

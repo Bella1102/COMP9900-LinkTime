@@ -7,6 +7,7 @@ import time
 import datetime
 import os
 from flask_mail import Message, Mail
+from flask import render_template
 
 BASE_HOST = 'http://127.0.0.1'
 BASE_PORT = 5000
@@ -180,13 +181,6 @@ def getPropertyInfo(pro_obj, img_obj, add_obj, rev_obj, host_obj):
 
 def getOrderInfo(order_obj, pro_obj, img_obj, add_obj):
     img_url_list = changeTextToList(img_obj.img_url)
-    # now_time = getLocalTime().split(' ')[0]
-    # order_status = order_obj.order_status
-    # comment_status = 'false'
-    # if order_status == 'Active':
-    #     if order_obj.checkOut < now_time:
-    #         order_status = 'Finished'
-    #         comment_status = 'true'
     temp={"order_id": order_obj.id,
           "property_id": order_obj.property_id,
           "order_time": order_obj.order_time,
@@ -209,7 +203,10 @@ def getAllProOfHost(ord_obj,pro_obj, img_obj, add_obj):
             "title": pro_obj.title,
             "price": pro_obj.price,
             "img_url": img_url_list[0],
-            "location": add_obj.location }
+            "location": add_obj.location,
+            "amenities": pro_obj.amenities,
+            "description": pro_obj.description,
+            "house_rules": pro_obj.house_rules}
     # if ord_obj:
     #     ord_info = {
     #         "order_id": order_obj.id,
@@ -263,18 +260,22 @@ def mail_config(app):
         MAIL_PASSWORD=os.getenv('MAIL_PASSWORD')
     )
     return Mail(app)
+
+
 def send_async_register_email(app, user_name, user_email):
     mail = mail_config(app)
-    subject = 'Hello %s' % user_name
-    message = '<h1>Welcome to LinkTime</h1>'
+    subject = 'Hello %s' % (user_name)
+
+    message = "<div style=''>" \
+              "<div style='height: 100px; width: 100%; background-color: #0073B1; text-align: center;line-height: 100px; font-size: 20px; font-weight: 600;color: #fff;'>" \
+              "Welcome to LinkTime</div>" \
+              "<div style='height: 400px; width: 100%; background-color: #fff; text-align: center;line-height: 400px; font-size: 20px; font-weight: 600;background-color:#f5f5f5''>" \
+              "<a href='http://127.0.0.1:3000'>GO TO HOME PAGE</a></div></div>"
 
     msg = Message(subject=subject,
                   sender='unswlinktime@gmail.com',
                   recipients=[user_email],
                   html=message)
-
-    with app.open_resource("uploads/h1.png") as fp:
-        msg.attach("h1.png", "image/png", fp.read())
 
     with app.app_context():
         mail.send(msg)
@@ -287,27 +288,36 @@ def send_register_email(app, user_name, user_email):
     thr.start()
     return thr
 
-def send_async_order_email(app, user_name, img_url, property_id, checkIn, checkOut, order_time, email):
+def send_async_order_email(app, user_name,property_id, checkIn, checkOut, order_time, email):
     mail = mail_config(app)
     pro_url = 'http://localhost:3000/props/%s' % (property_id)
     subject = 'Hello %s, Please confirm your order.' % user_name
-    message = "<p>Start time: %s </p>" \
+    message = "<div style='background: #e6f7ff'>" \
+              "<div style='height:100px;background-color: #0073B1;text-align:center;line-height:100px;font-size:26px;font-weight:400;color:#fff;'>" \
+              "Comfirm your order infomation" \
+              "</div>" \
+              "<div style='padding-left: 100px;'>" \
+              "<p>Start time: %s </p>" \
               "<p>End time: %s </p>" \
               "<p>Order time: %s </p>" \
-              "<p>Click the picture, check the property</p>" \
-              "<a href=%s><img src=%s/></a>" % (checkIn, checkOut, order_time, pro_url, img_url)
+              "</div>" \
+              "<div style='height:100px;background-color: #40a9ff;text-align:center;line-height:100px;font-size:20px;font-weight:400;color:#fff;'>" \
+              "<a href=%s style='color: #fff'>GO TO THE PROPERTY PAGE</a>" \
+              "</div>" \
+              "</div>" % (checkIn, checkOut, order_time, pro_url)
+
 
     msg = Message(subject=subject,
                   sender='unswlinktime@gmail.com',
-                  recipients=['procj0926@gmail.com'],
+                  recipients=[email],
                   html=message)
     with app.app_context():
         mail.send(msg)
 
     return ''
-def send_order_email(app, user_name, img_url, property_id,  checkIn, checkOut, order_time, email):
+def send_order_email(app, user_name, property_id,  checkIn, checkOut, order_time, email):
     import threading
-    thr = threading.Thread(target=send_async_order_email, args=[app, user_name, img_url, property_id,  checkIn, checkOut, order_time, email])
+    thr = threading.Thread(target=send_async_order_email, args=[app, user_name, property_id,  checkIn, checkOut, order_time, email])
     thr.start()
     return thr
 

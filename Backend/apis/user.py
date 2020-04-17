@@ -29,7 +29,6 @@ class User(Resource):
 
 
         pro_host = session.query(db.Host).filter_by(host_id=user.id).all()
-        print(pro_host)
         res = []
         for host_obj in pro_host:
             property_id = host_obj.property_id

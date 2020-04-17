@@ -310,6 +310,14 @@ def init_order(session):
     comment_status = False
 
     for item in res:
+        # change the available_date of property in order data
+        proInfo = session.query(db.Property).filter_by(property_id=int(item['property_id'])).first()
+
+        available_dates_list = proInfo.available_dates.split(',')
+        order_dates_list = dateRange(item['checkIn'], item['checkOut'])
+        available_dates = [item for item in available_dates_list if item not in order_dates_list]
+        proInfo.available_dates = ','.join(available_dates)
+
         order_status = item['order_status']
         if order_status == 'Active':
             if item['checkOut'] < now_time:
