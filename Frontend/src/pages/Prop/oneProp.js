@@ -247,7 +247,7 @@ class OneProp extends Component {
                                                     size="large"
                                                     placeholder={["Check-In", "Check-Out"]}
                                                     ranges={{ Today: [moment(), moment()], 
-                                                        'This Month': [moment().startOf('month'), moment().endOf('month')]}} />)
+                                                        'This Month': [moment(), moment().endOf('month')]}} />)
                                         }
                                     </Form.Item>
                                     <Form.Item label="Guests" >

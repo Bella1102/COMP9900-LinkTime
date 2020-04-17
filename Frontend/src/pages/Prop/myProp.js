@@ -25,7 +25,9 @@ class MyProp extends Component {
         previewVisible: false,
         previewImage: '',
         fileList: [],
-        currenPropId: null
+        currenPropId: null,
+        currenPropPrice: 0,
+        currenPropTitle: ''
     };
 
     getBase64(file) {
@@ -107,11 +109,20 @@ class MyProp extends Component {
         return current && current < moment().add(-1, 'days');
     }
 
+    showDrawer = (item) => {
+        this.setState({ 
+            drawerVisible: true, 
+            currenPropId: item.get('property_id'),
+            currenPropPrice: item.get('price').split('$')[1].split('.')[0],
+            currenPropTitle: item.get('title')
+        })
+    }
+
 
     render() {
         const { loginStatus, token, allProps } = this.props;
         const { getFieldDecorator } = this.props.form;
-        const { previewVisible, previewImage, fileList } = this.state;
+        const { previewVisible, previewImage, fileList, currenPropPrice, currenPropTitle } = this.state;
 
         const amenityOptions = ['TV', 'Internet', 'Wifi', 'Washer', 'Dryer', 
             'Hair dryer', 'Kitchen', 'Smoke detector', 'Air Conditioning', 'Free parking on premises']
@@ -153,7 +164,7 @@ class MyProp extends Component {
                                                 <Icon type="edit" 
                                                     key="edit"
                                                     style={{fontSize: "20px", color: "#f9c700"}}
-                                                    onClick={ () => { this.setState({ drawerVisible: true, currenPropId: item.get('property_id') }) }}
+                                                    onClick={ () => this.showDrawer(item) }
                                                     />, 
                                                 <Icon type="delete" 
                                                     key="delete"
@@ -219,7 +230,7 @@ class MyProp extends Component {
                         <Form.Item label="Title"> 
                         {
                             getFieldDecorator('title',{ 
-                                initialValue:'', 
+                                initialValue: currenPropTitle, 
                                 rules:[ ]
                             })( <Input allowClear/> )
                         }
@@ -241,7 +252,7 @@ class MyProp extends Component {
                         <Form.Item label="Price">
                             {
                                 getFieldDecorator('price', {
-                                    initialValue: '',
+                                    initialValue: currenPropPrice,
                                     rules: [{ pattern: new RegExp("^[1-9][0-9]*$", 'g'), message: 'The input price must be an integer' }]
                                 })(<Input placeholder="Please input the price" prefix="$" suffix="AUD"/>)
                             }
@@ -255,7 +266,7 @@ class MyProp extends Component {
                                                 disabledDate={this.disabledDate}
                                                 format="YYYY-MM-DD" style={{width: "100%"}}
                                                 ranges={{ Today: [moment(), moment()], 
-                                                'This Month': [moment().startOf('month'), moment().endOf('month')]}} />)
+                                                'This Month': [moment(), moment().endOf('month')]}} />)
                             }
                         </Form.Item>
                         <Form.Item label="House Rules">

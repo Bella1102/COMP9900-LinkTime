@@ -5,6 +5,7 @@
 **Frontend** 
 ```
     cd Frontend
-    yarn init
+    yarn install
     yarn start
 ```
+

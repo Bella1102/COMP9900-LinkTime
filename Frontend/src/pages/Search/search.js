@@ -346,7 +346,7 @@ class Search extends Component {
                             }) ( <RangePicker 
                                             disabledDate={this.disabledDate}
                                             ranges={{ Today: [moment(), moment()], 
-                                            'This Month': [moment().startOf('month'), moment().endOf('month')]}}/>)
+                                            'This Month': [moment(), moment().endOf('month')]}}/>)
                         }
                     </Form.Item>
                     <Form.Item>
@@ -379,7 +379,12 @@ class Search extends Component {
                         <div style={{height: "110vh", overflow: "auto"}}>
                         {   
                             part_results.size === 0 ? 
-                            <Empty description={<span>Sorry, no search results!</span>} style={{marginTop: "100px"}}/> : 
+                            <Fragment>
+                            <Empty description={<span>Sorry, no search result!</span>} style={{marginTop: "100px"}}/>
+                            <Link to="/requests">
+                                <div style={{textAlign: "center", marginTop: "30px"}}><Button type="primary">Go To Post Request</Button></div>
+                            </Link>
+                            </Fragment> : 
                             part_results.map((item, index) => {
                                 const price = item.get('price').split('.')[0]
                                 const amenities = item.get('amenities').slice(1, -1).split(',')
@@ -489,7 +494,7 @@ class Search extends Component {
         }
 
         let temp = this.props.location.search
-        let exp = /^\?location=\w*&type=\w*&start_date=([\d]{4}-[\d]{2}-[\d]{2})*&end_date=([\d]{4}-[\d]{2}-[\d]{2})*/g
+        let exp = /^\?location=\w*[ \w*]*&type=\w*&start_date=([\d]{4}-[\d]{2}-[\d]{2})*&end_date=([\d]{4}-[\d]{2}-[\d]{2})*/g
         if (!temp.match(exp)){
             this.props.search("", "", "", "")
         } else {
