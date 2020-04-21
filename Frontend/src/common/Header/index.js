@@ -60,7 +60,9 @@ class Header extends Component {
             <div className="header">
                 <Row className="header-top">
                     <Col span={24}>
-                        <Link to='/' className="logo">LinkTime</Link>
+                        <Link to='/' className="logo">
+                            <img src="/logo3.png" alt="" className="logoImg" />
+                        </Link>
                         <Link to='/login'><Button type="primary" className="logreg">Log in</Button></Link>
                         <Link to='/signup'><Button type="primary" className="logreg">Sign up</Button></Link>
                         <Dropdown overlay={this.visitorMenu()} placement="bottomCenter">
@@ -81,7 +83,9 @@ class Header extends Component {
             <div className="header">
                 <Row className="header-top">
                     <Col span={24}>
-                        <Link to='/' className="logo">LinkTime</Link>
+                        <Link to='/' className="logo">
+                            <img src="/logo3.png" alt="" className="logoImg" />
+                        </Link>
                         <Link to='/orders'>
                             <Button type="primary" className="orders">My orders</Button>
                         </Link>

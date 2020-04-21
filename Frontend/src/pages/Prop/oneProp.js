@@ -156,7 +156,7 @@ class OneProp extends Component {
                                         {propDetail.get("bedrooms")} {propDetail.get("bedrooms") > 1 ? "bedrooms" : "bedroom"}
                                     </span>
                                     <span style={{marginRight: "1%"}}>
-                                        { propDetail.get("bathrooms")} {propDetail.get("bedrooms") > 1 ? "bathrooms" : "bathroom"}
+                                        { propDetail.get("bathrooms")} {propDetail.get("bathrooms") > 1 ? "bathrooms" : "bathroom"}
                                     </span>
                                     <span style={{marginRight: "1%"}}>
                                         { propDetail.get("accommodates")} {propDetail.get("accommodates") > 1 ? "guests" : "guest"}

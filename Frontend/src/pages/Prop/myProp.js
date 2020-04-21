@@ -27,7 +27,10 @@ class MyProp extends Component {
         fileList: [],
         currenPropId: null,
         currenPropPrice: 0,
-        currenPropTitle: ''
+        currenPropTitle: '',
+        currenPropAmenities: ['TV', 'Internet', 'Wifi', 'Washer', 'Dryer'],
+        currenPropRules: '',
+        currenPropDetails: '',
     };
 
     getBase64(file) {
@@ -114,7 +117,9 @@ class MyProp extends Component {
             drawerVisible: true, 
             currenPropId: item.get('property_id'),
             currenPropPrice: item.get('price').split('$')[1].split('.')[0],
-            currenPropTitle: item.get('title')
+            currenPropTitle: item.get('title'),
+            currenPropRules: item.get('house_rules'),
+            currenPropDetails: item.get('description'),
         })
     }
 
@@ -122,7 +127,8 @@ class MyProp extends Component {
     render() {
         const { loginStatus, token, allProps } = this.props;
         const { getFieldDecorator } = this.props.form;
-        const { previewVisible, previewImage, fileList, currenPropPrice, currenPropTitle } = this.state;
+        const { previewVisible, previewImage, fileList, 
+            currenPropPrice, currenPropTitle, currenPropAmenities, currenPropRules, currenPropDetails,  } = this.state;
 
         const amenityOptions = ['TV', 'Internet', 'Wifi', 'Washer', 'Dryer', 
             'Hair dryer', 'Kitchen', 'Smoke detector', 'Air Conditioning', 'Free parking on premises']
@@ -238,7 +244,7 @@ class MyProp extends Component {
                         <Form.Item label="Amenities" >
                         {
                             getFieldDecorator('amenity', {
-                                initialValue: [],
+                                initialValue: currenPropAmenities,
                                 rules: [ ],
                             })( <Select mode="multiple" placeholder='Please select amenities' allowClear>
                                 {
@@ -272,15 +278,15 @@ class MyProp extends Component {
                         <Form.Item label="House Rules">
                             {
                                 getFieldDecorator('houseRules',{
-                                    initialValue: ''
-                                })( <Input.TextArea placeholder="Please input house rules" allowClear/> )
+                                    initialValue: currenPropRules,
+                                })( <Input.TextArea Rows={5} placeholder="Please input house rules" allowClear/> )
                             }
                         </Form.Item>
                         <Form.Item label="Other Detail">
                         {
                             getFieldDecorator('description',{
-                                initialValue: ''
-                            })( <Input.TextArea placeholder="Please input other detail" allowClear/> )
+                                initialValue: currenPropDetails,
+                            })( <Input.TextArea Rows={5} placeholder="Please input other detail" allowClear/> )
                         }
                         </Form.Item>
                     </Form>

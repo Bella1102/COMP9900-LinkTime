@@ -9,7 +9,7 @@ class Footer extends Component {
     render() {
         return (
             <div className="footer">
-                Copyright © COMP9900
+                Copyright © LinkTime
                 <BackTop />
             </div>
           );
