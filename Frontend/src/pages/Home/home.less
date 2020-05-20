@@ -2,7 +2,7 @@
 
 .homeContent {
     padding: 20px 2%;
-    min-height: 660px;
+    height: 100%;
     .book {
         color: @colorA;
         font-weight: bold;
@@ -15,8 +15,9 @@
             margin: 20px 0;
         }
         .typeImage {
-            width: 90%;
-            height: 390px;
+            display: inline-block;
+            max-width: 95%;
+            height: auto;
             border-radius: 5px;
             margin-bottom: 10px;
         }
@@ -53,13 +54,33 @@
             text-align: center;
             margin-bottom: 25px;
         }
-        .recomImage {
-            width: 90%;
-            height: 260px;
-            border-radius: 5px;
-            margin-bottom: 10px;
-        }
+    }
+}
 
+@media screen and (max-width: 1800px) {
+    .recomImage {
+        width: 90%;
+        height: 260px;
+        border-radius: 5px;
+        margin-bottom: 10px;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .recomImage {
+        width: 90%;
+        height: 200px;
+        border-radius: 5px;
+        margin-bottom: 10px;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .recomImage {
+        width: 90%;
+        height: 120px;
+        border-radius: 5px;
+        margin-bottom: 10px;
     }
 }
 

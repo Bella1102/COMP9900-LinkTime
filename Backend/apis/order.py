@@ -72,8 +72,8 @@ class Order(Resource):
         proInfo.available_dates = ','.join(available_dates)
 
         session.add(new_order)
-        from run import app
-        send_order_email(app, userInfo.username,property_id, checkIn, checkOut, order_time, userInfo.email)
+        # from run import app
+        # send_order_email(app, userInfo.username,property_id, checkIn, checkOut, order_time, userInfo.email)
         session.commit()
         session.close()
         return {'message': 'success'}

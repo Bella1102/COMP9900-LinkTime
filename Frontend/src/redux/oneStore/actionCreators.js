@@ -96,7 +96,7 @@ export const login = (username, password) => {
 			loginSuccess();
 			// ##############################
 			localStorage.setItem('linkToken', res.data.token)
-			cookie.save('userInfo', res.data.token, { path: '/', maxAge: 3600*24*7 })
+			cookie.save('userInfo', res.data.token, { path: '/', SameSite: 'None', maxAge: 3600*24*7 })
 			// get user info
 			dispatch(getUserInfo(res.data.token))
 		}).catch((error) => {
