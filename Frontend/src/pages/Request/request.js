@@ -98,7 +98,7 @@ class Request extends Component {
                                     <div key={item}>
                                         <Col span={3}>
                                             <div className="requestAvatarWrap">
-                                                <Avatar size={108} src={item.get("avatar")}/>
+                                                <Avatar className="avatarImg" src={item.get("avatar")}/>
                                                 <div className="requestName">{item.get("user_name")}</div>
                                             </div>
                                         </Col>
