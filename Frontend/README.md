@@ -2,7 +2,7 @@
 ## Accommodation Booking Web Portal Frontend
 
 
-#### Install Frontend Environment and Run Frontend
+### Install Frontend Environment and Run Frontend
 
 If node or npm is not installed on your computer, please check this [Website](https://nodejs.org/en/) for node installation.
 
@@ -10,8 +10,8 @@ After installing the node environment, open yourcommand console, execute the fol
 
 ```bash
     cd Frontend 
-    npm install 
-    npm start
+    yarn install
+    yarn start
 ```
 
 Open your browser and visit: [http://localhost:3000](http://localhost:3000). You will see the homepage of this project.

@@ -2,7 +2,7 @@
 ## Accommodation Booking Web Portal Frontend
 
 
-#### Install Backend Environment and Run Backend
+### Install Backend Environment and Run Backend
 
 You can create a virtual env with conda [recommended].  
 If conda is not installed on your computer, please check this [Website](https://docs.conda.io/projects/conda/en/latest/user-guide/install/) for conda installation.  
